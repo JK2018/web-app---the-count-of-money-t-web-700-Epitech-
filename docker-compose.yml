@@ -1,0 +1,39 @@
+version: '3'
+services:
+  db:
+    environment:
+      PGDATA: /var/lib/postgresql/pgdata
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: api
+      POSTGRES_HOST_AUTH_METHOD: trust
+    image: 'postgres:12-alpine'
+    restart: always
+  api:
+    build: "./api"
+    depends_on:
+      - db
+    environment:
+      MIX_ENV: dev
+    env_file:
+      - .env
+    ports:
+      - '3001:3000'
+    expose:
+      - 3000
+    volumes:
+      - ./api:/app
+  front:
+    build: "./front"
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    networks:
+      - default
+    restart: on-failure
+    volumes:
+      - ./front:/app
+
+networks:
+  default:
