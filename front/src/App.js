@@ -4,7 +4,6 @@ import Navbar from './component/Navbar';
 import Landing from './component/Landing';
 import Login from './component/Login';
 import Register from './component/Register';
-import Crypto from './component/Crypto';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 
@@ -20,7 +19,7 @@ const App = () => {
           <Switch>
             <Route exact path='/register' component={Register}></Route>
             <Route exact path='/login' component={Login}></Route>
-            <Route exact path='/cryptos/?' component={Crypto}></Route>
+            {/* <Route exact path='/cryptos/?' component={CryptoDashboard}></Route> */}
           </Switch>
         </section>
        

@@ -1,3 +1,24 @@
+
+
+
+
+.test{
+  border:solid red 2px;
+}
+.lidiv{
+  display: flex;
+  justify-content: space-evenly;
+}
+.pxl{
+  width: 15%;
+  border:solid blue 2px;
+}
+.pml{
+  width: 8%;
+  border:solid blue 2px;
+}
+
+
 /* Global Styles */
 :root {
   --primary-color: #17a2b8;
@@ -339,7 +360,7 @@ button {
 /* Landing Page */
 .landing {
   position: relative;
-  background: url('./img/showcase.jpg') no-repeat center center/cover;
+  /* background: url('./img/showcase.jpg') no-repeat center center/cover; */
   height: 100vh;
 }
 
