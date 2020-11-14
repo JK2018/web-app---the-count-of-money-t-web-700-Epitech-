@@ -3,7 +3,7 @@ import React from 'react'
 export const Landing = () => {
     return (
         <section className="landing">
-        <div>
+        <div className="mainCompDiv">
             <h1>LANDING PAGE</h1>
         </div>
     </section>

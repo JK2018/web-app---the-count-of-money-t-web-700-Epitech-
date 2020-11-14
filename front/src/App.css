@@ -7,6 +7,12 @@
   --success-color: #28a745;
 }
 
+.mainCompDiv{
+  width: 90%;
+  padding-top: 100px;
+  margin: auto;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

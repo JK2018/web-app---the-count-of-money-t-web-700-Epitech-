@@ -5,7 +5,7 @@ export const Navbar = () => {
     return (
         <nav className="navbar bg-dark">
         <h1>
-            <Link to="/"><i className="fas fa-code"></i> T-WEB-...</Link>
+            <Link to="/"><i className="fas fa-code"></i> The Count Of Money</Link>
         </h1>
         <ul>
             <li><Link to="/register">Register</Link></li>

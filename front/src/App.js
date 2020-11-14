@@ -14,6 +14,7 @@ const App = () => {
     <Router>
       <Fragment>
         <Navbar></Navbar>
+        
         <Route exact path='/' component={Landing}></Route>
         <section>
           <Switch>
@@ -22,6 +23,7 @@ const App = () => {
             <Route exact path='/cryptos/?' component={Crypto}></Route>
           </Switch>
         </section>
+       
       </Fragment>
     </Router>
   );
