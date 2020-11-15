@@ -4,6 +4,7 @@ import Navbar from './component/Navbar';
 import Landing from './component/Landing';
 import Login from './component/Login';
 import Register from './component/Register';
+import CryptoDashboard from './component/CryptoDashboard';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 
@@ -19,7 +20,7 @@ const App = () => {
           <Switch>
             <Route exact path='/register' component={Register}></Route>
             <Route exact path='/login' component={Login}></Route>
-            {/* <Route exact path='/cryptos/?' component={CryptoDashboard}></Route> */}
+            <Route exact path='/crypto' component={CryptoDashboard}></Route>
           </Switch>
         </section>
        
