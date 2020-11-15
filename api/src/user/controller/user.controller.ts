@@ -1,3 +1,4 @@
+import { UserIsUserGuard } from './../../auth/guards/user-guard';
 import { hasRoles } from './../../auth/decorator/roles.decorator';
 import { RolesGuard } from './../../auth/guards/role.guard';
 import { UserRole } from './../models/user.interface';
@@ -29,23 +30,27 @@ export class UserController {
             })
         )
     }
-
+    
+    @UseGuards(JwtAuthGuard, UserIsUserGuard)
     @Get(":id")
     findOne(@Param() params): Observable<User> {
         return this.userService.findOne(params.id);
     }
 
-    @UseGuards(JwtAuthGuard)
+    @hasRoles(UserRole.ADMIN)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
     findAll(): Observable<User[]> {
         return this.userService.findAll();
     }
 
+    @UseGuards(JwtAuthGuard, UserIsUserGuard)
     @Delete(":id")
     deleteOne(@Param() params): Observable<any> {
         return this.userService.deleteOne(params.id)
     }
 
+    @UseGuards(JwtAuthGuard, UserIsUserGuard)
     @Put(":id")
     updateOne(@Param() params, @Body() user : User): Observable<any> {
         return this.userService.updateOne(params.id, user)
