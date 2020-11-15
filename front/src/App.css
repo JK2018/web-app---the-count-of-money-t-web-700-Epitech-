@@ -2,20 +2,42 @@
 
 
 
-.test{
-  border:solid red 2px;
-}
+
 .lidiv{
   display: flex;
   justify-content: space-evenly;
+  border-bottom: solid black 1px;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  margin-top: 25px;
+}
+.coinName{
+  padding-left: 5px;
+  vertical-align: baseline;
+  line-height:40px;
+  
 }
 .pxl{
   width: 15%;
-  border:solid blue 2px;
+  height: 5%;
+}
+.pxl-4{
+  width: 11%;
+  
 }
 .pml{
-  width: 8%;
-  border:solid blue 2px;
+  width: 7%;
+  text-align: center;
+  
+}
+.pml4{
+  width: 11%;
+  text-align: center;
+  
+}
+.iconimg{
+  height: 40px;
+  width: 40px;
 }
 
 
