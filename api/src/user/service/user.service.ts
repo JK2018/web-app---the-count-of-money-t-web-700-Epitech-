@@ -22,6 +22,7 @@ export class UserService {
                 newUser.email = user.email;
                 newUser.password = passwordHash;
                 newUser.currency = user.currency;
+                newUser.role = user.role;
 
                 return from(this.userRepository.save(newUser)).pipe(
                     map((user: User) => {
@@ -92,5 +93,9 @@ export class UserService {
             ))
         )
 
+    }
+
+    updateRoleOfUser(id: number, user: User): Observable<any> {
+        return from(this.userRepository.update(id, user));
     }
 }
