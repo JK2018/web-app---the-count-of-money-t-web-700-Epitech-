@@ -1,13 +1,35 @@
-import React from 'react';
+
+import { Fragment } from 'react';
+import Navbar from './component/Navbar';
+import Landing from './component/Landing';
+import Login from './component/Login';
+import Register from './component/Register';
+import FavoritesList from './component/FavoritesList';
+import CryptoDashboard from './component/CryptoDashboard';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import CryptoDetails from './components/CryptoDetails';
 
-class App extends React.Component {
-  render() {
-    return "Bonjour à tous"
-  }
+const App = () => {
+
+
+
+  return (
+    <Router>
+      <Fragment>
+        <Navbar></Navbar>
+        <Route exact path='/' component={Landing}></Route>
+        <section>
+          <Switch>
+            <Route exact path='/register' component={Register}></Route>
+            <Route exact path='/favorites' component={FavoritesList}></Route>
+            <Route exact path='/login' component={Login}></Route>
+            <Route exact path='/crypto' component={CryptoDashboard}></Route>
+          </Switch>
+        </section>
+      </Fragment>
+    </Router>
+  );
 }
 
 export default App;
