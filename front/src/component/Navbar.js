@@ -8,6 +8,7 @@ const Navbar = () => {
             <Link to="/"><i className="fas fa-code"></i> The Count Of Money</Link>
         </h1>
         <ul>
+            <li><Link to="/favorites">Favorites</Link></li>
             <li><Link to="/register">Register</Link></li>
             <li><Link to="/login">Login</Link></li>
         </ul>

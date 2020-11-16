@@ -1,5 +1,48 @@
 
 /* CryptoList */
+
+.content{
+  width: 450px;
+  height: auto;
+  margin: 0 auto;
+  padding: 30px;
+}
+.nav-pills{
+  width: 450px;
+}
+.nav-item{
+  width: 50%;
+}
+.nav-pills .nav-link{
+  font-weight: bold;
+  padding-top: 13px;
+  text-align: center;
+  background: #343436;
+  color: #fff;
+  border-radius: 30px;
+  height: 100px;
+}
+.nav-pills .nav-link.active{
+  background: grey;
+  color: #000;
+}
+.tab-content{
+  position: absolute;
+  width: 450px;
+  height: auto;
+  margin-top: -50px;
+  background: #fff;
+  color: #000;
+  z-index: 1000;
+  padding: 30px;
+  margin-bottom: 50px;
+}
+.tab-content button{
+  border-radius: 15px;
+  width: 100px;
+  margin: 0 auto;
+  float: right;
+}
 .star{
   cursor: pointer;
 }
