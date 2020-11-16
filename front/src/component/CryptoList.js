@@ -38,7 +38,7 @@ const CryptoList = (props) => {
         <div>
 
             <ul>
-                <li>
+                {/* <li>
                     <div className="lidiv hder">
                         <p className="pml"><FontAwesomeIcon icon={faStar}/></p>
                         <p className="pml">Rank</p>
@@ -51,7 +51,7 @@ const CryptoList = (props) => {
                         <p className="pxl">Total Volume</p>
                         <p className="pxl-4">Market Cap</p>
                     </div>
-                </li>
+                </li> */}
                 {props.data.map(item => (
                 <Fragment key={item.market_cap_rank}>
                     <Crypto img={item.image}

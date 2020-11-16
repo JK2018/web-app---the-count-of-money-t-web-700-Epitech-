@@ -49,7 +49,7 @@ const Crypto = (props) => {
                         <p className="pml">{props.tag}</p>
                         <p className="pml4">{props.price}</p>
                         <p className="pml" style={{color: (props.oneday).charAt(0)==='-' ? 'red': 'green'}}>{props.oneday}%</p>
-                        <p className="pxl daycash" style={{color: (props.oneday).charAt(0)==='-' ? 'red': 'green'}}>{props.onedaycurr} $</p>
+                        <p className="pxl daycash" style={{color: (props.oneday).charAt(0)==='-' ? 'red': 'green'}}>{props.onedaycurr} </p>
                         <p className="pxl">{props.dayvol}K</p>
                         <p className="pxl-4">{props.mcap}M</p>  
                     </div>
