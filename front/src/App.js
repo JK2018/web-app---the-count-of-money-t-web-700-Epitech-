@@ -5,15 +5,12 @@ import Landing from './component/Landing';
 import Login from './component/Login';
 import Register from './component/Register';
 import FavoritesList from './component/FavoritesList';
-import CryptoDashboard from './component/CryptoDashboard';
+import CryptoDetail from './component/CryptoDetail';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 
 
 const App = () => {
-
-
-
   return (
     <Router>
       <Fragment>
@@ -24,7 +21,7 @@ const App = () => {
             <Route exact path='/register' component={Register}></Route>
             <Route exact path='/favorites' component={FavoritesList}></Route>
             <Route exact path='/login' component={Login}></Route>
-            <Route exact path='/crypto' component={CryptoDashboard}></Route>
+            <Route exact path='/crypto/:id' component={CryptoDetail}></Route>
           </Switch>
         </section>
       </Fragment>
