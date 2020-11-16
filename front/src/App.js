@@ -18,7 +18,6 @@ const App = () => {
     <Router>
       <Fragment>
         <Navbar></Navbar>
-        
         <Route exact path='/' component={Landing}></Route>
         <section>
           <Switch>
@@ -28,7 +27,6 @@ const App = () => {
             <Route exact path='/crypto' component={CryptoDashboard}></Route>
           </Switch>
         </section>
-       
       </Fragment>
     </Router>
   );

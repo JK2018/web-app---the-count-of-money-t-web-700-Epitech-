@@ -1,9 +1,9 @@
-import React, { useState, createContext, useContext} from 'react'
+import React, { useState} from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import Landing from './Landing';
+
 
 
 
@@ -13,10 +13,10 @@ const Crypto = (props) => {
     const location = useLocation();
     const [starColor, setStarColor] = useState(props.defaultStarCol);
     const cookies = new Cookies();
-
     const getFavs = cookies.getAll();
    
 
+    // toggle color, re-render, remove or add to cookies
     const handleFavToggle = (e) => {
         if(starColor === '#ebc934'){
             setStarColor('lightgrey');
@@ -30,7 +30,7 @@ const Crypto = (props) => {
         } else {
             setStarColor('#ebc934');
             cookies.set(props.id, props.id, { path: '/' });
-            console.log(cookies.getAll());
+            //console.log(cookies.getAll());
         }
     }
 
