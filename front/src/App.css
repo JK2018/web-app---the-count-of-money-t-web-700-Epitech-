@@ -549,7 +549,7 @@ button {
 
 /* Crypto Detail Page */
 .crypto-detail {
-  padding: 100px 5vw;
+  padding: 100px 10vw;
 }
 
 .crypto-detail .logo {
@@ -572,6 +572,13 @@ button {
 .crypto-detail li label {
   font-weight: 800;
   padding-right: 15px;
+}
+
+.crypto-detail .chart-container {
+  position: relative;
+  margin: auto;
+  height: 300px;
+  width: 100%;
 }
 
 /* Mobile Styles */
