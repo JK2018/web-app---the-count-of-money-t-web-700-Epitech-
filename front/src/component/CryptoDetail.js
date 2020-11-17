@@ -20,21 +20,21 @@ const CryptoDetail = () => {
         return <div>Chargement...</div>;
     } else {
         return (
-            <div class="crypto-detail">
+            <div className="crypto-detail">
                 <Grid container>
-                    <Grid lg={6} xs={6} item>
+                    <Grid className="logo" lg={5} xs={5} item>
                         <div>
                             <img src={data.image.large} alt="currency-logo"/>
+                            <h1>{data.name}</h1>
                         </div>
                     </Grid>
-                    <Grid lg={6} xs={6} item>
+                    <Grid lg={7} xs={7} item>
                         <ul>
-                            <li>Nom {data.name}</li>
-                            <li>Rank {data.market_cap_rank}</li>
-                            <li>Website {data.links.homepage[0]}</li>
-                            <li>Current price {data.market_data.current_price.eur} €</li>
-                            <li>Total volume {data.market_data.total_volume.eur} €</li>
-                            <li>Market cap {data.market_data.market_cap.eur} €</li>
+                            <li><label>Rank</label>{data.market_cap_rank}</li>
+                            <li><label>Website</label>{data.links.homepage[0]}</li>
+                            <li><label>Current price</label>{data.market_data.current_price.eur} €</li>
+                            <li><label>Total volume</label>{data.market_data.total_volume.eur} €</li>
+                            <li><label>Market cap</label>{data.market_data.market_cap.eur} €</li>
                         </ul>
                     </Grid>
                 </Grid>
