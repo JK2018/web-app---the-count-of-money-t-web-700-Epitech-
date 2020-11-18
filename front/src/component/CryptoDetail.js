@@ -10,6 +10,10 @@ const CryptoDetail = () => {
     const params = useParams();
     const coinId = params.id;
     const [data, setData] = useState([]);
+
+    function formatPrice(price) {
+        return parseFloat(price).toLocaleString('en');
+    }
  
     useEffect(() => {
 
@@ -143,11 +147,11 @@ const CryptoDetail = () => {
                     </Grid>
                     <Grid lg={7} xs={7} item>
                         <ul>
-                            <li><label>Rank</label>{data.market_cap_rank}</li>
-                            <li><label>Website</label>{data.links.homepage[0]}</li>
-                            <li><label>Current price</label>{data.market_data.current_price.eur} €</li>
-                            <li><label>Total volume</label>{data.market_data.total_volume.eur} €</li>
-                            <li><label>Market cap</label>{data.market_data.market_cap.eur} €</li>
+                            <li><label>Rank</label>{ data.market_cap_rank}</li>
+                            <li><label>Website</label><a href={data.links.homepage[0]} target="_blank">{data.links.homepage[0]}</a></li>
+                            <li><label>Current price</label>{ formatPrice(data.market_data.current_price.eur) } €</li>
+                            <li><label>Total volume</label>{ formatPrice(data.market_data.total_volume.eur) } €</li>
+                            <li><label>Market cap</label>{ formatPrice(data.market_data.market_cap.eur) } €</li>
                         </ul>
                     </Grid>
                 </Grid>
