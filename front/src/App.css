@@ -576,8 +576,8 @@ button {
 
 .crypto-detail .chart-container {
   position: relative;
-  margin: auto;
-  height: 300px;
+  margin: 70px auto;
+  height: 350px;
   width: 100%;
 }
 
