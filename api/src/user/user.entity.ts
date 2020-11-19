@@ -1,5 +1,5 @@
-import {Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, BeforeInsert} from 'typeorm';
-import {Crypto} from '../crypto/crypto.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, BeforeInsert } from 'typeorm';
+import { Crypto } from '../crypto/crypto.entity';
 import * as bcrypt from 'bcrypt';
 
 @Entity({name: 'users'})

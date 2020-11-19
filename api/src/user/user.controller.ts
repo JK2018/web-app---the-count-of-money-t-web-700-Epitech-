@@ -2,7 +2,7 @@ import {Body, Controller, HttpException, HttpStatus, Post, Req, UseGuards} from 
 import { Crud } from '@nestjsx/crud';
 import { User } from './user.entity';
 import { UserService } from './user.service';
-import {LocalAuthGuard} from "../auth/local-auth.guard";
+import { LocalAuthGuard } from '../auth/local-auth.guard';
 // import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 import UserDto from "./user.dto";
 
