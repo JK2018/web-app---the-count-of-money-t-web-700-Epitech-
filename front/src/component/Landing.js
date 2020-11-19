@@ -28,21 +28,24 @@ const Landing = () => {
 
     // fetches data from api, and updates data every 30s
     useEffect(() => {
+        console.log("c:"+c);
         const fetchData = async () => {
             setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
             const result = await axios(apiUrl,);
             setData(result.data);
-            const chartData = (result.data).filter(data => data.market_cap_rank < 11);
+            const chartData = (result.data).filter(da => da.market_cap_rank < 11);
             var allcoinsChartData = [];
 
             for (let i = 0; i < chartData.length-1; i++) {
                 var url ="https://api.coingecko.com/api/v3/coins/"+chartData[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
                 const result22 = await axios(url,);
                 const chartPricesRaw = result22.data.prices;
-                const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1]})); 
-                allcoinsChartData.push(chartPricesFinal);   
+                const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': chartData[i].market_cap_rank})); 
+                allcoinsChartData.push(chartPricesFinal);  
+                
             }
             setAllcoinsChartDataFinal(allcoinsChartData);
+            console.log("allcoinsChartDataFinal:"+ allcoinsChartDataFinal);
         }
         
         const interval=setInterval(()=>{
@@ -52,7 +55,7 @@ const Landing = () => {
 
         return()=>{
         clearInterval(interval)}
-    }, c);
+    }, [c]);
  
 
 
@@ -62,7 +65,7 @@ const Landing = () => {
         window.location.reload(false);
        
     } 
-//value={currValue} onChange={e=>setCurrValue(e.currentTarget.value)}
+
     return (
         <section className="landing">
             <div className="mainCompDiv">

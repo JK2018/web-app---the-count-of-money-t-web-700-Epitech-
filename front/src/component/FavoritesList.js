@@ -3,7 +3,7 @@ import axios from 'axios';
 import CryptoList from './CryptoList';
 import Cookies from 'universal-cookie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoneyBill, faStar, faCoins, faPercent } from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBill, faStar, faCoins } from "@fortawesome/free-solid-svg-icons";
 
 
 // ROUTE : /favorites
@@ -19,7 +19,7 @@ const FavoritesList = () => {
         { label: "JPY", value: "jpy"}
     ]);
 
-    
+ 
     var coinUrlString = "";
     const cookies = new Cookies();
     const getFavs = cookies.getAll();
@@ -44,9 +44,6 @@ const FavoritesList = () => {
     // fetches data from api, and updates data every 30s
     useEffect(() => {
 
-
-
-
         const fetchData = async () => {
             if(coinUrlString){
                 //var c = cookies.get('currency');
@@ -54,17 +51,18 @@ const FavoritesList = () => {
                 const result = await axios(apiUrl,);
                 setData(result.data);
 
-                const chartData = (result.data).filter(data => data.market_cap_rank < 11);
-            var allcoinsChartData = [];
+                const chartData = (result.data).filter(da => da.market_cap_rank < 11);
+                var allcoinsChartData = [];
 
-            for (let i = 0; i < chartData.length-1; i++) {
-                var url ="https://api.coingecko.com/api/v3/coins/"+chartData[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
-                const result22 = await axios(url,);
-                const chartPricesRaw = result22.data.prices;
-                const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1]})); 
-                allcoinsChartData.push(chartPricesFinal);   
-            }
-            setAllcoinsChartDataFinal(allcoinsChartData);
+                for (let i = 0; i < chartData.length-1; i++) {
+                    var url ="https://api.coingecko.com/api/v3/coins/"+chartData[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
+                    const result22 = await axios(url,);
+                    const chartPricesRaw = result22.data.prices;
+                    const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1]})); 
+                    allcoinsChartData.push(chartPricesFinal);   
+                }
+                setAllcoinsChartDataFinal(allcoinsChartData);
+                console.log("allcoinsChartDataFinal:"+ allcoinsChartDataFinal);
             } 
 
             
@@ -77,13 +75,14 @@ const FavoritesList = () => {
 
         return()=>{
         clearInterval(interval)}
-    }, c);
+    }, [c]);
 
     const onSelectChange = (e) => {
         setCurrencyValue(e.currentTarget.value);
         cookies.set('currency', e.currentTarget.value, { path: '/' });
         window.location.reload(false);
-    }
+       
+    } 
     
     return (
         <section className="landing">
@@ -107,7 +106,7 @@ const FavoritesList = () => {
                         <p className="pxl-4">Market Cap</p>
                         <p className="pxl">7d Chart</p>
                     </div>
-                <CryptoList data={data} defaultStarCol={'#ebc934'}></CryptoList>
+                <CryptoList allcoinsChartDataFinal={allcoinsChartDataFinal} data={data} defaultStarCol={'#ebc934'}></CryptoList>
             </div>
         </section>
     )

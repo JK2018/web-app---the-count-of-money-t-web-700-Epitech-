@@ -19,6 +19,9 @@ const Crypto = (props) => {
 
     useEffect(() => {
         setCryptoState(props);
+        
+        //const v = (cryptoState.allcoinsChartDataFinal).find(([dz]) => dz.rank === 1 );
+        //console.log("vvv"+v);
       }, [props]);
 
     // toggle color, re-render, remove or add to cookies
