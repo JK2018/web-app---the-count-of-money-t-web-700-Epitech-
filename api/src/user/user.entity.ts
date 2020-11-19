@@ -1,6 +1,6 @@
 import {Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, BeforeInsert} from 'typeorm';
 import {Crypto} from '../crypto/crypto.entity';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 
 @Entity({name: 'users'})
 export class User {
@@ -21,6 +21,11 @@ export class User {
 
     @Column()
     lastName: string;
+
+    @Column({
+        default: 'user',
+    })
+    role: string;
 
     @ManyToMany(() => Crypto, (crypto) => crypto.users)
     @JoinTable()
