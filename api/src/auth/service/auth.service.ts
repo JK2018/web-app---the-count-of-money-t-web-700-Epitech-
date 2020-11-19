@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { User } from 'src/user/models/user.interface';
-const bcrypt = require('bcrypt');
+import * as bcrypt from 'bcrypt';
+// const bcrypt = require('bcrypt');
 
 @Injectable()
 export class AuthService {
-
     constructor(private readonly jwtService: JwtService){}
 
     generateJWT(user: User): Observable <string> {
