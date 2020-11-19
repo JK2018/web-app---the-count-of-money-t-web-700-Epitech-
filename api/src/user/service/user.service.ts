@@ -1,11 +1,11 @@
-import { BadRequestException, Injectable} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { User } from '../models/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto, UpdateUserDto } from '../models/user.dto';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from "@nestjs/jwt";
-import UserDto from "../models/user.dto";
 
 @Injectable()
 export class UserService extends TypeOrmCrudService<User> {
@@ -20,7 +20,7 @@ export class UserService extends TypeOrmCrudService<User> {
         return this.userRepo.findOneOrFail(options);
     }
 
-    async createUser(user: UserDto) {
+    async createUser(user: CreateUserDto) {
         const newUser = new User();
 
         newUser.email = user.email;
@@ -30,6 +30,16 @@ export class UserService extends TypeOrmCrudService<User> {
         newUser.username = user.username;
 
         return this.userRepo.save(newUser);
+    }
+
+    async updateUser(id: string | number, user: UpdateUserDto): Promise<UpdateResult> {
+        const updatedUser = new User();
+
+        updatedUser.firstName = user.firstName;
+        updatedUser.lastName = user.lastName;
+        updatedUser.username = user.username;
+
+        return this.userRepo.update(id, updatedUser);
     }
 
     async validateUser(email, password): Promise<any> {
