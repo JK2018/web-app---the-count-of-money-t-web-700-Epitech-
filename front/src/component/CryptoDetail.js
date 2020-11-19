@@ -29,7 +29,14 @@ const CryptoDetail = () => {
                 </Grid>
             ))
         }
-        return <div className="no-news"><img src={sadFace}/><p>No news related to this currency ...</p></div>
+        return <div className="no-news"><img src={sadFace} alt="sad-face"/><p>No news related to this currency ...</p></div>
+    }
+
+    function trendPercentage(period) {
+        return <div className="trend">
+            <label>{period} evolution</label>
+            <span>{parseFloat(data.market_data[`${'price_change_percentage_'+period}`]).toFixed(2)}%</span>
+        </div>
     }
  
     useEffect(() => {
@@ -51,8 +58,8 @@ const CryptoDetail = () => {
                         data: {
                             datasets: [{
                                 label: 'Price',
-                                backgroundColor: '#ff6384',
-                                borderColor: '#ff6384',
+                                backgroundColor: '#36a2eb',
+                                borderColor: '#36a2eb',
                                 data: prices,
                                 type: 'line',
                                 pointRadius: 0,
@@ -176,7 +183,6 @@ const CryptoDetail = () => {
             setData(result.data);
             createMainChart();
             getRSSFeed(result.data.symbol, result.data.name);
-            //createEvolChart('day');
         })
 
     }, [coinId]);
@@ -187,13 +193,13 @@ const CryptoDetail = () => {
         return (
             <div className="crypto-detail">
                 <Grid container>
-                    <Grid className="logo" lg={4} xs={4} item>
+                    <Grid className="logo" lg={4} md={6} sm={6} xs={6} item>
                         <div>
                             <img src={data.image.large} alt="currency-logo"/>
                             <h1>{data.name}</h1>
                         </div>
                     </Grid>
-                    <Grid lg={4} xs={4} item>
+                    <Grid lg={4} md={6} sm={6} xs={6} item>
                         <ul>
                             <li><label>Rank</label>{data.market_cap_rank}</li>
                             <li><label>Website</label><a href={data.links.homepage[0]} target="_blank" rel="noreferrer">{data.links.homepage[0]}</a></li>
@@ -202,16 +208,18 @@ const CryptoDetail = () => {
                             <li><label>Market cap</label>{ formatPrice(data.market_data.market_cap.eur) } €</li>
                         </ul>
                     </Grid>
-                    <Grid lg={4} xs={4} item>
-                        <div>
-                            <canvas id="day-evol"></canvas>
-                        </div>
-                        <div>
-                            <canvas id="week-evol"></canvas>
-                        </div>
-                        <div>
-                            <canvas id="month-evol"></canvas>
-                        </div>
+                    <Grid lg={4} md={12} sm={12} xs={12} item>
+                        <Grid container>
+                            <Grid className="evol-chart" lg={4} md={4} sm={12} xs={12} item>
+                                {trendPercentage('24h')}
+                            </Grid>
+                            <Grid className="evol-chart" lg={4} md={4} sm={12} xs={12} item>
+                                {trendPercentage('7d')}
+                            </Grid>
+                            <Grid className="evol-chart" lg={4} md={4} sm={12} xs={12} item>
+                                {trendPercentage('30d')}
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
                 <Grid container>

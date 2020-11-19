@@ -574,6 +574,20 @@ button {
   padding-right: 15px;
 }
 
+.crypto-detail .trend {
+  text-align: center;
+}
+
+.crypto-detail .trend label{
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.crypto-detail .trend label, .crypto-detail .trend span{
+  display: block;
+  padding: 15px 0;
+}
+
 .crypto-detail .chart-container {
   position: relative;
   margin: 70px auto;
