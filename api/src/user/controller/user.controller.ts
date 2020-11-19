@@ -1,10 +1,10 @@
-import {Body, Controller, HttpException, HttpStatus, Post, Req, UseGuards} from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
 import { Crud } from '@nestjsx/crud';
-import { User } from './user.entity';
-import { UserService } from './user.service';
-import { LocalAuthGuard } from '../auth/local-auth.guard';
+import { User } from '../models/user.entity';
+import { UserService } from '../service/user.service';
+import { LocalAuthGuard } from '../../auth/guards/local-auth.guard';
 // import {JwtAuthGuard} from "../auth/jwt-auth.guard";
-import UserDto from "./user.dto";
+import UserDto from '../models/user.dto';
 
 @Crud({
     model: {

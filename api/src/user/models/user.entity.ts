@@ -1,19 +1,24 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, BeforeInsert } from 'typeorm';
-import { Crypto } from '../crypto/crypto.entity';
+import { Crypto } from '../../crypto/crypto.entity';
 import * as bcrypt from 'bcrypt';
+
+export enum UserRole {
+    ADMIN = 'admin',
+    USER = 'user'
+}
 
 @Entity({name: 'users'})
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ unique: true })
     email: string;
 
     @Column()
     password: string;
 
-    @Column()
+    @Column({ unique: true })
     username: string;
 
     @Column()
@@ -22,10 +27,8 @@ export class User {
     @Column()
     lastName: string;
 
-    @Column({
-        default: 'user',
-    })
-    role: string;
+    @Column({type: 'enum', enum: UserRole, default: UserRole.USER})
+    role: UserRole;
 
     @ManyToMany(() => Crypto, (crypto) => crypto.users)
     @JoinTable()

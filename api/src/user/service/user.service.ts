@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable} from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { User } from './user.entity';
+import { User } from '../models/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
-import UserDto from "./user.dto";
+import UserDto from "../models/user.dto";
 
 @Injectable()
 export class UserService extends TypeOrmCrudService<User> {
