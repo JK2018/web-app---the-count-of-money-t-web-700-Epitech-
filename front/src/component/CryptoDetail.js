@@ -21,7 +21,7 @@ const CryptoDetail = () => {
         const getCoinUrl = "https://api.coingecko.com/api/v3/coins/"+coinId;
         const getHistoryUrl = "https://api.coingecko.com/api/v3/coins/"+coinId+"/market_chart?vs_currency=usd&days=15";
 
-        function createChart() {
+        function createMainChart() {
             var ctx = document.getElementById('main-chart');
             if (ctx) {
                 ctx.getContext('2d');
@@ -69,8 +69,6 @@ const CryptoDetail = () => {
                                         sampleSize: 100
                                     },
                                     afterBuildTicks: function(scale, ticks) {
-                                        console.log(scale)
-                                        console.log(ticks)
                                         var majorUnit = scale._majorUnit;
                                         var firstTick = ticks[0];
                                         var i, ilen, val, tick, currMajor, lastMajor;
@@ -126,11 +124,42 @@ const CryptoDetail = () => {
             }
         }
 
+        function getRSSFeed(symbol, name) {
+            symbol = symbol.toLowerCase();
+            name = name.toLowerCase();
+            // rss2json.com mandatory to prevent CROS Request error 
+            axios("https://api.rss2json.com/v1/api.json?rss_url=https://cointelegraph.com/rss")
+                .then(function (response) {
+                    if (response.data.feed && response.data.items.length > 0) {
+                        var posts = response.data.items.filter(function(item) {
+                            // Check if categories match to this currency
+                            if (item.categories.some(category => category.toLowerCase().includes(name) || category.toLowerCase().includes(symbol))) {
+                                return true;
+                            }
+                            // Check if currency is mentionned in title
+                            if (item.title.toLowerCase().includes(name) || item.title.toLowerCase().includes(symbol)) {
+                                return true;
+                            }
+                            // check if currency is mentionned in content or description
+                            if (item.description.toLowerCase().includes(name) 
+                                || item.description.toLowerCase().includes(symbol)
+                                || item.content.toLowerCase().includes(name)
+                                || item.content.toLowerCase().includes(symbol)
+                            ) {
+                                return true;
+                            }
+                            return false;
+                        })
+                    }
+                })
+        }
+
         // Load currency data, then create chart
         axios(getCoinUrl).then((result) => {
             setData(result.data);
-            console.log(data);
-            createChart();
+            createMainChart();
+            getRSSFeed(result.data.symbol, result.data.name);
+            //createEvolChart('day');
         })
 
     }, [coinId]);
@@ -141,13 +170,13 @@ const CryptoDetail = () => {
         return (
             <div className="crypto-detail">
                 <Grid container>
-                    <Grid className="logo" lg={5} xs={5} item>
+                    <Grid className="logo" lg={4} xs={4} item>
                         <div>
                             <img src={data.image.large} alt="currency-logo"/>
                             <h1>{data.name}</h1>
                         </div>
                     </Grid>
-                    <Grid lg={7} xs={7} item>
+                    <Grid lg={4} xs={4} item>
                         <ul>
                             <li><label>Rank</label>{ data.market_cap_rank}</li>
                             <li><label>Website</label><a href={data.links.homepage[0]} target="_blank">{data.links.homepage[0]}</a></li>
@@ -155,6 +184,17 @@ const CryptoDetail = () => {
                             <li><label>Total volume</label>{ formatPrice(data.market_data.total_volume.eur) } €</li>
                             <li><label>Market cap</label>{ formatPrice(data.market_data.market_cap.eur) } €</li>
                         </ul>
+                    </Grid>
+                    <Grid lg={4} xs={4} item>
+                        <div>
+                            <canvas id="day-evol"></canvas>
+                        </div>
+                        <div>
+                            <canvas id="week-evol"></canvas>
+                        </div>
+                        <div>
+                            <canvas id="month-evol"></canvas>
+                        </div>
                     </Grid>
                 </Grid>
                 <Grid container>
