@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import axios from 'axios';
 import Chart from 'chart.js';
 import moment from 'moment';
+import Parser from 'html-react-parser';
 
 const CryptoDetail = () => {
 
@@ -128,6 +129,7 @@ const CryptoDetail = () => {
         // Load currency data, then create chart
         axios(getCoinUrl).then((result) => {
             setData(result.data);
+            console.log(data);
             createChart();
         })
 
@@ -159,6 +161,13 @@ const CryptoDetail = () => {
                     <Grid item lg={12} xs={12}>
                         <div className="chart-container">
                             <canvas id="main-chart"></canvas>
+                        </div>
+                    </Grid>
+                </Grid>
+                <Grid container>
+                    <Grid item lg={12} xs={12}>
+                        <div className="description">
+                            <p>{ Parser(data.description.en) }</p>
                         </div>
                     </Grid>
                 </Grid>
