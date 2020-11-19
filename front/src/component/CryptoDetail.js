@@ -4,16 +4,32 @@ import Grid from "@material-ui/core/Grid";
 import axios from 'axios';
 import Chart from 'chart.js';
 import moment from 'moment';
-import Parser from 'html-react-parser';
+import parse from 'html-react-parser';
+import sadFace from '../img/sad.svg'; 
 
 const CryptoDetail = () => {
 
     const params = useParams();
     const coinId = params.id;
     const [data, setData] = useState([]);
+    const [news, setNews] = useState([]);
 
     function formatPrice(price) {
         return parseFloat(price).toLocaleString('en');
+    }
+
+    function renderNews() {
+        if (news.length > 0) {
+            return news.map((item, i) => (
+                <Grid className="new-container" item xl={4} lg={4} md={4} sm={6} xs={12} key={i}>
+                    <a href={item.link} target="_blank" rel="noreferrer" className="new-content">
+                        <h3>{item.title}</h3>
+                        {parse(item.description)}
+                    </a>
+                </Grid>
+            ))
+        }
+        return <div className="no-news"><img src={sadFace}/><p>No news related to this currency ...</p></div>
     }
  
     useEffect(() => {
@@ -150,6 +166,7 @@ const CryptoDetail = () => {
                             }
                             return false;
                         })
+                        setNews(posts);
                     }
                 })
         }
@@ -178,8 +195,8 @@ const CryptoDetail = () => {
                     </Grid>
                     <Grid lg={4} xs={4} item>
                         <ul>
-                            <li><label>Rank</label>{ data.market_cap_rank}</li>
-                            <li><label>Website</label><a href={data.links.homepage[0]} target="_blank">{data.links.homepage[0]}</a></li>
+                            <li><label>Rank</label>{data.market_cap_rank}</li>
+                            <li><label>Website</label><a href={data.links.homepage[0]} target="_blank" rel="noreferrer">{data.links.homepage[0]}</a></li>
                             <li><label>Current price</label>{ formatPrice(data.market_data.current_price.eur) } €</li>
                             <li><label>Total volume</label>{ formatPrice(data.market_data.total_volume.eur) } €</li>
                             <li><label>Market cap</label>{ formatPrice(data.market_data.market_cap.eur) } €</li>
@@ -207,8 +224,14 @@ const CryptoDetail = () => {
                 <Grid container>
                     <Grid item lg={12} xs={12}>
                         <div className="description">
-                            <p>{ Parser(data.description.en) }</p>
+                            <p>{ parse(data.description.en) }</p>
                         </div>
+                    </Grid>
+                </Grid>
+                <Grid container className="news">
+                    <h2>Related news</h2>
+                    <Grid container>
+                        {renderNews()}
                     </Grid>
                 </Grid>
             </div>
