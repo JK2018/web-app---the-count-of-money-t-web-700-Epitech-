@@ -3,7 +3,7 @@ import axios from 'axios';
 import CryptoList from './CryptoList';
 import Cookies from 'universal-cookie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBill, faStar, faCoins, faPercent } from "@fortawesome/free-solid-svg-icons";
 
 
 // ROUTE : /favorites
@@ -18,12 +18,15 @@ const FavoritesList = () => {
         { label: "CHF", value: "chf"},
         { label: "JPY", value: "jpy"}
     ]);
-    const cookies = new Cookies();
-    var c = cookies.get('currency')
-    const getFavs = cookies.getAll();
-    const [currencyValue, setCurrencyValue] = useState(c);
-    var coinUrlString = "";
 
+    
+    var coinUrlString = "";
+    const cookies = new Cookies();
+    const getFavs = cookies.getAll();
+    const [c,setC] = useState(cookies.get('currency'));
+    const [currencyValue, setCurrencyValue] = useState(c);
+    const [allcoinsChartDataFinal, setAllcoinsChartDataFinal] = useState([]);
+ 
 
     // adds the favorite cryptos to the string url
     const buildUrlString = () => {
@@ -40,13 +43,31 @@ const FavoritesList = () => {
     
     // fetches data from api, and updates data every 30s
     useEffect(() => {
+
+
+
+
         const fetchData = async () => {
             if(coinUrlString){
-                var c = cookies.get('currency')
+                //var c = cookies.get('currency');
                 setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&ids="+coinUrlString+"&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d")
                 const result = await axios(apiUrl,);
                 setData(result.data);
+
+                const chartData = (result.data).filter(data => data.market_cap_rank < 11);
+            var allcoinsChartData = [];
+
+            for (let i = 0; i < chartData.length-1; i++) {
+                var url ="https://api.coingecko.com/api/v3/coins/"+chartData[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
+                const result22 = await axios(url,);
+                const chartPricesRaw = result22.data.prices;
+                const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1]})); 
+                allcoinsChartData.push(chartPricesFinal);   
+            }
+            setAllcoinsChartDataFinal(allcoinsChartData);
             } 
+
+            
         }
         
         const interval=setInterval(()=>{
@@ -56,7 +77,7 @@ const FavoritesList = () => {
 
         return()=>{
         clearInterval(interval)}
-    }, [apiUrl, coinUrlString]);
+    }, c);
 
     const onSelectChange = (e) => {
         setCurrencyValue(e.currentTarget.value);
@@ -68,23 +89,23 @@ const FavoritesList = () => {
         <section className="landing">
             <div className="mainCompDiv"> 
 
-            <div className="lidiv hder">
-                        <p className="pml"><FontAwesomeIcon icon={faStar}/></p>
+                    <div className="lidiv hder">
+                        <p className="pml"><FontAwesomeIcon style={{color: 'white'}} icon={faStar}/></p>
                         <p className="pml">Rank</p>
                         <p className="iconimg"> </p>
-                        <p className="pxl coinName">Coin</p>
+                        <p className="pxl coinName">Coin <FontAwesomeIcon icon={faCoins}/></p>
                         <p className="pml">Tag</p>
                         <p className="pml4">Price 
-                        <select value={currencyValue} onChange={e => onSelectChange(e)}>
+                        <select className="currencySelect" value={currencyValue} onChange={e => onSelectChange(e)}>
                             {currencies.map(({label, value})=>(
                                 <option key={value} value={value}>{label}</option>
                             ))}
                         </select></p> 
                         
                         <p className="pml">24h %</p>
-                        <p className="pxl daycash">24h curr</p>
-                        <p className="pxl">Total Volume</p>
+                        <p className="pxl daycash">24h <FontAwesomeIcon icon={faMoneyBill}/></p>
                         <p className="pxl-4">Market Cap</p>
+                        <p className="pxl">7d Chart</p>
                     </div>
                 <CryptoList data={data} defaultStarCol={'#ebc934'}></CryptoList>
             </div>
