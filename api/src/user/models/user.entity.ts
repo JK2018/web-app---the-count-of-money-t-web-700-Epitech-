@@ -14,13 +14,16 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    discord_id?: string;
+
     @ApiProperty()
     @Column({ unique: true })
-    email: string;
+    email?: string;
 
     @ApiProperty()
     @Column()
-    password: string;
+    password?: string;
 
     @ApiProperty()
     @Column({ unique: true })
@@ -28,11 +31,11 @@ export class User {
 
     @ApiProperty()
     @Column()
-    firstName: string;
+    first_name: string;
 
     @ApiProperty()
     @Column()
-    lastName: string;
+    last_name: string;
 
     @ApiProperty()
     @Column({type: 'enum', enum: UserRole, default: UserRole.USER})

@@ -1,25 +1,26 @@
-// import { JwtStrategy } from './guards/jwt-strategy';
-// import { RolesGuard } from './guards/role.guard';
-// import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
-// import { Module, forwardRef } from '@nestjs/common';
-// import { JwtModule} from '@nestjs/jwt';
-// import { ConfigModule, ConfigService } from '@nestjs/config';
-// import { AuthService } from './service/auth.service';
-// import { UserModule } from 'src/user/user.module';
-//
-// @Module({
-//     imports: [
-//         forwardRef(() => UserModule),
-//         JwtModule.registerAsync({
-//             imports: [ConfigModule],
-//             inject: [ConfigService],
-//             useFactory: async (configService: ConfigService) => ({
-//                 secret: configService.get('JWT_SECRET'),
-//                 signOptions: {expiresIn: '100000s'}
-//             })
-//         })
-//     ],
-//     providers: [AuthService, RolesGuard, JwtAuthGuard, JwtStrategy],
-//     exports: [AuthService]
-// })
-// export class AuthModule {}
+import { Module, forwardRef, HttpModule } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './constants/constants';
+import { LocalStrategy } from './guards/local.strategy';
+import { JwtStrategy } from './guards/jwt.strategy';
+import { AuthService } from './service/auth.service';
+import { UserModule } from '../user/user.module';
+import { PassportModule } from '@nestjs/passport';
+import { AuthController } from './controller/auth.controller';
+import { DiscordStrategy } from "./guards/discord.strategy";
+
+@Module({
+    imports: [
+        HttpModule,
+        forwardRef(() => UserModule),
+        JwtModule.register({
+            secret: jwtConstants.secret,
+            signOptions: { expiresIn: '30d' }
+        }),
+        PassportModule,
+    ],
+    providers: [AuthService, LocalStrategy, JwtStrategy, DiscordStrategy],
+    exports: [AuthService],
+    controllers: [AuthController]
+})
+export class AuthModule {}

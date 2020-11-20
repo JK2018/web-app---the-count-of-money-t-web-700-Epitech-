@@ -6,6 +6,7 @@ import { LocalAuthGuard } from '../../auth/guards/local-auth.guard';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CreateUserDto, UpdateUserDto } from '../models/user.dto';
 import {ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {AuthService} from "../../auth/service/auth.service";
 
 @ApiTags('Users')
 @Crud({
@@ -38,13 +39,16 @@ import {ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiResponse, Ap
 })
 @Controller('users')
 export class UserController {
-    constructor(public service: UserService) {}
+    constructor(
+        public service: UserService,
+        private readonly authService: AuthService
+    ) {}
 
     @ApiOkResponse({ description: 'Login user' })
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Req() req) {
-        return this.service.login(req.user).catch(err => {
+        return this.authService.login(req.user).catch(err => {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
                 message: err.message
