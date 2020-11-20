@@ -16,7 +16,13 @@ services:
     environment:
       MIX_ENV: dev
       DATABASE_URL: postgres://postgres:postgres@db:5432/api
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DATABASE: postgres
       JWT_SECRET: countofmoney
+      MODE: DEV
     ports:
       - '3000:3000'
     expose:
