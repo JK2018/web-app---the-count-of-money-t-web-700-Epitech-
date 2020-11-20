@@ -11,8 +11,8 @@ import { faMoneyBill, faStar, faCoins } from "@fortawesome/free-solid-svg-icons"
 const FavoritesList = () => {
 
     const [currencies] = useState([
-        { label: "USD", value: "usd"},
         { label: "EUR", value: "eur"},
+        { label: "USD", value: "usd"},
         { label: "GBP", value: "gbp"},
         { label: "CAD", value: "cad"},
         { label: "CHF", value: "chf"},
@@ -22,15 +22,20 @@ const FavoritesList = () => {
  
     var coinUrlString = "";
     const cookies = new Cookies();
-    const getFavs = cookies.getAll();
+    const getCooks = cookies.getAll();
     const [c,setC] = useState(cookies.get('currency'));
     const [currencyValue, setCurrencyValue] = useState(c);
     const [allcoinsChartDataFinal, setAllcoinsChartDataFinal] = useState([]);
- 
+    
 
     // adds the favorite cryptos to the string url
     const buildUrlString = () => {
-        for (const [value] of Object.entries(getFavs)) {
+        
+        const favs = getCooks;
+        delete favs.coinId;
+        delete favs.currency;
+        for (const [value] of Object.entries(favs)) {
+            //console.log("value : "+value);
             coinUrlString+=value+'%2C%20';
           }
         coinUrlString = coinUrlString.slice(0, -6);
@@ -43,26 +48,29 @@ const FavoritesList = () => {
     
     // fetches data from api, and updates data every 30s
     useEffect(() => {
-
         const fetchData = async () => {
+            
             if(coinUrlString){
+                //console.log("hmm "+coinUrlString);
                 //var c = cookies.get('currency');
                 setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&ids="+coinUrlString+"&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d")
                 const result = await axios(apiUrl,);
                 setData(result.data);
+                
 
-                const chartData = (result.data).filter(da => da.market_cap_rank < 11);
+                //const chartData = (result.data).filter(da => da.market_cap_rank < 11);
+                //console.log("Data "+result.data);
                 var allcoinsChartData = [];
 
-                for (let i = 0; i < chartData.length-1; i++) {
-                    var url ="https://api.coingecko.com/api/v3/coins/"+chartData[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
+                for (let i = 0; i < result.data.length; i++) {
+                    var url ="https://api.coingecko.com/api/v3/coins/"+result.data[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
                     const result22 = await axios(url,);
                     const chartPricesRaw = result22.data.prices;
-                    const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1]})); 
+                    const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank})); 
                     allcoinsChartData.push(chartPricesFinal);   
                 }
                 setAllcoinsChartDataFinal(allcoinsChartData);
-                console.log("allcoinsChartDataFinal:"+ allcoinsChartDataFinal);
+                
             } 
 
             
@@ -70,7 +78,7 @@ const FavoritesList = () => {
         
         const interval=setInterval(()=>{
             fetchData();
-           },30000);
+           },3000);///////////////////
            fetchData();
 
         return()=>{
@@ -79,7 +87,7 @@ const FavoritesList = () => {
 
     const onSelectChange = (e) => {
         setCurrencyValue(e.currentTarget.value);
-        cookies.set('currency', e.currentTarget.value, { path: '/' });
+        cookies.set('currency', e.currentTarget.value, { path: '/favorites' });
         window.location.reload(false);
        
     } 

@@ -11,8 +11,8 @@ const Landing = () => {
     
     
     const [currencies] = useState([
-        { label: "USD", value: "usd"},
         { label: "EUR", value: "eur"},
+        { label: "USD", value: "usd"},
         { label: "GBP", value: "gbp"},
         { label: "CAD", value: "cad"},
         { label: "CHF", value: "chf"},
@@ -28,7 +28,8 @@ const Landing = () => {
 
     // fetches data from api, and updates data every 30s
     useEffect(() => {
-        console.log("c:"+c);
+        
+        //console.log("c:"+c);
         const fetchData = async () => {
             setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
             const result = await axios(apiUrl,);
@@ -45,7 +46,7 @@ const Landing = () => {
                 
             }
             setAllcoinsChartDataFinal(allcoinsChartData);
-            console.log("allcoinsChartDataFinal:"+ allcoinsChartDataFinal);
+            
         }
         
         const interval=setInterval(()=>{

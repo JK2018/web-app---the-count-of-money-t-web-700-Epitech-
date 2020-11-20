@@ -11,8 +11,14 @@ const MiniChart = (props) => {
 // fetch data from api
 useEffect(() => {
     setMiniChartState(props);
-    //console.log("NA : "+miniChartState.allcoinsChartDataFinal);
-    const newArray = (miniChartState.allcoinsChartDataFinal).find(([element]) => element.rank == miniChartState.rank);
+   //console.log("NA : "+miniChartState.allcoinsChartDataFinal);
+  console.log(console.log(JSON.stringify(miniChartState.allcoinsChartDataFinal)));
+
+    const newArray = (miniChartState.allcoinsChartDataFinal).find(([element]) => element.rank === miniChartState.rank);
+    //const newArray2 = (miniChartState.allcoinsChartDataFinal).find(([element]) => element.rank === miniChartState.rank);
+    
+    //console.log("ttt : "+newArray);
+    
     //if(miniChartState.rank < 11){
         //console.log("miniChartState.rank :"+miniChartState.rank);
         //console.log("allcoinsChartDataFinal :"+miniChartState.allcoinsChartDataFinal === 101);
@@ -20,13 +26,13 @@ useEffect(() => {
        
        if(newArray){
         setData(newArray);
-        console.log("NA : "+newArray[0].rank);
+        //console.log("ttt : "+newArray[0].rank);
        }
        
        
         // from array only keep the data from  allcoinsChartDataFinal array of objs that have rank === miniChartState.rank.
     //}   
-}, );
+},[props] );
 // data[0].val>data[data.length-1].val
 
 if(1==1){
