@@ -9,6 +9,7 @@ const Navbar = () => {
         </h1>
         <ul>
             <li><Link to="/favorites">Favorites</Link></li>
+            <li><Link to="/settings">Settings (Temp)</Link></li>
             <li><Link to="/register">Register</Link></li>
             <li><Link to="/login">Login</Link></li>
         </ul>

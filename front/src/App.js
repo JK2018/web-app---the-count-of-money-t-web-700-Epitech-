@@ -6,6 +6,7 @@ import Login from './component/Login';
 import Register from './component/Register';
 import FavoritesList from './component/FavoritesList';
 import CryptoDetail from './component/CryptoDetail';
+import Settings from './component/Settings';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 
@@ -22,6 +23,7 @@ const App = () => {
             <Route exact path='/favorites' component={FavoritesList}></Route>
             <Route exact path='/login' component={Login}></Route>
             <Route exact path='/crypto/:id' component={CryptoDetail}></Route>
+            <Route exact path='/settings' component={Settings}></Route>
           </Switch>
         </section>
       </Fragment>

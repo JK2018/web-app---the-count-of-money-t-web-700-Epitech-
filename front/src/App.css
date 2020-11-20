@@ -655,6 +655,30 @@ button {
   margin: 30px 0 10px 0;
 }
 
+/* Settings form */
+.admin-settings {
+  padding: 100px 30vw;
+}
+
+.admin-settings .inline-form {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+}
+
+.admin-settings .inline-input {
+  padding-right: 50px;
+  flex-grow: 2;
+}
+
+.admin-settings .inline-button {
+  padding-right: 15px;
+}
+
+.admin-settings .list {
+  margin: 30px 0;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .container {
