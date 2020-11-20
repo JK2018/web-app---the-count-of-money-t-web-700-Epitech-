@@ -576,11 +576,19 @@ button {
 
 .crypto-detail .trend {
   text-align: center;
+  border-radius: 10px;
+  margin: 10px;
+  height: 100%;
 }
 
 .crypto-detail .trend label{
   font-weight: bold;
   text-transform: capitalize;
+  min-height: 85px;
+}
+
+.crypto-detail .trend img {
+  max-height: 50px;
 }
 
 .crypto-detail .trend label, .crypto-detail .trend span{

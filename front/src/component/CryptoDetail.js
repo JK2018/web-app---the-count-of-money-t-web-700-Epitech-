@@ -5,7 +5,12 @@ import axios from 'axios';
 import Chart from 'chart.js';
 import moment from 'moment';
 import parse from 'html-react-parser';
+
+// Img
 import sadFace from '../img/sad.svg'; 
+import upArrow from '../img/up-arrow.svg'; 
+import downArrow from '../img/down-arrow.svg'; 
+
 
 const CryptoDetail = () => {
 
@@ -33,8 +38,11 @@ const CryptoDetail = () => {
     }
 
     function trendPercentage(period) {
+        var percent = parseFloat(data.market_data[`${'price_change_percentage_'+period}`]).toFixed(2);
+        var icon = (percent > 0) ? upArrow : downArrow;
         return <div className="trend">
             <label>{period} evolution</label>
+            <img src={icon}/>
             <span>{parseFloat(data.market_data[`${'price_change_percentage_'+period}`]).toFixed(2)}%</span>
         </div>
     }
