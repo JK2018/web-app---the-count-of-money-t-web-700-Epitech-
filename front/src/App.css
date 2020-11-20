@@ -1,4 +1,12 @@
 /* CryptoList */
+.currencySelect{
+  border-radius: 5px;
+  background-color: grey;
+  color: white;
+  font-size: x-small;
+  font-weight: bold;
+  margin-left: 2px;
+}
 .star{
   cursor: pointer;
 }
