@@ -42,7 +42,7 @@ const CryptoDetail = () => {
         var icon = (percent > 0) ? upArrow : downArrow;
         return <div className="trend">
             <label>{period} evolution</label>
-            <img src={icon}/>
+            <img src={icon} alt={icon}/>
             <span>{parseFloat(data.market_data[`${'price_change_percentage_'+period}`]).toFixed(2)}%</span>
         </div>
     }

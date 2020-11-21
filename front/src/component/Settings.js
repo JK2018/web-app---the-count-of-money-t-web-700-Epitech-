@@ -6,6 +6,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCryptoDialog from './AddCryptoDialog';
@@ -40,6 +41,23 @@ const Settings = () => {
         var rssFeedsRef = [...rssFeeds];
         rssFeedsRef = rssFeedsRef.filter(item => item !== value);
         setFeeds(rssFeedsRef);
+    }
+
+    function addCryptos(symbol, name, logoUrl) {
+        var cryptosRef = [...cryptos];
+        cryptosRef.push({
+            symbol: symbol,
+            name: name,
+            logoUrl: logoUrl
+        })
+        setCryptos(cryptosRef);
+        console.log(cryptosRef);
+    }
+
+    function removeCrypto(symbol) {
+        var cryptosRef = [...cryptos];
+        cryptosRef = cryptosRef.filter(item => item.symbol !== symbol);
+        setCryptos(cryptosRef);
     }
 
     function handleKeyPress(e, input) {
@@ -94,19 +112,22 @@ const Settings = () => {
             <Button variant="outlined" color="primary" onClick={handleClickDialog}>
                 Add crypto currency
             </Button>
-            <AddCryptoDialog openDialog={openDialog}  handler={handleClickDialog}/>
+            <AddCryptoDialog openDialog={openDialog} handler={handleClickDialog} addCryptos={addCryptos}/>
             <List className="list">
-                {cryptos.map((value) =>
+                {cryptos.map((item) =>
                     React.cloneElement(
                         <ListItem>
-                            <ListItemText primary={value}/>
+                            <ListItemAvatar className="crypto-logo">
+                                <img src={item.logoUrl} alt={item.symbol} />
+                            </ListItemAvatar>
+                            <ListItemText class="crypto-info" primary={item.name} secondary={item.symbol}/>
                             <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete" onClick={() => removeFeed(value)} >
+                                <IconButton edge="end" aria-label="delete" onClick={() => removeCrypto(item.symbol)}>
                                     <DeleteIcon/>
                                 </IconButton>
                             </ListItemSecondaryAction>
                         </ListItem>,
-                        {key: value}
+                        {key: item.symbol}
                     )
                 )}
             </List>

@@ -679,7 +679,35 @@ button {
 }
 
 .admin-settings .list {
-  margin: 30px 0;
+  margin: 30px 0 50px 0;
+}
+
+.admin-settings .list li {
+  background-color: #f6f8fa;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.admin-settings .crypto-logo {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  margin-right: 20px;
+  text-align: center;
+}
+
+.admin-settings .crypto-logo img {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+
+.admin-settings .crypto-info span {
+  text-transform: capitalize;
+}
+
+.admin-settings .crypto-info p {
+  text-transform: uppercase;
 }
 
 /* Crypto Dialog */
