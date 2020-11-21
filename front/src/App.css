@@ -660,10 +660,13 @@ button {
   padding: 100px 30vw;
 }
 
+.admin-settings h1 {
+  margin-bottom: 30px;
+}
+
 .admin-settings .inline-form {
   display: flex;
   flex-direction: row;
-  margin-top: 40px;
 }
 
 .admin-settings .inline-input {
@@ -677,6 +680,11 @@ button {
 
 .admin-settings .list {
   margin: 30px 0;
+}
+
+/* Crypto Dialog */
+.add-crypto-dialog {
+  padding: 20px 15px;
 }
 
 /* Mobile Styles */
