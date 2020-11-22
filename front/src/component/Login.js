@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { TextField } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid";
 
 export const Login = () => {
 
@@ -9,50 +11,60 @@ export const Login = () => {
         password: ''
     });
 
-    const { email, password} = formData;
+    const { email, password } = formData;
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value});
-    
+    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
     const onSubmit = async e => {
         e.preventDefault();
-          // ADD LOGIC HERE
     }
-    
-
 
     return (
-        
-
-
-        <section className="landing">
-            <br></br><br></br><br></br><br></br><br></br>
-            <div className="mainCompDiv">
-           
-
-            <h1 className="large text-primary">Sign In</h1>
-            <p className="lead"><i className="fas fa-user"></i> Sign Into Your Account</p>
-            <form className="form" onSubmit={e => onSubmit(e)}>
-                <div className="form-group">
-                    <input type="email" value={email} onChange={e => onChange(e)} placeholder="Email Address" name="email" required/>
-                </div>
-                <div className="form-group">
-                    <input
-                        type="password"
-                        value={password} onChange={e => onChange(e)}
-                        placeholder="Password"
-                        name="password"
-                        minLength="6"
-                        required
-                    />
-                </div>
-                
-                <input type="submit" className="btn btn-primary" value="Log in" />
-            </form>
-            <p className="my-1">
-                Don't have an account? <Link to="/register">Sign Up</Link>
-            </p>
-            </div>
-        </section>
+        <Grid container>
+            <Grid item className="login-form" lg={4} md={6} sm={6} xs={10}>
+                <h1 className="lead">Log in into your account</h1>
+                <p className="introduction">
+                    With a user account, follow live your favorite crypto-currencies.<br/>
+                    Not registered yet? <Link to="/register">Create an account.</Link>
+                </p>
+                <form onSubmit={e => onSubmit(e)}>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <TextField 
+                                className="input"
+                                type="email" 
+                                name="email" 
+                                label="Email Address" 
+                                variant="outlined" 
+                                value={email} 
+                                onChange={e => onChange(e)} 
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="input"
+                                type="password" 
+                                name="password" 
+                                label="Password" 
+                                variant="outlined" 
+                                value={password} 
+                                onChange={e => onChange(e)} 
+                                minLength="6" 
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button className="submit-btn" type="submit" color="primary" variant="contained" size="large" fullWidth>
+                                Log in
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Grid>
+        </Grid>
     )
 }
 export default Login;

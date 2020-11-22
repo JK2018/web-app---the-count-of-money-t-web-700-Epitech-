@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Grid from "@material-ui/core/Grid";
+import Button from '@material-ui/core/Button';
+import { TextField } from '@material-ui/core';
 
 export const Register = () => {
 
@@ -8,16 +11,16 @@ export const Register = () => {
         username: '',
         email: '',
         password: '',
-        password2: ''
+        password_confirmation: ''
     });
 
-    const { username, email, password, password2} = formData;
+    const { username, email, password, password_confirmation } = formData;
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value});
-    
+    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
     const onSubmit = async e => {
         e.preventDefault();
-        if(password !== password2){
+        if (password !== password_confirmation) {
             console.log('PW DO NOT MATCH');
         } else {
             const newUser = {
@@ -42,54 +45,78 @@ export const Register = () => {
 
 
     return (
-        
-
-
-        <section className="landing">
-            <br></br><br></br><br></br><br></br><br></br>
-            <div className="mainCompDiv">
-           
-
-            <h1 className="large text-primary">Sign Up</h1>
-            <p className="lead"><i className="fas fa-user"></i> Create Your Account</p>
-            <form className="form" onSubmit={e => onSubmit(e)}>
-                <div className="form-group">
-                <input type="text" value={username} onChange={e => onChange(e)} placeholder="Username" name="username" required />
-                </div>
-                <div className="form-group">
-                <input type="email" value={email} onChange={e => onChange(e)} placeholder="Email Address" name="email" required/>
-                {/* <small className="form-text"
-                    >This site uses Gravatar so if you want a profile image, use a
-                    Gravatar email</small
-                > */}
-                </div>
-                <div className="form-group">
-                <input
-                    type="password"
-                    value={password} onChange={e => onChange(e)}
-                    placeholder="Password"
-                    name="password"
-                    minLength="6"
-                    required
-                />
-                </div>
-                <div className="form-group">
-                <input
-                    type="password"
-                    value={password2} onChange={e => onChange(e)}
-                    placeholder="Confirm Password"
-                    name="password2"
-                    minLength="6"
-                    required
-                />
-                </div>
-                <input type="submit" className="btn btn-primary" value="Register" />
-            </form>
-            <p className="my-1">
-                Already have an account? <Link to="/login">Sign In</Link>
-            </p>
-            </div>
-        </section>
+        <Grid container>
+            <Grid item className="login-form" lg={4} md={6} sm={6} xs={10}>
+                <h1 className="lead">Create new account</h1>
+                <p className="introduction">
+                    With a user account, save and follow live your favorite crypto-currencies.
+                    Already have an account? <Link to="/login">Sign in.</Link>
+                </p>
+                <form onSubmit={e => onSubmit(e)}>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <TextField 
+                                className="input"
+                                type="text" 
+                                name="username"
+                                label="Username"
+                                variant="outlined" 
+                                value ={username} 
+                                onChange={e => onChange(e)} 
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField 
+                                className="input"
+                                type="email"
+                                name="email"
+                                label="Email Address"
+                                variant="outlined" 
+                                value={email}
+                                onChange={e => onChange(e)}
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="input"
+                                type="password"
+                                name="password"
+                                label="Password"
+                                variant="outlined" 
+                                value={password} onChange={e => onChange(e)}
+                                minLength="6"
+                                onChange={e => onChange(e)}
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="input"
+                                type="password"
+                                name="password_confirmation"
+                                label="Confirm Password"
+                                variant="outlined" 
+                                value={password_confirmation} onChange={e => onChange(e)}
+                                minLength="6"
+                                onChange={e => onChange(e)}
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button className="submit-btn" type="submit" color="primary" variant="contained" size="large" fullWidth>
+                                Register
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Grid>
+        </Grid>
     )
 }
 export default Register;
