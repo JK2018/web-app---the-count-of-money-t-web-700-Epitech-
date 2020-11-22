@@ -7,7 +7,9 @@ import MiniChart from './MiniChart';
 
 
 
-
+// PARENT : CryptoList
+// CHILD : MiniChart
+// DESC : Element of CryptoList, displays basic data of a single cryptocoin
 const Crypto = (props) => {
 
     const [cryptoState, setCryptoState] = useState(props);
@@ -16,15 +18,13 @@ const Crypto = (props) => {
     const cookies = new Cookies();
     const getFavs = cookies.getAll();
    
-
     useEffect(() => {
         setCryptoState(props);
-        
-        //const v = (cryptoState.allcoinsChartDataFinal).find(([dz]) => dz.rank === 1 );
-        //console.log("vvv"+v);
       }, [props]);
 
-    // toggle color, re-render, remove or add to cookies
+      
+    // ACTION : when user click star icon
+    // DESC : toggle color, re-render, remove or add to cookies
     const handleFavToggle = (e) => {
         if(starColor === '#ebc934'){
             setStarColor('lightgrey');
@@ -37,8 +37,7 @@ const Crypto = (props) => {
             }  
         } else {
             setStarColor('#ebc934');
-            cookies.set(cryptoState.id, cryptoState.id, { path: '/' });
-            //console.log(cookies.getAll());
+            cookies.set(cryptoState.id, cryptoState.id, { path: '/' })
         }
     }
 
@@ -59,8 +58,7 @@ const Crypto = (props) => {
                         <p className="pml" style={{color: (cryptoState.oneday).charAt(0)==='-' ? 'red': 'green'}}>{cryptoState.oneday}%</p>
                         <p className="pxl daycash" style={{color: (cryptoState.oneday).charAt(0)==='-' ? 'red': 'green'}}>{cryptoState.onedaycurr} </p>
                         <p className="pxl-4">{cryptoState.mcap}M</p>
-                        <MiniChart className="pxl" allcoinsChartDataFinal={cryptoState.allcoinsChartDataFinal} id={cryptoState.id} rank={cryptoState.rank}></MiniChart>
-                          
+                        <MiniChart className="pxl" id={cryptoState.id} rank={cryptoState.rank}></MiniChart>    
                     </div>
                 </li>
             </div>

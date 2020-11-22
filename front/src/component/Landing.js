@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
+import MyContext from '../context/MyContext';
 import CryptoList from './CryptoList';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins, faMoneyBill, faStar } from "@fortawesome/free-solid-svg-icons";
 import Cookies from 'universal-cookie';
 
+
 // ROUTE : /
 // DESC : will render all cryptos.
 const Landing = () => {
     
-    
+    // DESC :  selectable currencies
     const [currencies] = useState([
         { label: "EUR", value: "eur"},
         { label: "USD", value: "usd"},
@@ -24,19 +26,21 @@ const Landing = () => {
     const [apiUrl, setApiUrl] = useState("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
     const [data, setData] = useState([]);
     const [allcoinsChartDataFinal, setAllcoinsChartDataFinal] = useState([]);
- 
+    const [contextValue, setContextValue] = useState({})
 
-    // fetches data from api, and updates data every 30s
+    // DESC : fetches data from api, and updates data every 30s
     useEffect(() => {
         
-        //console.log("c:"+c);
+        // DESC : fetch cryptos general data
         const fetchData = async () => {
             setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
             const result = await axios(apiUrl,);
             setData(result.data);
             const chartData = (result.data).filter(da => da.market_cap_rank < 11);
             var allcoinsChartData = [];
+            
 
+            // DESC : fetch historical data for each chart
             for (let i = 0; i < chartData.length-1; i++) {
                 var url ="https://api.coingecko.com/api/v3/coins/"+chartData[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
                 const result22 = await axios(url,);
@@ -45,10 +49,25 @@ const Landing = () => {
                 allcoinsChartData.push(chartPricesFinal);  
                 
             }
-            setAllcoinsChartDataFinal(allcoinsChartData);
+
+
+          
+            
+
+           // setAllcoinsChartDataFinal(allcoinsChartData);
+            setContextValue({
+                allcoinsChartDataFinal2: allcoinsChartData, 
+                data2: data,
+                test: "YEPA!"
+            })
+            //console.log(contextValue.allcoinsChartDataFinal2);
+            //console.log(allcoinsChartData);
+                
             
         }
         
+        fetchData();
+        // DESC : refresh 30s interval
         const interval=setInterval(()=>{
             fetchData(); 
            },30000);
@@ -59,39 +78,42 @@ const Landing = () => {
     }, [c]);
  
 
-
+    // ACTION : when user selects currency via select menu
+    // DESC : action when user selects another currency
     const onSelectChange = (e) => {
         setCurrencyValue(e.currentTarget.value);
         cookies.set('currency', e.currentTarget.value, { path: '/' });
-        window.location.reload(false);
-       
+        window.location.reload(false); 
     } 
 
+    
+
     return (
+        
         <section className="landing">
+            <MyContext.Provider value={contextValue}>
             <div className="mainCompDiv">
             
-            <div className="lidiv hder">
-                        <p className="pml"><FontAwesomeIcon style={{color: 'white'}} icon={faStar}/></p>
-                        <p className="pml">Rank</p>
-                        <p className="iconimg"> </p>
-                        <p className="pxl coinName">Coin <FontAwesomeIcon icon={faCoins}/></p>
-                        <p className="pml">Tag</p>
-                        <p className="pml4">Price 
-                        <select className="currencySelect" value={currencyValue} onChange={e => onSelectChange(e)}>
-                            {currencies.map(({label, value})=>(
-                                <option key={value} value={value}>{label}</option>
-                            ))}
-                        </select></p> 
-                        
-                        <p className="pml">24h %</p>
-                        <p className="pxl daycash">24h <FontAwesomeIcon icon={faMoneyBill}/></p>
-                        <p className="pxl-4">Market Cap</p>
-                        <p className="pxl">7d Chart</p>
-                    </div>
-                
-                <CryptoList allcoinsChartDataFinal={allcoinsChartDataFinal} data={data} defaultStarCol={'lightgrey'} ></CryptoList>
+                <div className="lidiv hder">
+                    <p className="pml"><FontAwesomeIcon style={{color: 'white'}} icon={faStar}/></p>
+                    <p className="pml">Rank</p>
+                    <p className="iconimg"> </p>
+                    <p className="pxl coinName">Coin <FontAwesomeIcon icon={faCoins}/></p>
+                    <p className="pml">Tag</p>
+                    <p className="pml4">Price 
+                    <select className="currencySelect" value={currencyValue} onChange={e => onSelectChange(e)}>
+                        {currencies.map(({label, value})=>(
+                            <option key={value} value={value}>{label}</option>
+                        ))}
+                    </select></p> 
+                    <p className="pml">24h %</p>
+                    <p className="pxl daycash">24h <FontAwesomeIcon icon={faMoneyBill}/></p>
+                    <p className="pxl-4">Market Cap</p>
+                    <p className="pxl">7d Chart</p>
+                </div>
+                <CryptoList data={data} defaultStarCol={'lightgrey'} ></CryptoList>
             </div>
+            </MyContext.Provider>
         </section>
     )
 }
