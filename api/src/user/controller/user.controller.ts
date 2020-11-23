@@ -1,65 +1,90 @@
-import { UserIsUserGuard } from './../../auth/guards/user-guard';
-import { hasRoles } from './../../auth/decorator/roles.decorator';
-import { RolesGuard } from './../../auth/guards/role.guard';
-import { UserRole } from './../models/user.interface';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
-import { map, catchError } from 'rxjs/operators';
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards} from '@nestjs/common';
+import { Crud } from '@nestjsx/crud';
+import { User } from '../models/user.entity';
 import { UserService } from '../service/user.service';
-import { User } from '../models/user.interface';
-import { Observable, of } from 'rxjs';
+import { LocalAuthGuard } from '../../auth/guards/local-auth.guard';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { CreateUserDto, UpdateUserDto } from '../models/user.dto';
+import {ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiResponse, ApiTags} from '@nestjs/swagger';
 
+@ApiTags('Users')
+@Crud({
+    model: {
+        type: User,
+    },
+    // routes: {
+    //     getManyBase?: {
+    //         decorators?: [],
+    //     },
+    //     getOneBase?: {
+    //         decorators?: [],
+    //     },
+    //     createOneBase?: {
+    //         decorators?: [],
+    //     },
+    //     createManyBase?: {
+    //         decorators?: [],
+    //     },
+    //     updateOneBase: {
+    //         decorators?: [],
+    //     },
+    //     replaceOneBase: {
+    //         decorators?: [],
+    //     },
+    //     deleteOneBase?: {
+    //         decorators?: [],
+    //     },
+    // }
+})
 @Controller('users')
 export class UserController {
+    constructor(public service: UserService) {}
 
-    constructor(private userService : UserService)  {}
-
-    @Post()
-    create(@Body() user: User): Observable<User | Object> {
-        return this.userService.create(user).pipe(
-            map((user: User) => user),
-            catchError(err => of({ error: err.message }))
-        );
-    }
-
+    @ApiOkResponse({ description: 'Login user' })
+    @UseGuards(LocalAuthGuard)
     @Post('login')
-    login(@Body() user: User): Observable<Object> {
-        return this.userService.login(user).pipe(
-            map((jwt: string) => {
-                return { access_token: jwt };
-            })
-        )
-    }
-    
-    @UseGuards(JwtAuthGuard, UserIsUserGuard)
-    @Get(":id")
-    findOne(@Param() params): Observable<User> {
-        return this.userService.findOne(params.id);
+    async login(@Req() req) {
+        return this.service.login(req.user).catch(err => {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
     }
 
-    @hasRoles(UserRole.ADMIN)
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Get()
-    findAll(): Observable<User[]> {
-        return this.userService.findAll();
+    @ApiCreatedResponse({ description: 'Register new user' })
+    @Post('register')
+    async register(@Req() req, @Body() body: CreateUserDto) {
+        return this.service.createUser(body).catch(err => {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
     }
 
-    @UseGuards(JwtAuthGuard, UserIsUserGuard)
-    @Delete(":id")
-    deleteOne(@Param() params): Observable<any> {
-        return this.userService.deleteOne(params.id)
+    @ApiOkResponse({ description: 'Get current user profile' })
+    @UseGuards(JwtAuthGuard)
+    @Get('profile')
+    async getProfile(@Req() { user }) {
+        return this.service.findOne(user.id).catch(err => {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        })
     }
 
-    @UseGuards(JwtAuthGuard, UserIsUserGuard)
-    @Put(":id")
-    updateOne(@Param() params, @Body() user : User): Observable<any> {
-        return this.userService.updateOne(params.id, user)
-    }
-
-    @hasRoles(UserRole.ADMIN)
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Put(':id/role')
-    updateRoleOfUser(@Param('id') id: string, @Body() user: User): Observable<User> {
-        return this.userService.updateRoleOfUser(Number(id), user);
+    @ApiNoContentResponse({ description: 'Edit current user profile' })
+    @HttpCode(204)
+    @UseGuards(JwtAuthGuard)
+    @Put('profile')
+    async editProfile(@Req() { user }, @Body() body: UpdateUserDto) {
+        return this.service.updateUser(user.id, body).catch(err => {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
     }
 }

@@ -6,11 +6,14 @@ WORKDIR /app
 
 # install app dependencies
 COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
+COPY yarn.lock ./
+RUN yarn install
 
 # add app
 COPY . ./
 
+ADD start.sh /
+RUN chmod +x /start.sh
+
 # start app
-CMD ["npm", "run","start:dev"]
+CMD ["/start.sh"]

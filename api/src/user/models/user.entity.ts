@@ -1,28 +1,50 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
-import { UserRole } from './user.interface';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, BeforeInsert } from 'typeorm';
+import { Crypto } from '../../crypto/crypto.entity';
+import * as bcrypt from 'bcrypt';
+import {ApiProperty} from "@nestjs/swagger";
 
-@Entity()
-export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+export enum UserRole {
+    ADMIN = 'admin',
+    USER = 'user'
+}
 
-  @Column({unique: true})
-  email: string;
+@Entity({name: 'users'})
+export class User {
+    @ApiProperty()
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column({unique: true})
-  username: string;
+    @ApiProperty()
+    @Column({ unique: true })
+    email: string;
 
-  @Column()
-  password: string;
+    @ApiProperty()
+    @Column()
+    password: string;
 
-  @Column({type: 'enum', enum: UserRole, default: UserRole.USER})
-  role: UserRole;
+    @ApiProperty()
+    @Column({ unique: true })
+    username: string;
 
-  @Column()
-  currency: string;
+    @ApiProperty()
+    @Column()
+    firstName: string;
 
-  @BeforeInsert()
-  emailToLowerCase() {
-      this.email = this.email.toLowerCase();
-  }
+    @ApiProperty()
+    @Column()
+    lastName: string;
+
+    @ApiProperty()
+    @Column({type: 'enum', enum: UserRole, default: UserRole.USER})
+    role: UserRole;
+
+    @ApiProperty()
+    @ManyToMany(() => Crypto, (crypto) => crypto.users)
+    @JoinTable()
+    cryptos: Crypto[];
+    
+    @BeforeInsert()
+    async hashPassword() {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
 }
