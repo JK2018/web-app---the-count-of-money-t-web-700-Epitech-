@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { CryptoModule } from './crypto/crypto.module';
 import { RBAcStorage } from './config/RBAcStorage';
 import { RBAcModule } from 'nestjs-rbac';
+import { CryptoModule } from './crypto/crypto.module';
 
 @Module({
   imports: [
