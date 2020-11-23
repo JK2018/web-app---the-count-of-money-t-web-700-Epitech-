@@ -4,6 +4,7 @@ import Navbar from './component/Navbar';
 import Landing from './component/Landing';
 import Login from './component/Login';
 import Register from './component/Register';
+import Profile from './component/Profile';
 import FavoritesList from './component/FavoritesList';
 import CryptoDashboard from './component/CryptoDashboard';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -25,6 +26,7 @@ const App = () => {
             <Route exact path='/favorites' component={FavoritesList}></Route>
             <Route exact path='/login' component={Login}></Route>
             <Route exact path='/crypto' component={CryptoDashboard}></Route>
+            <Route exact path='/profile' component={Profile}></Route>
           </Switch>
         </section>
       </Fragment>

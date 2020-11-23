@@ -100,7 +100,7 @@ const Landing = () => {
                     <p className="pml">24h %</p>
                     <p className="pxl daycash">24h <FontAwesomeIcon icon={faMoneyBill}/></p>
                     <p className="pxl-4">Market Cap</p>
-                    <p className="pxl">7d Chart</p>
+                    <p className="pxl">30d Chart</p>
                 </div>
                 <CryptoList data={data} defaultStarCol={'lightgrey'} ></CryptoList>
             </div>
