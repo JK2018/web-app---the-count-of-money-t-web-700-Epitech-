@@ -23,64 +23,40 @@ const Landing = () => {
     const cookies = new Cookies();
     const [c,setC] = useState(cookies.get('currency'));
     const [currencyValue, setCurrencyValue] = useState(c);
-    const [apiUrl, setApiUrl] = useState("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&order=market_cap_desc&per_page=10&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
+    const [apiUrl, setApiUrl] = useState("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&order=market_cap_desc&per_page=15&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
     const [data, setData] = useState([]);
-    const [allcoinsChartDataFinal, setAllcoinsChartDataFinal] = useState([]);
-    const [contextValue, setContextValue] = useState({})
+    const [contextValue, setContextValue] = useState({});
 
+    const theChartDataObj = {};
     // DESC : fetches data from api, and updates data every 30s
     useEffect( () => {
         
         // DESC : fetch cryptos general data
         const fetchData = async () => {
-            setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&order=market_cap_desc&per_page=10&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
+            setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&order=market_cap_desc&per_page=15&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
             const result = await axios(apiUrl,);
             setData(result.data);
-            //const chartData = (result.data).filter(da => da.market_cap_rank < 11);
-            var allcoinsChartData = [];
-            
 
-            // DESC : fetch historical data for each chart
+
+            // DESC : fetch historical data for each chart and set it as an object attribute
             for (let i = 0; i < result.data.length; i++) {
                 var url ="https://api.coingecko.com/api/v3/coins/"+result.data[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
                 const result22 = await axios(url,);
                 const chartPricesRaw = result22.data.prices;
                 const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank})); 
-                allcoinsChartData.push(chartPricesFinal);  
+                theChartDataObj['chartDataRank'+result.data[i].market_cap_rank]= chartPricesFinal;
                 
             }
-            //setAllcoinsChartDataFinal(allcoinsChartData);
-            //console.log("zdzd :" + allcoinsChartData); 
-            setContextValue({
-                allcoinsChartDataFinal2: allcoinsChartData, 
-                data2: data,
-            })
-            
-           
-                
+
+            // DESC : set the mini chart data obj to context
+            theChartDataObj['data2']= data;
+            setContextValue(
+                theChartDataObj
+            )
             
         }
-
-       
-
-        // function waitForElement(){
-        //     if(typeof allcoinsChartData !== "undefined" || typeof data !== "undefined"){
-        //         fetchData();
-        //         console.log("ezd "+typeof data[0]);
-        //     }
-        //     else{
-        //         setTimeout(waitForElement, 500);
-        //         console.log("here2");
-        //     }
-        // }
-        // waitForElement();
-
-        if(typeof contextValue.allcoinsChartDataFinal2 !== "undefined"){
-            console.log("landing test: OK");
-            }
-
-        
         fetchData();
+        
         // DESC : refresh 30s interval
         const interval=setInterval(()=>{
             fetchData(); 

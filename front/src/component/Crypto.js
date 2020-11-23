@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext} from 'react'
+import React, { useEffect, useState} from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import MiniChart from './MiniChart';
-import MyContext from '../context/MyContext';
 
 
 
@@ -18,13 +17,9 @@ const Crypto = (props) => {
     const [starColor, setStarColor] = useState(cryptoState.defaultStarCol);
     const cookies = new Cookies();
     const getFavs = cookies.getAll();
-    const contextValue = useContext(MyContext);
    
     useEffect(() => {
         setCryptoState(props);
-        if(typeof contextValue.allcoinsChartDataFinal2 !== "undefined"){
-        console.log("crypto test: OK");
-        }
       }, [props]);
 
       
