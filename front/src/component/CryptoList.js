@@ -1,6 +1,7 @@
-import React , {useState, useEffect} from 'react'
+import React , {useState, useEffect, useContext} from 'react'
 import { Fragment } from 'react';
 import Crypto from './Crypto';
+import MyContext from '../context/MyContext';
 
 
 
@@ -10,10 +11,13 @@ import Crypto from './Crypto';
 const CryptoList = (props) => {
 
     const [cryptoListState, setCryptoListState] = useState(props);
+    const contextValue = useContext(MyContext);
 
     useEffect(() => {
         setCryptoListState(props);
-        
+        if(typeof contextValue.allcoinsChartDataFinal2 !== "undefined"){
+            console.log("cryptolist test: OK");
+            }
     }, [props]);
    
       

@@ -9,60 +9,84 @@ import MyContext from '../context/MyContext';
 const MiniChart = (props) => {
     
     const contextValue = useContext(MyContext);
-   const [miniChartState, setMiniChartState] = useState(props);
-   const [data, setData] = useState([]);
-  
+    const [miniChartState, setMiniChartState] = useState(props);
+    const [data, setData] = useState([]);
+    const [val0, setVal0] = useState();
+    const [valX, setValX] = useState();
    
-    useEffect(() => {
-        //console.log(contextValue.allcoinsChartDataFinal2);
+    useEffect( () => {
         setMiniChartState(props);
-        const filterData = (array) => {
-            const newArray = array.flat().filter((x) => x.rank === miniChartState.rank);
-                setData(newArray);
+       
+        const filterData = () => {
+            console.log("azeazeazeae : "+contextValue.allcoinsChartDataFinal2);
+            const newArray = contextValue.allcoinsChartDataFinal2.flat().filter((x) => x.rank === miniChartState.rank);
+            function waitForElement2(){
+                if(typeof newArray !== "undefined"){
+                    filterData();
+                    console.log("xxxxx "+typeof data[0]);
+                }
+                else{
+                    setTimeout(waitForElement2, 3500);
+                    console.log("hereee");
+                }
+            }
+            waitForElement2();
+            setData(newArray);
+                
+                //setVal0(newArray[0].val);
+                //setValX(newArray[newArray.length-1].val);
         } 
-       if(!contextValue.allcoinsChartDataFinal2 === undefined){
-            filterData(contextValue.allcoinsChartDataFinal2);
+        //filterData();
+        function waitForElement(){
+            if(typeof data[0] !== "undefined"){
+                filterData();
+                console.log("aaaa "+typeof data[0]);
+            }
+            else{
+                setTimeout(waitForElement, 3500);
+               // console.log("here");
+            }
         }
-        else { 
-            //filterData([]);
-        }  
+        waitForElement();
+     
            
     },[props] );
+    
 
+
+    
 ///////////
   
 
 
+// return (
+//     <div>
+//     <BarChart width={150} height={40} data={data}>
+//             <Bar dataKey='val' fill="green" />
+//         </BarChart>
+//     </div>
+// )
 
-// if(!data === undefined){
-//     // DESC : green bars when chart slope is positive , and red when negative
-//     if(data[0].val < data[data.length-1].val){
-//         return (
-//             <div>
-//             <BarChart width={150} height={40} data={data}>
-//                     <Bar dataKey='val' fill="green" />
-//                 </BarChart>
-//             </div>
-//         )
-//     } else {
-//         return (
-//             <div>
-//             <BarChart width={150} height={40} data={data}>
-//                     <Bar dataKey='val' fill="red" />
-//                 </BarChart>
-//             </div>
-//         )
-//     }
-// } else {
-    return (
-        <div>
 
+    //DESC : green bars when chart slope is positive , and red when negative
+    if(val0 < valX){
+        return (
+            <div>
             <BarChart width={150} height={40} data={data}>
-                <Bar dataKey='val' fill="grey" />
-            </BarChart>
-        </div>
-    )
-//}
+                    <Bar dataKey='val' fill="green" />
+                </BarChart>
+            </div>
+        )
+    } else {
+        return (
+            <div>
+            <BarChart width={150} height={40} data={data}>
+                    <Bar dataKey='val' fill="red" />
+                </BarChart>
+            </div>
+        )
+    }
+
     
 
 
