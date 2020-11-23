@@ -12,15 +12,13 @@ const Crypto = (props) => {
     const [starColor, setStarColor] = useState(cryptoState.defaultStarCol);
     const cookies = new Cookies();
     const getFavs = cookies.getAll();
-
     useEffect(() => {
         setCryptoState(props);
-        
-        //const v = (cryptoState.allcoinsChartDataFinal).find(([dz]) => dz.rank === 1 );
-        //console.log("vvv"+v);
       }, [props]);
 
-    // toggle color, re-render, remove or add to cookies
+      
+    // ACTION : when user click star icon
+    // DESC : toggle color, re-render, remove or add to cookies
     const handleFavToggle = (e) => {
         if(starColor === '#ebc934'){
             setStarColor('lightgrey');
@@ -33,33 +31,31 @@ const Crypto = (props) => {
             }  
         } else {
             setStarColor('#ebc934');
-            cookies.set(cryptoState.id, cryptoState.id, { path: '/' });
-            //console.log(cookies.getAll());
+            cookies.set(cryptoState.id, cryptoState.id, { path: '/' })
         }
     }
 
 
-        return (
-            <div>
-                <li>
-                    <div className="lidiv">
-                        {cryptoState.id in getFavs? //ADD IF LOGGED IN !
-                         <p className="pml"><FontAwesomeIcon style={{color:'#ebc934'}} onClick={handleFavToggle} className="star" icon={faStar}/></p>
-                         : <p className="pml"><FontAwesomeIcon style={{color:'lightgrey'}} onClick={handleFavToggle} className="star" icon={faStar}/></p>}
-                        
-                        <p className="pml">{cryptoState.rank}</p>
-                        <img className="iconimg" src={cryptoState.img} alt=""/>
-                        <p className="pxl coinName"><Link to={{ pathname: "/crypto/"+props.id }} style={{display: 'block'}}>{props.coin}</Link></p>
-                        <p className="pml">{cryptoState.tag}</p>
-                        <p className="pml4">{cryptoState.price}</p>
-                        <p className="pml" style={{color: (cryptoState.oneday).charAt(0)==='-' ? 'red': 'green'}}>{cryptoState.oneday}%</p>
-                        <p className="pxl daycash" style={{color: (cryptoState.oneday).charAt(0)==='-' ? 'red': 'green'}}>{cryptoState.onedaycurr} </p>
-                        <p className="pxl-4">{cryptoState.mcap}M</p>
-                        <MiniChart className="pxl" allcoinsChartDataFinal={cryptoState.allcoinsChartDataFinal} id={cryptoState.id} rank={cryptoState.rank}></MiniChart>
-                          
-                    </div>
-                </li>
-            </div>
-        )
+    return (
+        <div>
+            <li>
+                <div className="lidiv">
+                    {cryptoState.id in getFavs? //ADD IF LOGGED IN !
+                        <p className="pml"><FontAwesomeIcon style={{color:'#ebc934'}} onClick={handleFavToggle} className="star" icon={faStar}/></p>
+                        : <p className="pml"><FontAwesomeIcon style={{color:'lightgrey'}} onClick={handleFavToggle} className="star" icon={faStar}/></p>}
+                    
+                    <p className="pml">{cryptoState.rank}</p>
+                    <img className="iconimg" src={cryptoState.img} alt=""/>
+                    <p className="pxl coinName"><Link to={{ pathname: "/crypto/"+props.id }} style={{display: 'block'}}>{props.coin}</Link></p>
+                    <p className="pml">{cryptoState.tag}</p>
+                    <p className="pml4">{cryptoState.price}</p>
+                    <p className="pml" style={{color: (cryptoState.oneday).charAt(0)==='-' ? 'red': 'green'}}>{cryptoState.oneday}%</p>
+                    <p className="pxl daycash" style={{color: (cryptoState.oneday).charAt(0)==='-' ? 'red': 'green'}}>{cryptoState.onedaycurr} </p>
+                    <p className="pxl-4">{cryptoState.mcap}M</p>
+                    <MiniChart className="pxl" id={cryptoState.id} rank={cryptoState.rank}></MiniChart>    
+                </div>
+            </li>
+        </div>
+    )
 }
 export default Crypto;

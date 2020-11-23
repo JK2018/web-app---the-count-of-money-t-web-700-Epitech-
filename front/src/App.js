@@ -4,6 +4,7 @@ import Navbar from './component/Navbar';
 import Landing from './component/Landing';
 import Login from './component/Login';
 import Register from './component/Register';
+import Profile from './component/Profile';
 import FavoritesList from './component/FavoritesList';
 import CryptoDetail from './component/CryptoDetail';
 import Settings from './component/Settings';
