@@ -17,6 +17,7 @@ const MiniChart = (props) => {
     useEffect( () => {
         setMiniChartState(props);
 
+        // DESC : wait till parent comp update
         function waitForElement(){
             if(typeof contextValue['chartDataRank'+miniChartState.rank] !== "undefined"){
                 setVal0(contextValue['chartDataRank'+miniChartState.rank][0]['val']);
@@ -25,7 +26,6 @@ const MiniChart = (props) => {
             }
             else{
                 setTimeout(waitForElement, 2500);
-                //console.log("test");
             }
         }
         waitForElement();

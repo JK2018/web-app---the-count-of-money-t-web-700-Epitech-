@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+import MyContext from '../context/MyContext';
 import CryptoList from './CryptoList';
 import Cookies from 'universal-cookie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,8 +27,8 @@ const FavoritesList = () => {
     const getCooks = cookies.getAll();
     const [c,setC] = useState(cookies.get('currency'));
     const [currencyValue, setCurrencyValue] = useState(c);
-    const [allcoinsChartDataFinal, setAllcoinsChartDataFinal] = useState([]);
-    
+    const [contextValue, setContextValue] = useState({});
+    const theChartDataObj = {};
 
     // DESC : adds the favorite cryptos to the string url
     const buildUrlString = () => {
@@ -42,7 +43,7 @@ const FavoritesList = () => {
     buildUrlString();
     
 
-    const [apiUrl, setApiUrl] = useState("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&ids="+coinUrlString+"&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
+    const [apiUrl, setApiUrl] = useState("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&ids="+coinUrlString+"&order=market_cap_desc&per_page=15&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
     const [data, setData] = useState([]);
     
 
@@ -51,27 +52,33 @@ const FavoritesList = () => {
         const fetchData = async () => {
             if(coinUrlString){
 
-                // DESC : fetch cryptos general data
-                setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&ids="+coinUrlString+"&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d")
+                setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&ids="+coinUrlString+"&order=market_cap_desc&per_page=15&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
                 const result = await axios(apiUrl,);
                 setData(result.data);
-                var allcoinsChartData = [];
 
-                // DESC : fetch historical data for each chart
+
+                // DESC : fetch historical data for each chart and set it as an object attribute
                 for (let i = 0; i < result.data.length; i++) {
                     var url ="https://api.coingecko.com/api/v3/coins/"+result.data[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
                     const result22 = await axios(url,);
                     const chartPricesRaw = result22.data.prices;
                     const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank})); 
-                    allcoinsChartData.push(chartPricesFinal);   
+                    theChartDataObj['chartDataRank'+result.data[i].market_cap_rank]= chartPricesFinal;
+                    
                 }
-                setAllcoinsChartDataFinal(allcoinsChartData);
-                
-            } 
 
-            
+                // DESC : set the mini chart data obj to context
+                theChartDataObj['data2']= data;
+                setContextValue(theChartDataObj);
+                
+            }   
         }
         fetchData();
+
+
+
+
+
         // DESC : refresh 30s interval
         const interval=setInterval(()=>{
             fetchData();
@@ -80,6 +87,7 @@ const FavoritesList = () => {
 
         return()=>{
         clearInterval(interval)}
+        
     }, [c]);
 
 
@@ -93,7 +101,9 @@ const FavoritesList = () => {
     
     return (
         <section className="landing">
-            <div className="mainCompDiv"> 
+            <MyContext.Provider value={contextValue}>
+            <div className="mainCompDiv">
+            
                 <div className="lidiv hder">
                     <p className="pml"><FontAwesomeIcon style={{color: 'white'}} icon={faStar}/></p>
                     <p className="pml">Rank</p>
@@ -111,8 +121,9 @@ const FavoritesList = () => {
                     <p className="pxl-4">Market Cap</p>
                     <p className="pxl">7d Chart</p>
                 </div>
-                <CryptoList allcoinsChartDataFinal={allcoinsChartDataFinal} data={data} defaultStarCol={'#ebc934'}></CryptoList>
+                <CryptoList data={data} defaultStarCol={'lightgrey'} ></CryptoList>
             </div>
+            </MyContext.Provider>
         </section>
     )
 }
