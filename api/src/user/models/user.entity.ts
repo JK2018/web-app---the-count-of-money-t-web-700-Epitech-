@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, BeforeInsert } from 'typeorm';
-import { Crypto } from '../../crypto/crypto.entity';
+import { Crypto } from '../../crypto/entities/crypto.entity';
 import * as bcrypt from 'bcrypt';
 import {ApiProperty} from "@nestjs/swagger";
 

@@ -1,4 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateCryptoDto } from './create-crypto.dto';
 
-export class UpdateCryptoDto extends PartialType(CreateCryptoDto) {}
+export class UpdateCryptoDto extends PartialType(CreateCryptoDto) {
+    @ApiProperty()
+    label: string;
+}
