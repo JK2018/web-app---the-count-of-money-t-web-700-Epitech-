@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
 import { TextField } from '@material-ui/core';
 import "../assets/css/login.css";
+
+// API
+import userApi from "../api/user";
 
 export const Register = () => {
 
@@ -30,14 +32,10 @@ export const Register = () => {
                 password
             }
             try {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
                 const body = JSON.stringify(newUser);
-                const res = await axios.post('/api/users', body, config);
-                console.log(res.data);
+                userApi.create(body).then((response) => {
+                    console.log(response.data);
+                })
             } catch (error) {
                 console.error(error.response.data);
             }

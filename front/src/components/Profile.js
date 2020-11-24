@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import "../assets/css/profile.css";
+
+// API
+import userApi from "../api/user";
 
 export const Profile = () => {
 
@@ -26,14 +28,10 @@ export const Profile = () => {
                 password
             }
             try {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
                 const body = JSON.stringify(newUser);
-                const res = await axios.post('/api/users', body, config);
-                console.log(res.data);
+                userApi.update(body).then((response) => {
+                    console.log(response.data);
+                })
             } catch (error) {
                 console.error(error.response.data);
             }

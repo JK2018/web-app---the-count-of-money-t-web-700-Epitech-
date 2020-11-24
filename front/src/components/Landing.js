@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
 import BaseContext from '../contexts/base';
 import CryptoList from './CryptoList';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins, faMoneyBill, faStar } from "@fortawesome/free-solid-svg-icons";
 import Cookies from 'universal-cookie';
+
+// API
+import cryptoApi from "../api/crypto";
 
 // ROUTE : /
 // DESC : will render all cryptos.
@@ -23,7 +25,6 @@ const Landing = () => {
     const cookies = new Cookies();
     const [c, setC] = useState(cookies.get('currency') ? cookies.get('currency') : "usd");
     const [currencyValue, setCurrencyValue] = useState(c);
-    const [apiUrl, setApiUrl] = useState("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + c + "&order=market_cap_desc&per_page=15&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
     const [data, setData] = useState([]);
     const [contextValue, setContextValue] = useState({});
     const theChartDataObj = {};
@@ -32,28 +33,26 @@ const Landing = () => {
     useEffect(() => {
 
         // DESC : fetch cryptos general data
-        const fetchData = async () => {
-            setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + c + "&order=market_cap_desc&per_page=15&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
-            const result = await axios(apiUrl,);
-            setData(result.data);
+        const fetchData = async () => {            
+            cryptoApi.getDetailed(c).then((result) => {
 
-
-            // DESC : fetch historical data for each chart and set it as an object attribute
-            for (let i = 0; i < result.data.length; i++) {
-                var url = "https://api.coingecko.com/api/v3/coins/" + result.data[i].id + "/market_chart?vs_currency=usd&days=30&interval=daily"
-                const result22 = await axios(url,);
-                const chartPricesRaw = result22.data.prices;
-                const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank }));
-                theChartDataObj['chartDataRank' + result.data[i].market_cap_rank] = chartPricesFinal;
-
-            }
-
-            // DESC : set the mini chart data obj to context
-            theChartDataObj['data2'] = data;
-            setContextValue(
-                theChartDataObj
-            )
-
+                setData(result.data);
+    
+                // DESC : fetch historical data for each chart and set it as an object attribute
+                for (let i = 0; i < result.data.length; i++) {
+                    cryptoApi.getHistoricData(result.data[i].id, "usd", 30, "daily").then((response) => {
+                        const chartPricesRaw = response.data.prices;
+                        const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank }));
+                        theChartDataObj['chartDataRank' + result.data[i].market_cap_rank] = chartPricesFinal;
+                    })
+                }
+    
+                // DESC : set the mini chart data obj to context
+                theChartDataObj['data2'] = data;
+                setContextValue(
+                    theChartDataObj
+                )
+            })
         }
         fetchData();
 
