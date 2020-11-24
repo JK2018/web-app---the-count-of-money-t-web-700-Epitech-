@@ -1,15 +1,19 @@
 import { useParams } from "react-router-dom";
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react"
 import Grid from "@material-ui/core/Grid";
-import axios from 'axios';
-import Chart from 'chart.js';
-import moment from 'moment';
-import parse from 'html-react-parser';
+import Chart from "chart.js";
+import moment from "moment";
+import parse from "html-react-parser";
+import "../assets/css/crypto-detail.css";
+
+// API
+import cryptoApi from "../api/crypto"; 
+import articleApi from "../api/article"; 
 
 // Img
-import sadFace from '../img/sad.svg'; 
-import upArrow from '../img/up-arrow.svg'; 
-import downArrow from '../img/down-arrow.svg'; 
+import sadFace from "../assets/img/sad.svg"; 
+import upArrow from "../assets/img/up-arrow.svg"; 
+import downArrow from "../assets/img/down-arrow.svg";
 
 
 const CryptoDetail = () => {
@@ -49,14 +53,11 @@ const CryptoDetail = () => {
  
     useEffect(() => {
 
-        const getCoinUrl = "https://api.coingecko.com/api/v3/coins/"+coinId;
-        const getHistoryUrl = "https://api.coingecko.com/api/v3/coins/"+coinId+"/market_chart?vs_currency=usd&days=15";
-
         function createMainChart() {
             var ctx = document.getElementById('main-chart');
             if (ctx) {
                 ctx.getContext('2d');
-                axios(getHistoryUrl).then((response) => {
+                cryptoApi.getHistoricData(coinId).then((response) => {
                     var prices = response.data.prices.map(item => {
                         var timestamp = item[0];
                         var price = Number.parseFloat(item[1]).toFixed(2);
@@ -159,7 +160,7 @@ const CryptoDetail = () => {
             symbol = symbol.toLowerCase();
             name = name.toLowerCase();
             // rss2json.com mandatory to prevent CROS Request error 
-            axios("https://api.rss2json.com/v1/api.json?rss_url=https://cointelegraph.com/rss")
+            articleApi.getFeed("https://cointelegraph.com/rss")
                 .then(function (response) {
                     if (response.data.feed && response.data.items.length > 0) {
                         var posts = response.data.items.filter(function(item) {
@@ -187,7 +188,7 @@ const CryptoDetail = () => {
         }
 
         // Load currency data, then create chart
-        axios(getCoinUrl).then((result) => {
+        cryptoApi.get(coinId).then((result) => {
             setData(result.data);
             createMainChart();
             getRSSFeed(result.data.symbol, result.data.name);

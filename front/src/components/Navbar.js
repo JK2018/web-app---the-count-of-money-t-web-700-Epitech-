@@ -8,7 +8,7 @@ const Navbar = () => {
             <Link to="/"><i className="fas fa-code"></i> The Count Of Money</Link>
         </h1>
         <ul>
-            { !"logged in" === false ? //for testing only
+            { "logged in" === false ? //for testing only
                 <Fragment>
                     <li><Link to="/register">Register</Link></li>
                     <li><Link to="/login">Login</Link></li>

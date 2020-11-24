@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios';
-import MyContext from '../context/MyContext';
+import React, { useState, useEffect } from 'react';
+import BaseContext from '../contexts/base';
 import CryptoList from './CryptoList';
 import Cookies from 'universal-cookie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoneyBill, faStar, faCoins } from "@fortawesome/free-solid-svg-icons";
 
+// API
+import cryptoApi from "../api/crypto";
 
 // ROUTE : /favorites
 // DESC : will render only cryptos selected as favorites by user that has signed in.
@@ -40,43 +41,33 @@ const FavoritesList = () => {
         coinUrlString = coinUrlString.slice(0, -6);
     }
     buildUrlString();
-    
 
-    const [apiUrl, setApiUrl] = useState("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&ids="+coinUrlString+"&order=market_cap_desc&per_page=15&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
     const [data, setData] = useState([]);
     
-
     // DESC : fetches data from api, and updates data every 30s
     useEffect(() => {
         const fetchData = async () => {
             if(coinUrlString){
+                cryptoApi.getDetailed(c, coinUrlString).then((result) => {
 
-                setApiUrl("https://api.coingecko.com/api/v3/coins/markets?vs_currency="+c+"&ids="+coinUrlString+"&order=market_cap_desc&per_page=15&page=1&sparkline=false&price_change_percentage=1h%2C%2024h%2C%207d");
-                const result = await axios(apiUrl,);
-                setData(result.data);
+                    setData(result.data);
 
+                    // DESC : fetch historical data for each chart and set it as an object attribute
+                    for (let i = 0; i < result.data.length; i++) {
+                        cryptoApi.getHistoricData(result.data[i].id, "usd", 30, "daily").then((response) => {
+                            const chartPricesRaw = response.data.prices;
+                            const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank})); 
+                            theChartDataObj['chartDataRank'+result.data[i].market_cap_rank]= chartPricesFinal;
+                        }) 
+                    }
 
-                // DESC : fetch historical data for each chart and set it as an object attribute
-                for (let i = 0; i < result.data.length; i++) {
-                    var url ="https://api.coingecko.com/api/v3/coins/"+result.data[i].id+"/market_chart?vs_currency=usd&days=30&interval=daily"
-                    const result22 = await axios(url,);
-                    const chartPricesRaw = result22.data.prices;
-                    const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank})); 
-                    theChartDataObj['chartDataRank'+result.data[i].market_cap_rank]= chartPricesFinal;
-                    
-                }
-
-                // DESC : set the mini chart data obj to context
-                theChartDataObj['data2']= data;
-                setContextValue(theChartDataObj);
-                
+                    // DESC : set the mini chart data obj to context
+                    theChartDataObj['data2']= data;
+                    setContextValue(theChartDataObj);
+                })
             }   
         }
         fetchData();
-
-
-
-
 
         // DESC : refresh 30s interval
         const interval=setInterval(()=>{
@@ -89,7 +80,6 @@ const FavoritesList = () => {
 
     }, [c]);
 
-
     // ACTION : when user selects currency via select menu
     // DESC : action when user selects another currency
     const onSelectChange = (e) => {
@@ -100,7 +90,7 @@ const FavoritesList = () => {
     
     return (
         <section className="landing">
-            <MyContext.Provider value={contextValue}>
+            <BaseContext.Provider value={contextValue}>
             <div className="mainCompDiv">
             
                 <div className="lidiv hder">
@@ -122,7 +112,7 @@ const FavoritesList = () => {
                 </div>
                 <CryptoList data={data} defaultStarCol={'lightgrey'} ></CryptoList>
             </div>
-            </MyContext.Provider>
+            </BaseContext.Provider>
         </section>
     )
 }

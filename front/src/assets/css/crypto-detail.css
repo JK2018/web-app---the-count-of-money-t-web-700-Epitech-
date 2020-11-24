@@ -1,0 +1,100 @@
+/* Crypto Detail Page */
+
+.crypto-detail {
+    padding: 100px 10vw;
+}
+
+.crypto-detail .logo {
+    text-align: center;
+}
+
+.crypto-detail .logo h1 {
+    margin-top: 20px;
+    font-size: 2.5rem;
+}
+
+.crypto-detail .logo img {
+    max-width: 200px;
+}
+
+.crypto-detail li {
+    padding: 15px 0;
+}
+
+.crypto-detail li label {
+    font-weight: 800;
+    padding-right: 15px;
+}
+
+.crypto-detail .trend {
+    text-align: center;
+    border-radius: 10px;
+    margin: 10px;
+    height: 100%;
+}
+
+.crypto-detail .trend label {
+    font-weight: bold;
+    text-transform: capitalize;
+    min-height: 85px;
+}
+
+.crypto-detail .trend img {
+    max-height: 50px;
+}
+
+.crypto-detail .trend label, .crypto-detail .trend span {
+    display: block;
+    padding: 15px 0;
+}
+
+.crypto-detail .chart-container {
+    position: relative;
+    margin: 70px auto;
+    height: 350px;
+    width: 100%;
+}
+
+.crypto-detail .news {
+    margin: 0 -20px;
+}
+
+.crypto-detail .news h2 {
+    margin: 50px 0 30px 20px;
+    text-transform: uppercase;
+}
+
+.crypto-detail .new-container {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.crypto-detail .new-content {
+    height: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 15px 2px #dddddd;
+    box-shadow: 0px 0px 15px 2px #dddddd;
+    color: inherit;
+    display: block;
+}
+
+.crypto-detail .new-content h3 {
+    margin-bottom: 20px;
+}
+
+.crypto-detail .new-content img {
+    margin: 10px 0 20px 0;
+}
+
+.crypto-detail .no-news {
+    text-align: center;
+    font-size: 1.2rem;
+    width: 100%;
+}
+
+.crypto-detail .no-news img {
+    height: 80px;
+    opacity: 0.8;
+    margin: 30px 0 10px 0;
+}

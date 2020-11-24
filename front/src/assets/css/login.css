@@ -1,0 +1,24 @@
+/* Login/register page */
+.login-form {
+    padding-top: 150px;
+    margin: auto !important;
+  }
+  
+  .login-form .lead {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 40px;
+  }
+  
+  .login-form .introduction {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+  
+  .login-form .input {
+    margin: 10px 0;
+  }
+  
+  .login-form .submit-btn {
+    margin-top: 20px;
+  }

@@ -1,0 +1,63 @@
+/* CryptoList */
+.currencySelect {
+    border-radius: 5px;
+    background-color: grey;
+    color: white;
+    font-size: x-small;
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+.star {
+    cursor: pointer;
+}
+
+.hder {
+    font-weight: bold;
+}
+
+.daycash {
+    padding-left: 15px;
+}
+
+.lidiv {
+    display: flex;
+    border-bottom: solid black 1px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    margin-top: 25px;
+    width: 100%;
+}
+
+.coinName {
+    padding-left: 5px;
+    vertical-align: baseline;
+    line-height: 40px;
+}
+
+.pxl {
+    width: 15%;
+    height: 5%;
+    line-height: 40px;
+}
+
+.pxl-4 {
+    width: 11%;
+    line-height: 40px;
+}
+
+.pml {
+    width: 7%;
+    line-height: 40px;
+}
+
+.pml4 {
+    width: 11%;
+    line-height: 40px;
+}
+
+.iconimg {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+}

@@ -10,6 +10,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCryptoDialog from './AddCryptoDialog';
+import "../assets/css/settings.css";
 
 const Settings = () => {
 
