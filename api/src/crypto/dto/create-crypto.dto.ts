@@ -2,11 +2,11 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateCryptoDto {
     @ApiProperty()
-    label: string;
+    cmids: string;
 
     @ApiProperty()
-    url_img: string;
+    fullName: string;
 
     @ApiProperty()
-    default: string;
+    imgUrl: string;
 }

@@ -1,26 +1,34 @@
+import { Crypto } from './../entities/crypto.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { CreateCryptoDto } from '../dto/create-crypto.dto';
 import { UpdateCryptoDto } from '../dto/update-crypto.dto';
 
 @Injectable()
 export class CryptoService {
-  create(createCryptoDto: CreateCryptoDto) {
-    return 'This action adds a new crypto';
+
+  constructor(
+    @InjectRepository(Crypto) private readonly cryptoRepo: Repository<Crypto>
+  ) { }
+
+  async create(createCryptoDto: CreateCryptoDto) : Promise<any> {
+    return this.cryptoRepo.save(createCryptoDto);
   }
 
-  findAll() {
-    return `This action returns all crypto`;
+  async findAll() : Promise<any> {
+    return this.cryptoRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} crypto`;
+  async findOne(id: number) : Promise<any> {
+    return this.cryptoRepo.findOne({id});
   }
 
-  update(id: number, updateCryptoDto: UpdateCryptoDto) {
-    return `This action updates a #${id} crypto`;
+  async update(id: number, updateCryptoDto: UpdateCryptoDto) : Promise<any> {
+    return this.cryptoRepo.update(id, updateCryptoDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} crypto`;
+  async remove(id: number) : Promise<any> {
+    return this.cryptoRepo.delete(id);
   }
 }

@@ -11,11 +11,13 @@ export class Crypto {
 
     @ApiProperty()
     @Column({ unique: true })
-    label: string;
+    cmids: string;
 
     @ApiProperty()
-    @Column()
-    url_img: string;
+    fullName: string;
+
+    @ApiProperty()
+    imgUrl: string;
 
     @ApiProperty()
     @Column()
@@ -25,4 +27,9 @@ export class Crypto {
     @ManyToMany(() => User, (user) => user.cryptos)
     @JoinTable()
     users: User[];
+
+    @BeforeInsert()
+    async setDefault() {
+        this.default = false;
+    }
 }
