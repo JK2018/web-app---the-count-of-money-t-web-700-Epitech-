@@ -1,4 +1,4 @@
-import { Module, forwardRef, HttpModule } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants/constants';
 import { LocalStrategy } from './guards/local.strategy';
@@ -7,11 +7,11 @@ import { AuthService } from './service/auth.service';
 import { UserModule } from '../user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './controller/auth.controller';
-import { DiscordStrategy } from "./guards/discord.strategy";
+import { DiscordStrategy } from './guards/discord.strategy';
+import { FacebookStrategy } from './guards/facebook.strategy';
 
 @Module({
     imports: [
-        HttpModule,
         forwardRef(() => UserModule),
         JwtModule.register({
             secret: jwtConstants.secret,
@@ -19,7 +19,13 @@ import { DiscordStrategy } from "./guards/discord.strategy";
         }),
         PassportModule,
     ],
-    providers: [AuthService, LocalStrategy, JwtStrategy, DiscordStrategy],
+    providers: [
+        AuthService,
+        LocalStrategy,
+        JwtStrategy,
+        DiscordStrategy,
+        FacebookStrategy
+    ],
     exports: [AuthService],
     controllers: [AuthController]
 })

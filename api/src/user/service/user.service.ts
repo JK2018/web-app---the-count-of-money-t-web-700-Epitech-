@@ -3,7 +3,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { User } from '../models/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { CreateUserDto, UpdateUserDto } from '../models/user.dto';
+import {CreateUserDto, CreateUserFromProviderDto, UpdateUserDto} from '../models/user.dto';
 
 @Injectable()
 export class UserService extends TypeOrmCrudService<User> {
@@ -14,7 +14,7 @@ export class UserService extends TypeOrmCrudService<User> {
     }
 
     async getUserWhere(options?: {[key: string]: any}): Promise<User> {
-        return this.userRepo.findOneOrFail(options);
+        return this.userRepo.findOne(options);
     }
 
     async createUser(user: CreateUserDto) {
@@ -29,12 +29,14 @@ export class UserService extends TypeOrmCrudService<User> {
         return this.userRepo.save(newUser);
     }
 
-    async createUserFromProvider(data?: any) {
+    async createUserFromProvider(providerIdField: string, data: CreateUserFromProviderDto) {
         const user = new User();
 
-        user.first_name = '';
-        user.last_name = '';
-        user.username = data.username && data.username;
+        user[providerIdField] = data.providerId;
+        user.email = data.email;
+        user.first_name = data.firstName;
+        user.last_name = data.lastName;
+        user.username = data.username;
 
         return this.userRepo.save(user);
     }

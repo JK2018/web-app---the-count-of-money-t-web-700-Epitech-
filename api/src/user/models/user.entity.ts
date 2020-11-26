@@ -14,15 +14,20 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @ApiProperty()
+    @Column({ nullable: true })
     discord_id?: string;
 
     @ApiProperty()
-    @Column({ unique: true })
+    @Column({ nullable: true })
+    facebook_id?: string;
+
+    @ApiProperty()
+    @Column({ unique: true, nullable: true })
     email?: string;
 
     @ApiProperty()
-    @Column()
+    @Column({ nullable: true })
     password?: string;
 
     @ApiProperty()
@@ -48,6 +53,8 @@ export class User {
     
     @BeforeInsert()
     async hashPassword() {
-        this.password = await bcrypt.hash(this.password, 10);
+        if (this.password) {
+            this.password = await bcrypt.hash(this.password, 10);
+        }
     }
 }

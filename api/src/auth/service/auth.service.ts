@@ -5,6 +5,7 @@ import { User } from '../../user/models/user.entity';
 // import { Observable, from } from 'rxjs';
 // import { User } from 'src/user/models/user.interface';
 import * as bcrypt from 'bcrypt';
+import {CreateUserFromProviderDto} from "../../user/models/user.dto";
 
 @Injectable()
 export class AuthService {
@@ -13,11 +14,19 @@ export class AuthService {
         private readonly userService: UserService
     ) {}
 
+    // async loginFromProvider(user: User) {
+    //     const payload = { id: user.id, role: user.role }
+    //
+    //     return {
+    //         access_token: this.jwtService.sign(payload)
+    //     }
+    // }
+
     async login(user: User) {
         const payload = { id: user.id, email: user.email, role: user.role };
 
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: this.jwtService.sign(payload)
         }
     }
 
@@ -33,16 +42,19 @@ export class AuthService {
         }
     }
 
-    async loginWithProvider(field: string, id: string, data?: any): Promise<any> {
-        // const user = await this.userService.getUserWhere({ [field]: id });
+    async findOrCreate(providerIdField: string, id: string, data?: CreateUserFromProviderDto): Promise<User> {
+        try {
+            let user = await this.userService.getUserWhere({ [providerIdField]: id });
 
-        // if (!user) {
-        //     user = await this.userService.createUserFromProvider(data);
-        // }
-        // console.log('user', user);
-        return {
-            test: 'test'
-        };
+            if (!user) {
+                user = await this.userService.createUserFromProvider(providerIdField, data);
+            }
+
+            return user;
+        } catch (err) {
+            console.log(err);
+            throw new BadRequestException();
+        }
     }
 
     // generateJWT(user: User): Observable <string> {
