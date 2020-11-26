@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards, Param, Delete, Patch } from '@nestjs/common';
 import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CryptoService } from '../service/crypto.service';
 import { CreateCryptoDto } from '../dto/create-crypto.dto';
@@ -8,6 +8,30 @@ import { UpdateCryptoDto } from '../dto/update-crypto.dto';
 @Controller('cryptos')
 export class CryptoController {
   constructor(private readonly cryptoService: CryptoService) { }
+
+  @ApiOkResponse({ description: 'Get all cryptos available' })
+  // @UseGuards(JwtAuthGuard)
+  @Get("available")
+  async availables() {
+    return this.cryptoService.cryptosAvailable().catch(err => {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        message: err.message
+      }, HttpStatus.BAD_REQUEST)
+    });
+  }
+
+  @ApiOkResponse({ description: 'Get all cryptos available' })
+  // @UseGuards(JwtAuthGuard)
+  @Get("currencies")
+  async currencies() {
+    return this.cryptoService.currenciesAvailable().catch(err => {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        message: err.message
+      }, HttpStatus.BAD_REQUEST)
+    });
+  }
 
   @ApiCreatedResponse({ description: 'Create/register a new crypto' })
   // @UseGuards(JwtAuthGuard)
@@ -33,11 +57,24 @@ export class CryptoController {
     });
   }
 
-  @ApiOkResponse({ description: 'Get crypto by id' })
+  @ApiOkResponse({ description: 'Get all cryptos available' })
   // @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.cryptoService.findOne(+id).catch(err => {
+  @Get(":cmid/history/:nbDay")
+  async history(@Param('cmid') cmid: string, @Param('nbDay') nbDay) {
+    return this.cryptoService.getHistory(cmid,nbDay).catch(err => {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        message: err.message
+      }, HttpStatus.BAD_REQUEST)
+    });
+  }
+
+
+  @ApiOkResponse({ description: 'Get crypto by cmid' })
+  // @UseGuards(JwtAuthGuard)
+  @Get(':cmid')
+  async findOne(@Param('cmid') cmid: string) {
+    return this.cryptoService.findByCmId(cmid).catch(err => {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
         message: err.message
@@ -67,5 +104,5 @@ export class CryptoController {
         message: err.message
       }, HttpStatus.BAD_REQUEST)
     });
-  }
+  }  
 }

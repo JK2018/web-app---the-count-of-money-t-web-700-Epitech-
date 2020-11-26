@@ -101,7 +101,7 @@ export class UserController {
         });
     }
 
-    @ApiNoContentResponse({ description: 'Add crypto user' })
+    @ApiNoContentResponse({ description: 'Remove crypto user' })
     @HttpCode(204)
     @UseGuards(JwtAuthGuard)
     @Delete('cryptos/:idCrypto')

@@ -11,7 +11,7 @@ export class Crypto {
 
     @ApiProperty()
     @Column({ unique: true })
-    cmids: string;
+    cmid: string;
 
     @ApiProperty()
     @Column()
