@@ -85,7 +85,7 @@ export const Register = () => {
                                 name="password"
                                 label="Password"
                                 variant="outlined" 
-                                value={password} onChange={e => onChange(e)}
+                                value={password}
                                 minLength="6"
                                 onChange={e => onChange(e)}
                                 required
@@ -99,7 +99,7 @@ export const Register = () => {
                                 name="password_confirmation"
                                 label="Confirm Password"
                                 variant="outlined" 
-                                value={password_confirmation} onChange={e => onChange(e)}
+                                value={password_confirmation}
                                 minLength="6"
                                 onChange={e => onChange(e)}
                                 required

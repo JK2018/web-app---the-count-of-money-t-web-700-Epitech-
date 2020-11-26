@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Chart from "chart.js";
 import moment from "moment";
 import parse from "html-react-parser";
+import { renderNews, getRSSFeed } from '../utils/articles';
 import "../assets/css/crypto-detail.css";
 
 // API
@@ -25,20 +26,6 @@ const CryptoDetail = () => {
 
     function formatPrice(price) {
         return parseFloat(price).toLocaleString('en');
-    }
-
-    function renderNews() {
-        if (news.length > 0) {
-            return news.map((item, i) => (
-                <Grid className="new-container" item xl={4} lg={4} md={4} sm={6} xs={12} key={i}>
-                    <a href={item.link} target="_blank" rel="noreferrer" className="new-content">
-                        <h3>{item.title}</h3>
-                        {parse(item.description)}
-                    </a>
-                </Grid>
-            ))
-        }
-        return <div className="no-news"><img src={sadFace} alt="sad-face"/><p>No news related to this currency ...</p></div>
     }
 
     function trendPercentage(period) {
@@ -156,42 +143,11 @@ const CryptoDetail = () => {
             }
         }
 
-        function getRSSFeed(symbol, name) {
-            symbol = symbol.toLowerCase();
-            name = name.toLowerCase();
-            // rss2json.com mandatory to prevent CROS Request error 
-            articleApi.getFeed("https://cointelegraph.com/rss")
-                .then(function (response) {
-                    if (response.data.feed && response.data.items.length > 0) {
-                        var posts = response.data.items.filter(function(item) {
-                            // Check if categories match to this currency
-                            if (item.categories.some(category => category.toLowerCase().includes(name) || category.toLowerCase().includes(symbol))) {
-                                return true;
-                            }
-                            // Check if currency is mentionned in title
-                            if (item.title.toLowerCase().includes(name) || item.title.toLowerCase().includes(symbol)) {
-                                return true;
-                            }
-                            // check if currency is mentionned in content or description
-                            if (item.description.toLowerCase().includes(name) 
-                                || item.description.toLowerCase().includes(symbol)
-                                || item.content.toLowerCase().includes(name)
-                                || item.content.toLowerCase().includes(symbol)
-                            ) {
-                                return true;
-                            }
-                            return false;
-                        })
-                        setNews(posts);
-                    }
-                })
-        }
-
         // Load currency data, then create chart
         cryptoApi.get(coinId).then((result) => {
             setData(result.data);
             createMainChart();
-            getRSSFeed(result.data.symbol, result.data.name);
+            getRSSFeed([result.data.name]).then((posts) => setNews(posts));;
         })
 
     }, [coinId]);
@@ -248,7 +204,7 @@ const CryptoDetail = () => {
                 <Grid container className="news">
                     <h2>Related news</h2>
                     <Grid container>
-                        {renderNews()}
+                        {renderNews(news)}
                     </Grid>
                 </Grid>
             </div>

@@ -6,6 +6,7 @@ import Register from './components/Register';
 import FavoritesList from './components/FavoritesList';
 import CryptoDetail from './components/CryptoDetail';
 import Settings from './components/Settings';
+import Articles from './components/Articles';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './assets/css/main.css';
 
@@ -17,6 +18,7 @@ const Router = () => {
                 <Route exact path='/' component={Landing}></Route>
                 <section>
                     <Switch>
+                        <Route exact path='/articles' component={Articles}></Route>
                         <Route exact path='/register' component={Register}></Route>
                         <Route exact path='/favorites' component={FavoritesList}></Route>
                         <Route exact path='/login' component={Login}></Route>

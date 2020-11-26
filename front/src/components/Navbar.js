@@ -10,11 +10,13 @@ const Navbar = () => {
         <ul>
             { "logged in" === false ? //for testing only
                 <Fragment>
+                    <li><Link to="/articles">Articles</Link></li>
                     <li><Link to="/register">Register</Link></li>
                     <li><Link to="/login">Login</Link></li>
                 </Fragment>
             :
                 <Fragment>
+                    <li><Link to="/articles">Articles</Link></li>
                     <li><Link to="/favorites">Favorites</Link></li>
                     <li><Link to="/settings">Settings (Temp)</Link></li>
                     <li><Link to="/login">Profile</Link></li>
