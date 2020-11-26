@@ -1,12 +1,12 @@
-import {Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Crud } from '@nestjsx/crud';
 import { User } from '../models/user.entity';
 import { UserService } from '../service/user.service';
 import { LocalAuthGuard } from '../../auth/guards/local-auth.guard';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CreateUserDto, UpdateUserDto } from '../models/user.dto';
-import {ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiResponse, ApiTags} from '@nestjs/swagger';
-import {AuthService} from "../../auth/service/auth.service";
+import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AuthService } from '../../auth/service/auth.service';
 
 @ApiTags('Users')
 @Crud({

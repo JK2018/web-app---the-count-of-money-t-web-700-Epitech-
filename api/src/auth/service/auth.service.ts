@@ -2,8 +2,6 @@ import {BadRequestException, Injectable} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../user/service/user.service';
 import { User } from '../../user/models/user.entity';
-// import { Observable, from } from 'rxjs';
-// import { User } from 'src/user/models/user.interface';
 import * as bcrypt from 'bcrypt';
 import {CreateUserFromProviderDto} from "../../user/models/user.dto";
 
@@ -13,14 +11,6 @@ export class AuthService {
         private readonly jwtService: JwtService,
         private readonly userService: UserService
     ) {}
-
-    // async loginFromProvider(user: User) {
-    //     const payload = { id: user.id, role: user.role }
-    //
-    //     return {
-    //         access_token: this.jwtService.sign(payload)
-    //     }
-    // }
 
     async login(user: User) {
         const payload = { id: user.id, email: user.email, role: user.role };

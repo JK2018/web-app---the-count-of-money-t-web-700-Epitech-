@@ -18,8 +18,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     }
 
     async validate(accessToken: string, refreshToken: string, profile: Profile): Promise<any> {
-        // console.log('request', request);
-        // const userProfile: CreateUserFromProviderDto;
         const { name, emails } = profile;
         const userProfile: CreateUserFromProviderDto = {
             providerId: profile.id,
@@ -28,9 +26,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
             email: emails && emails[0].value,
             username: `${name.givenName} ${name.familyName}`
         }
-
-        console.log('profile', profile);
-        // console.log('done', done);
 
         return await this.authService.findOrCreate('facebook_id', profile.id, userProfile);
     }
