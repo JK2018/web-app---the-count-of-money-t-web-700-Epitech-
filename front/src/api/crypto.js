@@ -29,7 +29,7 @@ const crypto = {
         });
     },
 
-    getHistoricData: (coinId, currency = "usd", days = 30, interval = "days") => {
+    getHistoricData: (coinId, currency = "usd", days = 30, interval = "daily") => {
         return new Promise((resolve, reject) => {
             const getHistoryUrl = "https://api.coingecko.com/api/v3/coins/"+coinId+"/market_chart?vs_currency="+currency+"&days="+days+"&interval="+interval;
             axios(getHistoryUrl)

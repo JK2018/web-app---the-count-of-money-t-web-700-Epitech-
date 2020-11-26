@@ -4,13 +4,45 @@ import CryptoList from './CryptoList';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins, faMoneyBill, faStar } from "@fortawesome/free-solid-svg-icons";
 import Cookies from 'universal-cookie';
+import Tour from 'reactour';
+import '../assets/css/main.css';
 
 // API
 import cryptoApi from "../api/crypto";
 
+
+
+const steps = [
+    {
+        selector: '',
+        content: 'Welcome to The Count Of Money! Here is a quick tour to get you on track!',
+    },
+    {
+      selector: '.tourStep1',
+      content: 'See these cool stars? They will let you add your favorite cryptos to your own private portfolio!',
+    },
+    {
+        selector: '.tourStep1',
+        content: 'You can click on any crypto\'s star in order to add or remove it from your portfolio.',
+    },
+    {
+        selector: '.tourStep1',
+        content: 'You will notice it\'s color changes weather you chose the crypto to be among your favorites, or not!',
+    },
+    {
+        selector: '.first-step',
+        content: 'Once you\'re done, you can check out all your fav\'s over here! Have fun!',
+    },
+    // ...
+  ];
+
+
 // ROUTE : /
 // DESC : will render all cryptos.
 const Landing = () => {
+
+    const [isTourOpen, setIsTourOpen] = useState(true);
+
 
     // DESC :  selectable currencies
     const [currencies] = useState([
@@ -78,6 +110,15 @@ const Landing = () => {
     return (
 
         <section className="landing">
+            <div className="tourStep1" style={{width: '35px',
+  height: '465px',
+  position: 'absolute',
+  top: '190px',
+  left: '4.4%'}}></div>
+            <Tour
+            steps={steps}
+            isOpen={isTourOpen}
+            onRequestClose={() => setIsTourOpen(false)}/>
             <BaseContext.Provider value={contextValue}>
                 <div className="mainCompDiv">
 
@@ -98,7 +139,7 @@ const Landing = () => {
                         <p className="pxl-4">Market Cap</p>
                         <p className="pxl">30d Chart</p>
                     </div>
-                    <CryptoList data={data} defaultStarCol={'lightgrey'} ></CryptoList>
+                    <CryptoList className="tourStep1" data={data} defaultStarCol={'lightgrey'} ></CryptoList>
                 </div>
             </BaseContext.Provider>
         </section>
