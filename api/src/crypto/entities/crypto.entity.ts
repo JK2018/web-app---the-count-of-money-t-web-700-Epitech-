@@ -1,6 +1,6 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, BeforeInsert } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../../user/models/user.entity';
-import {ApiProperty} from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity({name: 'cryptos'})
 export class Crypto {
@@ -14,9 +14,11 @@ export class Crypto {
     cmids: string;
 
     @ApiProperty()
+    @Column()
     fullName: string;
 
     @ApiProperty()
+    @Column()
     imgUrl: string;
 
     @ApiProperty()
@@ -25,11 +27,5 @@ export class Crypto {
 
     @ApiProperty()
     @ManyToMany(() => User, (user) => user.cryptos)
-    @JoinTable()
     users: User[];
-
-    @BeforeInsert()
-    async setDefault() {
-        this.default = false;
-    }
 }
