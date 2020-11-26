@@ -1,3 +1,4 @@
+import { Crypto } from './../../crypto/entities/crypto.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { User } from '../models/user.entity';
@@ -6,18 +7,24 @@ import { Repository, UpdateResult } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto, UpdateUserDto } from '../models/user.dto';
 import * as bcrypt from 'bcrypt';
+import { CryptoService } from '../../crypto/service/crypto.service';
 
 @Injectable()
 export class UserService extends TypeOrmCrudService<User> {
     constructor(
         @InjectRepository(User) private readonly userRepo: Repository<User>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private cryptoService: CryptoService
     ) {
         super(userRepo);
     }
 
     async getUserWhere(options?: {[key: string]: any}): Promise<User> {
         return this.userRepo.findOneOrFail(options);
+    }
+
+    async getUser(id: number): Promise<User> {
+        return this.userRepo.findOne({id}, {relations: ['cryptos']});
     }
 
     async createUser(user: CreateUserDto) {
@@ -60,5 +67,23 @@ export class UserService extends TypeOrmCrudService<User> {
         return {
             access_token: this.jwtService.sign(payload),
         }
+    }
+
+    async addCrypto(user: User, id: number) {
+        return Promise.all([this.getUser(user.id), this.cryptoService.findOne(id)])
+        .then(res => {
+            let newUser : User = res[0];
+            let crypto : Crypto = res[1];
+            newUser.cryptos.push(crypto);
+            return this.userRepo.save(newUser);
+        })
+    }
+
+    async removeCrypto(user: User, cryptoId: number) {
+        return this.getUser(user.id)
+        .then(newUser => {
+            newUser.cryptos = newUser.cryptos.filter((crypto : Crypto) => crypto.id != cryptoId);
+            return this.userRepo.save(newUser);
+        })
     }
 }

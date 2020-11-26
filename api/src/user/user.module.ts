@@ -8,6 +8,7 @@ import { jwtConstants } from '../auth/constants';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from '../auth/guards/local.strategy';
 import { JwtStrategy } from '../auth/guards/jwt.strategy';
+import { CryptoModule } from '../crypto/crypto.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { JwtStrategy } from '../auth/guards/jwt.strategy';
           signOptions: { expiresIn: '30d' }
       }),
       PassportModule,
+      CryptoModule
   ],
   providers: [UserService, LocalStrategy, JwtStrategy],
   controllers: [UserController]

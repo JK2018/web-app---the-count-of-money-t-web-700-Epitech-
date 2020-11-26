@@ -21,7 +21,7 @@ export class CryptoService {
   }
 
   async findOne(id: number) : Promise<any> {
-    return this.cryptoRepo.findOne({id});
+    return this.cryptoRepo.findOne({id}, {relations: ['users']});
   }
 
   async update(id: number, updateCryptoDto: UpdateCryptoDto) : Promise<any> {

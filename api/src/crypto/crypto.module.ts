@@ -6,9 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Crypto]),
+    TypeOrmModule.forFeature([Crypto])
   ],
   controllers: [CryptoController],
-  providers: [CryptoService]
+  providers: [CryptoService],
+  exports: [CryptoService]
 })
 export class CryptoModule {}
