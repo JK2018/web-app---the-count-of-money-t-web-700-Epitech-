@@ -18,7 +18,8 @@ const steps = [
         content: 'Welcome to The Count Of Money! Here is a quick tour to get you on track!',
     },
     {
-      selector: '.tourStep1',
+        waitSec: 5,
+      selector: '.step1',
       content: 'See these cool stars? They will let you add your favorite cryptos to your own private portfolio!',
     },
     {
@@ -30,7 +31,7 @@ const steps = [
         content: 'You will notice it\'s color changes weather you chose the crypto to be among your favorites, or not!',
     },
     {
-        selector: '.first-step',
+        selector: '.tourStep2',
         content: 'Once you\'re done, you can check out all your fav\'s over here! Have fun!',
     },
     // ...

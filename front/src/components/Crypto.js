@@ -39,8 +39,8 @@ const Crypto = (props) => {
             <li>
                 <div className="lidiv">
                     {cryptoState.id in getFavs ? //ADD IF LOGGED IN !
-                        <p className="pml"><FontAwesomeIcon style={{ color: '#ebc934' }} onClick={handleFavToggle} className="star" icon={faStar} /></p>
-                        : <p className="pml"><FontAwesomeIcon style={{ color: 'lightgrey' }} onClick={handleFavToggle} className="star" icon={faStar} /></p>}
+                        <p className="pml"><span className="step1"><FontAwesomeIcon style={{ color: '#ebc934' }} onClick={handleFavToggle} className="star" icon={faStar} /></span></p>
+                        : <p className="pml"><span className="step1"><FontAwesomeIcon className="step1" style={{ color: 'lightgrey' }} onClick={handleFavToggle} className="star" icon={faStar} /></span></p>}
 
                     <p className="pml">{cryptoState.rank}</p>
                     <img className="iconimg" src={cryptoState.img} alt="" />
