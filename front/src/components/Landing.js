@@ -10,6 +10,8 @@ import '../assets/css/main.css';
 // API
 import cryptoApi from "../api/crypto";
 
+
+// guided tour style var
 const stepStyle = {
                 color: 'darkgrey',
                 fontWeight: 'bold',
@@ -19,6 +21,7 @@ const stepStyle = {
 
             };
 
+// Guided tour steps
 const steps = [
     {
         selector: '',
@@ -126,11 +129,6 @@ const Landing = () => {
     return (
 
         <section className="landing">
-            <div className="tourStep1" style={{width: '35px',
-  height: '465px',
-  position: 'absolute',
-  top: '190px',
-  left: '4.4%'}}></div>
             <Tour className="tour"
             steps={steps}
             isOpen={isTourOpen}
@@ -149,7 +147,7 @@ const Landing = () => {
                                 {currencies.map(({ label, value }) => (
                                     <option key={value} value={value}>{label}</option>
                                 ))}
-                            </select></p>
+                            </select></p> 
                         <p className="pml">24h %</p>
                         <p className="pxl daycash">24h <FontAwesomeIcon icon={faMoneyBill} /></p>
                         <p className="pxl-4">Market Cap</p>

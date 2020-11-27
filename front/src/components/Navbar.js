@@ -18,8 +18,8 @@ const Navbar = () => {
                 <Fragment>
                     <li><Link to="/articles">Articles</Link></li>
                     <li className="step2"><Link to="/favorites">Favorites</Link></li>
-                    <li><Link to="/settings">Settings (Temp)</Link></li>
-                    <li><Link to="/login">Profile</Link></li>
+                    <li><Link to="/settings">Settings</Link></li>
+                    <li><Link to="/profile">Profile</Link></li>
                     <li className="step3" ><Link to="/">Logout</Link></li>
                 </Fragment>
             }

@@ -34,14 +34,30 @@ const Crypto = (props) => {
         }
     }
 
+    const isLoggedStars = ()=> {
+        var logStatus = true; // <-FOR TESTING
+        if(!logStatus){return <p className="pml"><FontAwesomeIcon style={{ color: 'white' }} className="star" icon={faStar} /></p>}
+        else{
+            if(cryptoState.id in getFavs){
+                return <p className="pml"><span className="step1"><FontAwesomeIcon style={{ color: '#ebc934' }} onClick={handleFavToggle} className="star" icon={faStar} /></span></p>
+            }else{
+                return <p className="pml"><span className="step1"><FontAwesomeIcon className="step1" style={{ color: 'lightgrey' }} onClick={handleFavToggle} className="star" icon={faStar} /></span></p>
+            }     
+        }
+    }
+
+
     return (
         <div>
             <li>
                 <div className="lidiv">
-                    {cryptoState.id in getFavs ? //ADD IF LOGGED IN !
+                    
+                    {isLoggedStars()}
+               
+                    {/* {cryptoState.id in getFavs ? //ADD IF LOGGED IN !
                         <p className="pml"><span className="step1"><FontAwesomeIcon style={{ color: '#ebc934' }} onClick={handleFavToggle} className="star" icon={faStar} /></span></p>
                         : <p className="pml"><span className="step1"><FontAwesomeIcon className="step1" style={{ color: 'lightgrey' }} onClick={handleFavToggle} className="star" icon={faStar} /></span></p>}
-
+                 */}
                     <p className="pml">{cryptoState.rank}</p>
                     <img className="iconimg" src={cryptoState.img} alt="" />
                     <p className="pxl coinName"><Link to={{ pathname: "/crypto/" + props.id }} style={{ display: 'block' }}>{props.coin}</Link></p>

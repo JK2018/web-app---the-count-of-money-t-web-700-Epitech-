@@ -1,5 +1,8 @@
 import Grid from "@material-ui/core/Grid";
 import parse from "html-react-parser";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+
 
 // API
 import articleApi from "../api/article"; 
@@ -7,14 +10,21 @@ import articleApi from "../api/article";
 // Img
 import sadFace from "../assets/img/sad.svg";
 
+    
+
 export function renderNews(news, gridSize = "large") {
 
     var xlCol = (gridSize === "large") ? 4 : 3;
     var lgCol = (gridSize === "large") ? 4 : 3;
 
+    
+
+  
+
     if (news.length > 0) {
         return news.map((item, i) => (
             <Grid className="new-container" item xl={xlCol} lg={lgCol} md={4} sm={6} xs={12} key={i}>
+                
                 <a href={item.link} target="_blank" rel="noreferrer" className="new-content">
                     <h3>{item.title}</h3>
                     {parse(item.description)}
