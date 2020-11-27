@@ -74,9 +74,13 @@ export class CryptoService {
       .then(response => response.data);
   }
 
-  async getHistory(user: User, cmid: string, nbDay: string): Promise<any> {
+  async getHistory(user: User, cmid: string, periode: string): Promise<any> {
     return this.userService.findOne(user.id)
-    .then(user => axios.get(`https://api.coingecko.com/api/v3/coins/${cmid}/market_chart?vs_currency=${user.currency}&days=${nbDay}`))
-    .then(response => response.data);
+    .then(user => {
+      return axios.get(`https://api.coingecko.com/api/v3/coins/${cmid}/market_chart?vs_currency=${user.currency}&interval=${periode}`)
+      .then(res => {
+        let history = res.data;
+      })
+    })
   }
 }

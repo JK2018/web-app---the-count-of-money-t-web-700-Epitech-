@@ -60,9 +60,9 @@ export class CryptoController {
 
   @ApiOkResponse({ description: 'Get all cryptos available' })
   @UseGuards(JwtAuthGuard)
-  @Get(":cmid/history/:nbDay")
-  async history(@Req() { user }, @Param('cmid') cmid: string, @Param('nbDay') nbDay) {
-    return this.cryptoService.getHistory(user, cmid,nbDay).catch(err => {
+  @Get(":cmid/history/:periode")
+  async history(@Req() { user }, @Param('cmid') cmid: string, @Param('periode') periode) {
+    return this.cryptoService.getHistory(user, cmid, periode).catch(err => {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
         message: err.message
