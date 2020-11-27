@@ -10,31 +10,46 @@ import '../assets/css/main.css';
 // API
 import cryptoApi from "../api/crypto";
 
+const stepStyle = {
+                color: 'darkgrey',
+                fontWeight: 'bold',
+                borderRadius : '10px',
+                boxShadow: '0px 0px 20px 1px black',
+                background: 'linear-gradient(to right, #2C5364, #203A43, #0F2027)', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+            };
 
 const steps = [
     {
         selector: '',
+        style: stepStyle,
         content: 'Welcome to The Count Of Money! Here is a quick tour to get you on track!',
     },
     {
-        waitSec: 5,
       selector: '.step1',
+      style: stepStyle,
       content: 'See these cool stars? They will let you add your favorite cryptos to your own private portfolio!',
     },
     {
-        selector: '.tourStep1',
+        selector: '.step1',
+        style: stepStyle,
         content: 'You can click on any crypto\'s star in order to add or remove it from your portfolio.',
     },
     {
-        selector: '.tourStep1',
+        selector: '.step1',
+        style: stepStyle,
         content: 'You will notice it\'s color changes weather you chose the crypto to be among your favorites, or not!',
     },
     {
-        selector: '.tourStep2',
-        content: 'Once you\'re done, you can check out all your fav\'s over here! Have fun!',
+        selector: '.step2',
+        style: stepStyle,
+        content: 'Once you\'re ready, you can check out all your fav\'s over here!',
     },
-    // ...
+    {
+        selector: '.step3',
+        style: stepStyle,
+        content: 'One last thing.. Don\'t forget to log out when you\'re done! Have fun!',
+    }
   ];
 
 
@@ -116,7 +131,7 @@ const Landing = () => {
   position: 'absolute',
   top: '190px',
   left: '4.4%'}}></div>
-            <Tour
+            <Tour className="tour"
             steps={steps}
             isOpen={isTourOpen}
             onRequestClose={() => setIsTourOpen(false)}/>
