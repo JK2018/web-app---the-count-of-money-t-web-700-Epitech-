@@ -1,5 +1,5 @@
 .articles {
-    margin: 100px 10vw;
+    margin: 50px 10vw;
 }
 
 .filters {
@@ -24,6 +24,7 @@
     box-shadow: 0px 0px 15px 2px #dddddd;
     color: inherit;
     display: block;
+    background-color: #FFF;
 }
 
 .new-content h3 {

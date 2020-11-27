@@ -8,12 +8,52 @@
     margin-left: 2px;
 }
 
-.star {
-    cursor: pointer;
+.crypto-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
 }
 
-.hder {
+.crypto-table a {
+    color: inherit;
     font-weight: bold;
+}
+
+.crypto-table thead tr, .crypto-table tbody tr {
+    text-align: left;
+}
+
+.crypto-table thead tr th {
+    font-weight: bold;
+    font-size: 14px;
+    color: rgb(180, 180, 180);
+}
+
+.crypto-table tbody td {
+    color: rgb(54, 54, 54);
+    background-color: #fff;
+    padding: 10px 0;
+}
+
+.crypto-table tbody td:first-child {
+    padding-left: 30px;
+    border-radius: 20px 0 0 20px;
+}
+
+.crypto-table tbody td:last-child {
+    border-radius: 0 20px 20px 0;
+}
+
+.crypto-table .sub-icon {
+    margin-left: 15px;
+}
+
+.crypto-table .uppercase {
+    text-transform: uppercase;
+}
+
+.star {
+    cursor: pointer;
 }
 
 .daycash {

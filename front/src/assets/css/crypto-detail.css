@@ -3,7 +3,7 @@
 /* Crypto Detail Page */
 
 .crypto-detail {
-    padding: 100px 10vw;
+    padding: 70px 10vw;
 }
 
 .crypto-detail .logo {
@@ -29,24 +29,30 @@
 }
 
 .crypto-detail .trend {
+    display: flex;
+    justify-content: space-around;
     text-align: center;
     border-radius: 10px;
-    margin: 10px;
+    margin: 20px 10px;
     height: 100%;
+    background-color: #FFF;
+    padding: 5px 20px;
 }
 
 .crypto-detail .trend label {
     font-weight: bold;
     text-transform: capitalize;
-    min-height: 85px;
 }
 
 .crypto-detail .trend img {
-    max-height: 50px;
+    max-height: 20px;
+    max-width: 20px;
+    margin-right: 20px;
+    vertical-align: middle;
 }
 
 .crypto-detail .trend label, .crypto-detail .trend span {
-    display: block;
+    font-size: 20px;
     padding: 15px 0;
 }
 

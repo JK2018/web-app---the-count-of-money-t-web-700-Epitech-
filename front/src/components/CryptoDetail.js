@@ -8,11 +8,9 @@ import { renderNews, getRSSFeed } from '../utils/articles';
 import "../assets/css/crypto-detail.css";
 
 // API
-import cryptoApi from "../api/crypto"; 
-import articleApi from "../api/article"; 
+import cryptoApi from "../api/crypto";
 
 // Img
-import sadFace from "../assets/img/sad.svg"; 
 import upArrow from "../assets/img/up-arrow.svg"; 
 import downArrow from "../assets/img/down-arrow.svg";
 
@@ -33,8 +31,7 @@ const CryptoDetail = () => {
         var icon = (percent > 0) ? upArrow : downArrow;
         return <div className="trend">
             <label>{period} evolution</label>
-            <img src={icon} alt={icon}/>
-            <span>{parseFloat(data.market_data[`${'price_change_percentage_'+period}`]).toFixed(2)}%</span>
+            <span><img src={icon} alt={icon}/>{parseFloat(data.market_data[`${'price_change_percentage_'+period}`]).toFixed(2)}%</span>
         </div>
     }
  
@@ -153,7 +150,7 @@ const CryptoDetail = () => {
     }, [coinId]);
 
     if (Object.keys(data).length === 0) {
-        return <div>Chargement...</div>;
+        return <div></div>;
     } else {
         return (
             <div className="crypto-detail">
@@ -174,16 +171,14 @@ const CryptoDetail = () => {
                         </ul>
                     </Grid>
                     <Grid lg={4} md={12} sm={12} xs={12} item>
-                        <Grid container>
-                            <Grid className="evol-chart" lg={4} md={4} sm={12} xs={12} item>
-                                {trendPercentage('24h')}
-                            </Grid>
-                            <Grid className="evol-chart" lg={4} md={4} sm={12} xs={12} item>
-                                {trendPercentage('7d')}
-                            </Grid>
-                            <Grid className="evol-chart" lg={4} md={4} sm={12} xs={12} item>
-                                {trendPercentage('30d')}
-                            </Grid>
+                        <Grid className="evol-chart">
+                            {trendPercentage('24h')}
+                        </Grid>
+                        <Grid className="evol-chart">
+                            {trendPercentage('7d')}
+                        </Grid>
+                        <Grid className="evol-chart">
+                            {trendPercentage('30d')}
                         </Grid>
                     </Grid>
                 </Grid>

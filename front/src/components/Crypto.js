@@ -35,25 +35,20 @@ const Crypto = (props) => {
     }
 
     return (
-        <div>
-            <li>
-                <div className="lidiv">
-                    {cryptoState.id in getFavs ? //ADD IF LOGGED IN !
-                        <p className="pml"><FontAwesomeIcon style={{ color: '#ebc934' }} onClick={handleFavToggle} className="star" icon={faStar} /></p>
-                        : <p className="pml"><FontAwesomeIcon style={{ color: 'lightgrey' }} onClick={handleFavToggle} className="star" icon={faStar} /></p>}
-
-                    <p className="pml">{cryptoState.rank}</p>
-                    <img className="iconimg" src={cryptoState.img} alt="" />
-                    <p className="pxl coinName"><Link to={{ pathname: "/crypto/" + props.id }} style={{ display: 'block' }}>{props.coin}</Link></p>
-                    <p className="pml">{cryptoState.tag}</p>
-                    <p className="pml4">{cryptoState.price}</p>
-                    <p className="pml" style={{ color: (cryptoState.oneday).charAt(0) === '-' ? 'red' : 'green' }}>{cryptoState.oneday}%</p>
-                    <p className="pxl daycash" style={{ color: (cryptoState.oneday).charAt(0) === '-' ? 'red' : 'green' }}>{cryptoState.onedaycurr} </p>
-                    <p className="pxl-4">{cryptoState.mcap}M</p>
-                    <MiniChart className="pxl" id={cryptoState.id} rank={cryptoState.rank}></MiniChart>
-                </div>
-            </li>
-        </div>
+        <tr>
+            {cryptoState.id in getFavs ? //ADD IF LOGGED IN !
+                <td><FontAwesomeIcon style={{ color: '#ebc934' }} onClick={handleFavToggle} className="star" icon={faStar} /></td>
+                : <td><FontAwesomeIcon style={{ color: 'lightgrey' }} onClick={handleFavToggle} className="star" icon={faStar} /></td>}
+            <td>{cryptoState.rank}</td>
+            <td><img className="iconimg" src={cryptoState.img} alt="" /></td>
+            <td className="coinName"><Link to={{ pathname: "/crypto/" + props.id }} style={{ display: 'block' }}>{props.coin}</Link></td>
+            <td className="uppercase">{cryptoState.tag}</td>
+            <td>{cryptoState.price}</td>
+            <td style={{ color: (cryptoState.oneday).charAt(0) === '-' ? 'red' : 'green' }}>{cryptoState.oneday}%</td>
+            <td className="daycash" style={{ color: (cryptoState.oneday).charAt(0) === '-' ? 'red' : 'green' }}>{cryptoState.onedaycurr} </td>
+            <td>{cryptoState.mcap} M</td>
+            <td><MiniChart id={cryptoState.id} rank={cryptoState.rank}></MiniChart></td>
+        </tr>
     )
 }
 export default Crypto;

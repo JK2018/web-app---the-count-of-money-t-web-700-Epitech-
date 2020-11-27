@@ -1,13 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import './index.css';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Router from './Router';
-//import reportWebVitals from './reportWebVitals';
+
+// Or Create your Own theme:
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#2962ff'
+    },
+    secondary: {
+      main: '#2962ff'
+    }
+  }
+});
 
 ReactDOM.render(
-  <Router/>,
+  <MuiThemeProvider theme={theme}>
+    <Router/>
+  </MuiThemeProvider>,
   document.getElementById('root')
 );
 
-
-//reportWebVitals();

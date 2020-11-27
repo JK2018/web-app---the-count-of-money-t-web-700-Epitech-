@@ -1,4 +1,12 @@
 import React, { useState } from 'react';
+import Grid from "@material-ui/core/Grid";
+import Button from '@material-ui/core/Button';
+import { TextField } from '@material-ui/core';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import "../assets/css/profile.css";
 
 // API
@@ -7,19 +15,19 @@ import userApi from "../api/user";
 export const Profile = () => {
 
     const [formData, setFormData] = useState({
-        username: '',
-        email: '',
+        username: 'John',
+        email: 'john.doe@gmail.com',
         password: '',
-        password2: ''
+        password_confirmation: ''
     });
 
-    const { username, email, password, password2 } = formData;
+    const { username, email, password, password_confirmation } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const onSubmit = async e => {
         e.preventDefault();
-        if (password !== password2) {
+        if (password !== password_confirmation) {
             console.log('PW DO NOT MATCH');
         } else {
             const newUser = {
@@ -39,49 +47,85 @@ export const Profile = () => {
     }
 
     return (
-        <section className="landing">
-            <br></br><br></br><br></br><br></br><br></br>
-            <div className="mainCompDiv">
-
-
-                <h1 className="large text-primary">Profile</h1>
-                <p className="lead"><i className="fas fa-user"></i> Edit Your Account</p>
-                <form className="form" onSubmit={e => onSubmit(e)}>
-                    <div className="form-group">
-                        <input type="text" value={username} onChange={e => onChange(e)} placeholder="Username" name="username" required />
-                    </div>
-                    <div className="form-group">
-                        <input type="email" value={email} onChange={e => onChange(e)} placeholder="Email Address" name="email" required />
-                        {/* <small className="form-text"
-                    >This site uses Gravatar so if you want a profile image, use a
-                    Gravatar email</small
-                > */}
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="password"
-                            value={password} onChange={e => onChange(e)}
-                            placeholder="Password"
-                            name="password"
-                            minLength="6"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="password"
-                            value={password2} onChange={e => onChange(e)}
-                            placeholder="Confirm Password"
-                            name="password2"
-                            minLength="6"
-                            required
-                        />
-                    </div>
-                    <input type="submit" className="btn btn-primary" value="Update" />
+        <Grid container>
+            <Grid item className="login-form" lg={4} md={6} sm={6} xs={10}>
+                <h1 className="lead">Edit your profile</h1>
+                <form onSubmit={e => onSubmit(e)}>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <TextField 
+                                className="input"
+                                type="text" 
+                                name="username"
+                                label="Username"
+                                variant="outlined" 
+                                value ={username} 
+                                onChange={e => onChange(e)} 
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField 
+                                className="input"
+                                type="email"
+                                name="email"
+                                label="Email Address"
+                                variant="outlined" 
+                                value={email}
+                                onChange={e => onChange(e)}
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="input"
+                                type="password"
+                                name="password"
+                                label="Password"
+                                variant="outlined" 
+                                value={password}
+                                minLength="6"
+                                onChange={e => onChange(e)}
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="input"
+                                type="password"
+                                name="password_confirmation"
+                                label="Confirm Password"
+                                variant="outlined" 
+                                value={password_confirmation}
+                                minLength="6"
+                                onChange={e => onChange(e)}
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormLabel component="legend">Default currency</FormLabel>
+                            <RadioGroup aria-label="default currency" name="currency" className="currency" required>
+                                <FormControlLabel value="usd" control={<Radio/>} label="USD"/>
+                                <FormControlLabel value="eur" control={<Radio/>} label="EUR"/>
+                                <FormControlLabel value="gbp" control={<Radio/>} label="GPB"/>
+                                <FormControlLabel value="cad" control={<Radio/>} label="CAD"/>
+                                <FormControlLabel value="chf" control={<Radio/>} label="CHF"/>
+                                <FormControlLabel value="jpy" control={<Radio/>} label="JPY"/>
+                            </RadioGroup>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button className="submit-btn" type="submit" color="primary" variant="contained" size="large" fullWidth>
+                                Update
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </form>
-
-            </div>
-        </section>
+            </Grid>
+        </Grid>
     )
 }
 export default Profile;

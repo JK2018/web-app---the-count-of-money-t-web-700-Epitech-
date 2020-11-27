@@ -76,31 +76,34 @@ const Landing = () => {
     }
 
     return (
-
         <section className="landing">
-            <BaseContext.Provider value={contextValue}>
-                <div className="mainCompDiv">
-
-                    <div className="lidiv hder">
-                        <p className="pml"><FontAwesomeIcon style={{ color: 'white' }} icon={faStar} /></p>
-                        <p className="pml">Rank</p>
-                        <p className="iconimg"> </p>
-                        <p className="pxl coinName">Coin <FontAwesomeIcon icon={faCoins} /></p>
-                        <p className="pml">Tag</p>
-                        <p className="pml4">Price
-                    <select className="currencySelect" value={currencyValue} onChange={e => onSelectChange(e)}>
-                                {currencies.map(({ label, value }) => (
-                                    <option key={value} value={value}>{label}</option>
-                                ))}
-                            </select></p>
-                        <p className="pml">24h %</p>
-                        <p className="pxl daycash">24h <FontAwesomeIcon icon={faMoneyBill} /></p>
-                        <p className="pxl-4">Market Cap</p>
-                        <p className="pxl">30d Chart</p>
-                    </div>
-                    <CryptoList data={data} defaultStarCol={'lightgrey'} ></CryptoList>
-                </div>
-            </BaseContext.Provider>
+            <div className="main-comp">
+                <BaseContext.Provider value={contextValue}>
+                    <table className="crypto-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Rank</th>
+                                <th></th>
+                                <th>Coin<FontAwesomeIcon icon={faCoins} className="sub-icon"/></th>
+                                <th>Tag</th>
+                                <th>Price
+                                    <select className="currencySelect sub-icon" value={currencyValue} onChange={e => onSelectChange(e)}>
+                                        {currencies.map(({ label, value }) => (
+                                            <option key={value} value={value}>{label}</option>
+                                        ))}
+                                    </select>
+                                </th>
+                                <th>24h %</th>
+                                <th>24h<FontAwesomeIcon icon={faMoneyBill} className="sub-icon"/></th>
+                                <th>Market Cap</th>
+                                <th>30d Chart Evolution</th>
+                            </tr>
+                        </thead>
+                        <CryptoList data={data} defaultStarCol={'lightgrey'} ></CryptoList>
+                    </table>
+                </BaseContext.Provider>
+            </div>
         </section>
     )
 }

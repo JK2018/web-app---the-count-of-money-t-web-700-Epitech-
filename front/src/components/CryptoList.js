@@ -12,6 +12,11 @@ const CryptoList = (props) => {
     const [cryptoListState, setCryptoListState] = useState(props);
     const contextValue = useContext(BaseContext);
 
+    function formatFloat(float, digit = 2) {
+        console.log(digit)
+        return parseFloat(float).toLocaleString('en', {minimumFractionDigits: digit, maximumFractionDigits: digit})
+    }
+
     useEffect(() => {
         setCryptoListState(props);
         if(typeof contextValue.allcoinsChartDataFinal2 !== "undefined"){
@@ -20,26 +25,23 @@ const CryptoList = (props) => {
     }, [props]);
 
     return (
-        <div>
-            <ul>
-                {cryptoListState.data.map(item => (
-                    <Fragment key={item.market_cap_rank}>
-                        <Crypto img={item.image}
-                            id={item.id}
-                            coin={item.name} 
-                            tag={item.symbol} 
-                            defaultStarCol={cryptoListState.defaultStarCol}
-                            price={item.current_price} 
-                            rank={parseInt(item.market_cap_rank)} 
-                            oneday={String(item.price_change_percentage_24h).slice(0, -3)} 
-                            onedaycurr={String(item.price_change_24h).slice(0, -2)} 
-                            dayvol={(parseInt(item.total_volume)/1000).toFixed(2)} 
-                            mcap={(parseInt(item.market_cap)/1000000).toFixed(2)}>
-                        </Crypto>
-                    </Fragment>
-                ))}
-            </ul>
-        </div>
+        <tbody>
+            {cryptoListState.data.map(item => (
+                <Crypto key={item.market_cap_rank}
+                    img={item.image}
+                    id={item.id}
+                    coin={item.name} 
+                    tag={item.symbol} 
+                    defaultStarCol={cryptoListState.defaultStarCol}
+                    price={formatFloat(item.current_price).toLocaleString('en')} 
+                    rank={item.market_cap_rank} 
+                    oneday={formatFloat(item.price_change_percentage_24h)} 
+                    onedaycurr={formatFloat(item.price_change_24h)} 
+                    dayvol={formatFloat(item.total_volume/1000)} 
+                    mcap={formatFloat(item.market_cap/1000000, 0)}>
+                </Crypto>
+            ))}
+        </tbody>
     )
 }
 export default CryptoList;
