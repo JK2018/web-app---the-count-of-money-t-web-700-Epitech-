@@ -5,9 +5,8 @@ import { TextField } from '@material-ui/core';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import "../assets/css/profile.css";
+import "../assets/css/login.css";
 
 // API
 import userApi from "../api/user";
@@ -22,6 +21,12 @@ export const Profile = () => {
     });
 
     const { username, email, password, password_confirmation } = formData;
+
+    const [defaultCurrency, setCurrency] = useState("usd");
+
+    const onChangeRadio = (event) => {
+        setCurrency(event.target.value);
+    };
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -106,9 +111,9 @@ export const Profile = () => {
                                 fullWidth
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} className="currency">
                             <FormLabel component="legend">Default currency</FormLabel>
-                            <RadioGroup aria-label="default currency" name="currency" className="currency" required>
+                            <RadioGroup aria-label="default currency" name="currency" className="currency-radio" value={defaultCurrency} onChange={onChangeRadio}>
                                 <FormControlLabel value="usd" control={<Radio/>} label="USD"/>
                                 <FormControlLabel value="eur" control={<Radio/>} label="EUR"/>
                                 <FormControlLabel value="gbp" control={<Radio/>} label="GPB"/>
