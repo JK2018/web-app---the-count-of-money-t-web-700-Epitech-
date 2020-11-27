@@ -35,6 +35,10 @@ export class User {
     lastName: string;
 
     @ApiProperty()
+    @Column()
+    currency: string;
+
+    @ApiProperty()
     @Column({type: 'enum', enum: UserRole, default: UserRole.USER})
     role: UserRole;
 

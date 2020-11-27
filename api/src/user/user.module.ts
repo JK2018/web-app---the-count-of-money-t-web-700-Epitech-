@@ -21,6 +21,7 @@ import { CryptoModule } from '../crypto/crypto.module';
       CryptoModule
   ],
   providers: [UserService, LocalStrategy, JwtStrategy],
-  controllers: [UserController]
+  controllers: [UserController],
+  exports: [UserService]
 })
 export class UserModule {}

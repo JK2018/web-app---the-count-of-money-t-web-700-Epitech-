@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from './../../auth/guards/jwt-auth.guard';
 import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards, Param, Delete, Patch } from '@nestjs/common';
 import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CryptoService } from '../service/crypto.service';
@@ -46,10 +47,10 @@ export class CryptoController {
   }
 
   @ApiOkResponse({ description: 'Get all cryptos' })
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll() {
-    return this.cryptoService.findAll().catch(err => {
+  async findAll(@Req() { user }) {
+    return this.cryptoService.findAll(user).catch(err => {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
         message: err.message
@@ -58,10 +59,10 @@ export class CryptoController {
   }
 
   @ApiOkResponse({ description: 'Get all cryptos available' })
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(":cmid/history/:nbDay")
-  async history(@Param('cmid') cmid: string, @Param('nbDay') nbDay) {
-    return this.cryptoService.getHistory(cmid,nbDay).catch(err => {
+  async history(@Req() { user }, @Param('cmid') cmid: string, @Param('nbDay') nbDay) {
+    return this.cryptoService.getHistory(user, cmid,nbDay).catch(err => {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
         message: err.message
@@ -71,10 +72,10 @@ export class CryptoController {
 
 
   @ApiOkResponse({ description: 'Get crypto by cmid' })
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':cmid')
-  async findOne(@Param('cmid') cmid: string) {
-    return this.cryptoService.findByCmId(cmid).catch(err => {
+  async findOne(@Req() { user }, @Param('cmid') cmid: string) {
+    return this.cryptoService.findByCmId(user, cmid).catch(err => {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
         message: err.message

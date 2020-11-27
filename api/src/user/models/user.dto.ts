@@ -15,6 +15,9 @@ export class CreateUserDto {
 
     @ApiProperty()
     username: string;
+
+    @ApiProperty()
+    currency: string;
 }
 
 export class UpdateUserDto {
@@ -26,4 +29,7 @@ export class UpdateUserDto {
 
     @ApiProperty()
     username: string;
+
+    @ApiProperty()
+    currency: string;
 }

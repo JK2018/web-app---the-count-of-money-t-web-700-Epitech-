@@ -35,6 +35,7 @@ export class UserService extends TypeOrmCrudService<User> {
         newUser.firstName = user.firstName;
         newUser.lastName = user.lastName;
         newUser.username = user.username;
+        newUser.currency = user.currency;
 
         return this.userRepo.save(newUser);
     }
