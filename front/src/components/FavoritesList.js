@@ -3,7 +3,7 @@ import BaseContext from '../contexts/base';
 import CryptoList from './CryptoList';
 import Cookies from 'universal-cookie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoneyBill, faStar, faCoins } from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBill, faCoins } from "@fortawesome/free-solid-svg-icons";
 
 // API
 import cryptoApi from "../api/crypto";
@@ -22,13 +22,14 @@ const FavoritesList = () => {
         { label: "JPY", value: "jpy"}
     ]);
  
-    var coinUrlString = "";
     const cookies = new Cookies();
     const getCooks = cookies.getAll();
-    const [c, setC] = useState(cookies.get('currency') ? cookies.get('currency') : "usd");
-    const [currencyValue, setCurrencyValue] = useState(c);
+    const [defaultCurrency, setDefaultCurrency] = useState(cookies.get('currency') ? cookies.get('currency') : "usd");
+    const [currencyValue, setCurrencyValue] = useState(defaultCurrency);
     const [contextValue, setContextValue] = useState({});
-    const theChartDataObj = {};
+    const [data, setData] = useState([]);
+    const theChartDataObj = {};    
+    var coinUrlString = "";
 
     // DESC : adds the favorite cryptos to the string url
     const buildUrlString = () => {
@@ -41,14 +42,14 @@ const FavoritesList = () => {
         coinUrlString = coinUrlString.slice(0, -6);
     }
     buildUrlString();
-
-    const [data, setData] = useState([]);
     
+
     // DESC : fetches data from api, and updates data every 30s
     useEffect(() => {
+
         const fetchData = async () => {
             if(coinUrlString){
-                cryptoApi.getDetailed(c, coinUrlString).then((result) => {
+                cryptoApi.getDetailed(defaultCurrency, coinUrlString).then((result) => {
 
                     setData(result.data);
 
@@ -78,7 +79,7 @@ const FavoritesList = () => {
         return()=>{
         clearInterval(interval)}
 
-    }, [c]);
+    }, [defaultCurrency]);
 
     // ACTION : when user selects currency via select menu
     // DESC : action when user selects another currency

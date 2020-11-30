@@ -1,7 +1,5 @@
-import React , {useState, useEffect, useContext} from 'react'
-import { Fragment } from 'react';
+import React , {useState, useEffect} from 'react'
 import Crypto from './Crypto';
-import BaseContext from '../contexts/base';
 import "../assets/css/crypto-list.css"
 
 // PARENT : Landing, Favorites
@@ -10,18 +8,13 @@ import "../assets/css/crypto-list.css"
 const CryptoList = (props) => {
 
     const [cryptoListState, setCryptoListState] = useState(props);
-    const contextValue = useContext(BaseContext);
 
     function formatFloat(float, digit = 2) {
-        console.log(digit)
         return parseFloat(float).toLocaleString('en', {minimumFractionDigits: digit, maximumFractionDigits: digit})
     }
 
     useEffect(() => {
         setCryptoListState(props);
-        if(typeof contextValue.allcoinsChartDataFinal2 !== "undefined"){
-            console.log("cryptolist test: OK");
-            }
     }, [props]);
 
     return (

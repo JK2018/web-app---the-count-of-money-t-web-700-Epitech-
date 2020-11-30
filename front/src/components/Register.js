@@ -23,9 +23,7 @@ export const Register = () => {
 
     const onSubmit = async e => {
         e.preventDefault();
-        if (password !== password_confirmation) {
-            console.log('PW DO NOT MATCH');
-        } else {
+        if (password === password_confirmation) {
             const newUser = {
                 username,
                 email,
@@ -34,7 +32,7 @@ export const Register = () => {
             try {
                 const body = JSON.stringify(newUser);
                 userApi.create(body).then((response) => {
-                    console.log(response.data);
+                    //
                 })
             } catch (error) {
                 console.error(error.response.data);

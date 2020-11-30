@@ -34,11 +34,23 @@ const Crypto = (props) => {
         }
     }
 
+    const isLoggedStars = ()=> {
+        var logStatus = true; // <-FOR TESTING
+        if (!logStatus) {
+            return <td><FontAwesomeIcon style={{ color: 'white' }} className="star" icon={faStar} /></td>
+        } else {
+            if(cryptoState.id in getFavs){
+                return <td><span className="step1"><FontAwesomeIcon style={{ color: '#ebc934' }} onClick={handleFavToggle} className="star" icon={faStar} /></span></td>
+            }else{
+                return <td><span className="step1"><FontAwesomeIcon style={{ color: 'lightgrey' }} onClick={handleFavToggle} className="star" icon={faStar} /></span></td>
+            }     
+        }
+    }
+
+
     return (
         <tr>
-            {cryptoState.id in getFavs ? //ADD IF LOGGED IN !
-                <td><FontAwesomeIcon style={{ color: '#ebc934' }} onClick={handleFavToggle} className="star" icon={faStar} /></td>
-                : <td><FontAwesomeIcon style={{ color: 'lightgrey' }} onClick={handleFavToggle} className="star" icon={faStar} /></td>}
+            {isLoggedStars()}
             <td>{cryptoState.rank}</td>
             <td><img className="iconimg" src={cryptoState.img} alt="" /></td>
             <td className="coinName"><Link to={{ pathname: "/crypto/" + props.id }} style={{ display: 'block' }}>{props.coin}</Link></td>

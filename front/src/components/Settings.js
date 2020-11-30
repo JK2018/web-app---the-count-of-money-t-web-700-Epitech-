@@ -52,7 +52,6 @@ const Settings = () => {
             logoUrl: logoUrl
         })
         setCryptos(cryptosRef);
-        console.log(cryptosRef);
     }
 
     function removeCrypto(symbol) {
@@ -121,7 +120,7 @@ const Settings = () => {
                             <ListItemAvatar className="crypto-logo">
                                 <img src={item.logoUrl} alt={item.symbol} />
                             </ListItemAvatar>
-                            <ListItemText class="crypto-info" primary={item.name} secondary={item.symbol}/>
+                            <ListItemText className="crypto-info" primary={item.name} secondary={item.symbol}/>
                             <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="delete" onClick={() => removeCrypto(item.symbol)}>
                                     <DeleteIcon/>

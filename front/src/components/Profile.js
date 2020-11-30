@@ -13,6 +13,7 @@ import userApi from "../api/user";
 
 export const Profile = () => {
 
+    // DESC :  selectable currencies
     const [formData, setFormData] = useState({
         username: 'John',
         email: 'john.doe@gmail.com',
@@ -32,9 +33,7 @@ export const Profile = () => {
 
     const onSubmit = async e => {
         e.preventDefault();
-        if (password !== password_confirmation) {
-            console.log('PW DO NOT MATCH');
-        } else {
+        if (password === password_confirmation) {
             const newUser = {
                 username,
                 email,
@@ -42,7 +41,7 @@ export const Profile = () => {
             }
             try {
                 const body = JSON.stringify(newUser);
-                userApi.update(body).then((response) => {
+                userApi.create(body).then((response) => {
                     console.log(response.data);
                 })
             } catch (error) {

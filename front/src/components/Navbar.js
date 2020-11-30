@@ -7,8 +7,8 @@ import logo from "../assets/img/coins.svg";
 const Navbar = () => {
     return (
         <nav className="navbar">
-            <div class="logo">
-                <img src={logo}/>
+            <div className="logo">
+                <img src={logo} alt="logo"/>
                 <h1>
                     <Link to="/">Count Of Money</Link>
                 </h1>
@@ -23,10 +23,10 @@ const Navbar = () => {
                 :
                     <Fragment>
                         <li><Link to="/articles">Articles</Link></li>
-                        <li><Link to="/favorites">Favorites</Link></li>
+                        <li className="step2"><Link to="/favorites">Favorites</Link></li>
                         <li><Link to="/profile">Profile</Link></li>
                         {"admin" !== false ? <li><Link to="/settings">Settings</Link></li> : ""}
-                        <li><Link to="/">Logout</Link></li>
+                        <li className="step3"><Link to="/">Logout</Link></li>
                     </Fragment>
                 }
             </ul>

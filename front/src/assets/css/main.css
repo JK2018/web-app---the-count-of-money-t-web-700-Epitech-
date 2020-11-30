@@ -144,4 +144,11 @@ img {
   .navbar .welcome {
     display: none;
   }
+
+  /* Tour Guide */
+
+  .reactour__dot { cursor: default; outline: none; }
+  .reactour__dot--is-active { height: 12px; width: 12px; border-radius: 50%; }
+  .tour { outline: none; }
+
 }
