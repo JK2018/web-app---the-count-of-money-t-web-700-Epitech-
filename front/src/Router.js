@@ -1,44 +1,33 @@
-import React, { useState } from "react";
-import { Switch, Route } from "react-router-dom";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
-import Dashboard from "./Views/Dashboard/Dashboard";
-import { useAuth } from "./Contexts/authContext";
-import Login from "./Views/Login/Login";
-import Profile from "./Views/Profile/Profile";
-import Cryptos from "./Views/Cryptos/Cryptos";
-import Articles from "./Views/Articles/Articles";
+import { Fragment } from 'react';
+import Navbar from './components/Navbar';
+import Landing from './components/Landing';
+import Login from './components/Login';
+import Register from './components/Register';
+import FavoritesList from './components/FavoritesList';
+import CryptoDetail from './components/CryptoDetail';
+import Settings from './components/Settings';
+import Articles from './components/Articles';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import './assets/css/main.css';
 
-
-export const Router = () => {
-    const theme = createMuiTheme();
-    const { user } = useAuth();
-
+const Router = () => {
     return (
-        <MuiThemeProvider theme={theme}>
-            <Switch>
-                {user ? (
-                    <Dashboard>
-                        <Switch>
-                            <Route exact path="/cryptos">
-                                <Cryptos />
-                            </Route>
-                            <Route exact path="/articles">
-                                <Articles />
-                            </Route>
-                            <Route exact path="/profile">
-                                <Profile />
-                            </Route>
-                            <Route exact path="/">
-                                <Profile />
-                            </Route>
-                        </Switch>
-                    </Dashboard>
-                ) : (
-                        <Route path="/">
-                            <Login />
-                        </Route>
-                    )}
-            </Switch>
-        </MuiThemeProvider>
+        <BrowserRouter>
+            <Fragment>
+                <Navbar></Navbar>
+                <Route exact path='/' component={Landing}></Route>
+                <section>
+                    <Switch>
+                        <Route exact path='/articles' component={Articles}></Route>
+                        <Route exact path='/register' component={Register}></Route>
+                        <Route exact path='/favorites' component={FavoritesList}></Route>
+                        <Route exact path='/login' component={Login}></Route>
+                        <Route exact path='/crypto/:id' component={CryptoDetail}></Route>
+                        <Route exact path='/settings' component={Settings}></Route>
+                    </Switch>
+                </section>
+            </Fragment>
+        </BrowserRouter>
     );
-};
+}
+export default Router;
