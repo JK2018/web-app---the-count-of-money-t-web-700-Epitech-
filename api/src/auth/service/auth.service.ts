@@ -1,6 +1,7 @@
+import { UserService } from './../../user/service/user.service';
 import {BadRequestException, Injectable} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../../user/service/user.service';
+import { Inject, forwardRef } from '@nestjs/common';
 import { User } from '../../user/models/user.entity';
 import * as bcrypt from 'bcrypt';
 import {CreateUserFromProviderDto} from "../../user/models/user.dto";
@@ -9,7 +10,7 @@ import {CreateUserFromProviderDto} from "../../user/models/user.dto";
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly userService: UserService
+        @Inject(forwardRef(() => UserService)) private userService: UserService,
     ) {}
 
     async login(user: User) {

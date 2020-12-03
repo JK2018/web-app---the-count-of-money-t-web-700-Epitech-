@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, BeforeInsert } from 'typeorm';
-import { Crypto } from '../../crypto/crypto.entity';
+import { Crypto } from '../../crypto/entities/crypto.entity';
 import * as bcrypt from 'bcrypt';
 import {ApiProperty} from "@nestjs/swagger";
 
@@ -41,6 +41,10 @@ export class User {
     @ApiProperty()
     @Column()
     last_name: string;
+
+    @ApiProperty()
+    @Column()
+    currency: string;
 
     @ApiProperty()
     @Column({type: 'enum', enum: UserRole, default: UserRole.USER})

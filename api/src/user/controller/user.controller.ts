@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards, Delete, Param } from '@nestjs/common';
 import { Crud } from '@nestjsx/crud';
 import { User } from '../models/user.entity';
 import { UserService } from '../service/user.service';
@@ -71,7 +71,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Get('profile')
     async getProfile(@Req() { user }) {
-        return this.service.findOne(user.id).catch(err => {
+        return this.service.getUser(user.id).catch(err => {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
                 message: err.message
@@ -85,6 +85,32 @@ export class UserController {
     @Put('profile')
     async editProfile(@Req() { user }, @Body() body: UpdateUserDto) {
         return this.service.updateUser(user.id, body).catch(err => {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
+    }
+
+    @ApiNoContentResponse({ description: 'Add crypto user' })
+    @HttpCode(204)
+    @UseGuards(JwtAuthGuard)
+    @Put('cryptos/:idCrypto')
+    async addCrypto(@Req() { user }, @Param('idCrypto') idCrypto: number) {
+        return this.service.addCrypto(user, idCrypto).catch(err => {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
+    }
+
+    @ApiNoContentResponse({ description: 'Remove crypto user' })
+    @HttpCode(204)
+    @UseGuards(JwtAuthGuard)
+    @Delete('cryptos/:idCrypto')
+    async removeCrypto(@Req() { user }, @Param('idCrypto') idCrypto: number) {
+        return this.service.removeCrypto(user, idCrypto).catch(err => {
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
                 message: err.message

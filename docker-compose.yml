@@ -3,39 +3,45 @@ services:
   postgres:
     container_name: postgres
     image: postgres:12
-#    networks:
-#      - webnet
-#    env_file:
-#      - ./api/.env
     environment:
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_USER: "postgres"
-      POSTGRES_DB: "count_of_money"
-      PG_DATA: /var/lib/postgresql/data
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=count_of_money
+      - PG_DATA=/var/lib/postgresql/data
     ports:
       - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
   api:
-    container_name: api
-    env_file:
-      - ./api/.env
-    build:
-      context: ./api
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    build: "./api"
+    depends_on:
+      - db
+    environment:
+      MIX_ENV: dev
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/count_of_money
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DATABASE: count_of_money
+      JWT_SECRET: countofmoney
+      MODE: DEV
+      RUN_MIGRATIONS: "true"
     ports:
-      - 8000:8000
-#    networks:
-#      - webnet
+      - '3000:3000'
+    expose:
+      - 3000
+    volumes:
+      - ./api:/app
+    ports:
+      - 3000:3000
     depends_on:
       - postgres
   front:
     build: "./front"
     ports:
-      - "3000:3000"
+      - "3001:3000"
     expose:
       - 3000
     networks:
