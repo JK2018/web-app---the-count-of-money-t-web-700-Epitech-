@@ -77,9 +77,10 @@ export class CryptoService {
   async getHistory(user: User, cmid: string, periode: string): Promise<any> {
     return this.userService.findOne(user.id)
     .then(user => {
-      return axios.get(`https://api.coingecko.com/api/v3/coins/${cmid}/market_chart?vs_currency=${user.currency}&interval=${periode}`)
+      return axios.get(`https://api.coingecko.com/api/v3/coins/${cmid}/market_chart?vs_currency=${user.currency}&interval=${periode}&days=30`)
       .then(res => {
         let history = res.data;
+        return history;
       })
     })
   }

@@ -3,8 +3,8 @@ services:
   postgres:
     container_name: postgres
     image: postgres:12
-    env_file:
-      - ./api/.env
+    # env_file:
+    #   - ./api/.env
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
