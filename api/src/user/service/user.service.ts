@@ -1,26 +1,23 @@
 import { Crypto } from './../../crypto/entities/crypto.entity';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { CryptoService } from './../../crypto/service/crypto.service';
+import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { User } from '../models/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto, UpdateUserDto } from '../models/user.dto';
-import * as bcrypt from 'bcrypt';
-import { CryptoService } from '../../crypto/service/crypto.service';
+import { CreateUserDto, CreateUserFromProviderDto, UpdateUserDto } from '../models/user.dto';
 
 @Injectable()
 export class UserService extends TypeOrmCrudService<User> {
     constructor(
         @InjectRepository(User) private readonly userRepo: Repository<User>,
-        private jwtService: JwtService,
         private cryptoService: CryptoService
     ) {
         super(userRepo);
     }
 
     async getUserWhere(options?: {[key: string]: any}): Promise<User> {
-        return this.userRepo.findOneOrFail(options);
+        return this.userRepo.findOne(options);
     }
 
     async getUser(id: number): Promise<User> {
@@ -40,6 +37,19 @@ export class UserService extends TypeOrmCrudService<User> {
         return this.userRepo.save(newUser);
     }
 
+    async createUserFromProvider(providerIdField: string, data: CreateUserFromProviderDto) {
+        const user = new User();
+
+        user[providerIdField] = data.providerId;
+        user.email = data.email;
+        user.firstName = data.firstName;
+        user.lastName = data.lastName;
+        user.username = data.username;
+        user.currency = "eur";
+
+        return this.userRepo.save(user);
+    }
+
     async updateUser(id: string | number, user: UpdateUserDto): Promise<UpdateResult> {
         const updatedUser = new User();
 
@@ -48,26 +58,6 @@ export class UserService extends TypeOrmCrudService<User> {
         updatedUser.username = user.username;
 
         return this.userRepo.update(id, updatedUser);
-    }
-
-    async validateUser(email, password): Promise<any> {
-        try {
-            const user = await this.getUserWhere({where: {email}});
-            const isRightPassword = await bcrypt.compare(password, user.password);
-
-            if (isRightPassword)
-                return user;
-        } catch (e) {
-            throw new BadRequestException();
-        }
-    }
-
-    async login(user: User) {
-        const payload = { id: user.id, email: user.email, role: user.role };
-
-        return {
-            access_token: this.jwtService.sign(payload),
-        }
     }
 
     async addCrypto(user: User, id: number) {

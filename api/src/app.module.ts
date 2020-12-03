@@ -4,14 +4,16 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configService } from './config/config.service';
 import { UserModule } from './user/user.module';
+import { CryptoModule } from './crypto/crypto.module';
 import { RBAcStorage } from './config/RBAcStorage';
 import { RBAcModule } from 'nestjs-rbac';
-import { CryptoModule } from './crypto/crypto.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
       TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
       RBAcModule.forRoot(RBAcStorage),
+      AuthModule,
       UserModule,
       CryptoModule
   ],
