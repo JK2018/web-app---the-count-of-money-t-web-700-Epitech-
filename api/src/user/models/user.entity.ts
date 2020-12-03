@@ -36,11 +36,11 @@ export class User {
 
     @ApiProperty()
     @Column()
-    first_name: string;
+    firstName: string;
 
     @ApiProperty()
     @Column()
-    last_name: string;
+    lastName: string;
 
     @ApiProperty()
     @Column()

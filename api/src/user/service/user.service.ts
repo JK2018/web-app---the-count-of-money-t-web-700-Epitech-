@@ -29,8 +29,8 @@ export class UserService extends TypeOrmCrudService<User> {
 
         newUser.email = user.email;
         newUser.password = user.password;
-        newUser.first_name = user.firstName;
-        newUser.last_name = user.lastName;
+        newUser.firstName = user.firstName;
+        newUser.lastName = user.lastName;
         newUser.username = user.username;
         newUser.currency = user.currency;
 
@@ -42,8 +42,8 @@ export class UserService extends TypeOrmCrudService<User> {
 
         user[providerIdField] = data.providerId;
         user.email = data.email;
-        user.first_name = data.firstName;
-        user.last_name = data.lastName;
+        user.firstName = data.firstName;
+        user.lastName = data.lastName;
         user.username = data.username;
         user.currency = "eur";
 
@@ -53,8 +53,8 @@ export class UserService extends TypeOrmCrudService<User> {
     async updateUser(id: string | number, user: UpdateUserDto): Promise<UpdateResult> {
         const updatedUser = new User();
 
-        updatedUser.first_name = user.firstName;
-        updatedUser.last_name = user.lastName;
+        updatedUser.firstName = user.firstName;
+        updatedUser.lastName = user.lastName;
         updatedUser.username = user.username;
 
         return this.userRepo.update(id, updatedUser);
