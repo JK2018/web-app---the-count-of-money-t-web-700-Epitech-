@@ -15,8 +15,6 @@ services:
     restart: always
   api:
     build: "./api"
-    depends_on:
-      - db
     environment:
       MIX_ENV: dev
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/count_of_money
@@ -26,10 +24,12 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DATABASE: count_of_money
       JWT_SECRET: countofmoney
+      DISCORD_APP_ID: 779290970318438420
+      DISCORD_APP_SECRET: XvZUB9EGBFHCtGuQHdhmDKP4PuB-PXRx
+      FACEBOOK_APP_ID: 371638957457565
+      FACEBOOK_APP_SECRET: cfbae58fe9426fe4d27855e837d48e2e
       MODE: DEV
       RUN_MIGRATIONS: "true"
-    ports:
-      - '3000:3000'
     expose:
       - 3000
     volumes:
