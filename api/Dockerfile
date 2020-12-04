@@ -1,18 +1,19 @@
-FROM node:12-alpine
+# pull official base image
+FROM node
 
+# set working directory
 WORKDIR /app
 
-ADD package.json /app/package.json
-
+# install app dependencies
+COPY package.json ./
+COPY yarn.lock ./
 RUN yarn install
 
-ADD . /app
+# add app
+COPY . ./
 
-EXPOSE 3000
+ADD start.sh /
+RUN chmod +x /start.sh
 
-# PRODUCTION
-#CMD ["yarn", "build"]
-#CMD ["yarn", "start:prod"]
-
-# DEV
-CMD ["yarn", "start"]
+# start app
+CMD ["/start.sh"]

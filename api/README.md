@@ -34,6 +34,16 @@
 $ yarn install
 ```
 
+## Migration
+
+```bash
+# generate migration
+$ yarn typeorm:migration:generate {MIGRATION_NAME}
+
+# run migration
+$ yarn typeorm:migration:run
+```
+
 ## Running the app
 
 ```bash
