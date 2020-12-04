@@ -21,7 +21,7 @@ export class UserService extends TypeOrmCrudService<User> {
     }
 
     async getUser(id: number): Promise<User> {
-        return this.userRepo.findOne({id}, {relations: ['cryptos']});
+        return this.userRepo.findOne(id);
     }
 
     async createUser(user: CreateUserDto) {
@@ -63,8 +63,8 @@ export class UserService extends TypeOrmCrudService<User> {
     async addCrypto(user: User, id: number) {
         return Promise.all([this.getUser(user.id), this.cryptoService.findOne(id)])
         .then(res => {
-            let newUser : User = res[0];
-            let crypto : Crypto = res[1];
+            const newUser : User = res[0];
+            const crypto : Crypto = res[1];
             newUser.cryptos.push(crypto);
             return this.userRepo.save(newUser);
         })

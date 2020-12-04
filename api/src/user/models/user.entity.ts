@@ -51,7 +51,9 @@ export class User {
     role: UserRole;
 
     @ApiProperty()
-    @ManyToMany(() => Crypto, (crypto) => crypto.users)
+    @ManyToMany(() => Crypto, (crypto) => crypto.users, {
+        eager: true
+    })
     @JoinTable()
     cryptos: Crypto[];
     
