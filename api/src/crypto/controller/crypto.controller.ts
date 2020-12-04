@@ -1,5 +1,5 @@
 import { JwtAuthGuard } from './../../auth/guards/jwt-auth.guard';
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards, Param, Delete, Patch } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Put, Req, UseGuards, Param, Delete, Patch, Query } from '@nestjs/common';
 import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CryptoService } from '../service/crypto.service';
 import { CreateCryptoDto } from '../dto/create-crypto.dto';
@@ -39,6 +39,17 @@ export class CryptoController {
   @Post()
   async create(@Body() createCryptoDto: CreateCryptoDto) {
     return this.cryptoService.create(createCryptoDto).catch(err => {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        message: err.message
+      }, HttpStatus.BAD_REQUEST)
+    });
+  }
+
+  @ApiOkResponse({ description: 'Get all cryptos publix' })
+  @Get("public")
+  async findAllPublic(@Query() { devis }) {
+    return this.cryptoService.findAllPublic(devis).catch(err => {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
         message: err.message

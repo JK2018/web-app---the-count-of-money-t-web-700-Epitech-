@@ -37,6 +37,21 @@ export class CryptoService {
     })
   }
 
+  async findAllPublic(devise: string = "eur"): Promise<any> {
+    return this.cryptoRepo.find({default: true})
+    .then((cryptos: Crypto[]) => {
+      return Promise.all(cryptos.map((crypto : Crypto) => axios.get(`https://api.coingecko.com/api/v3/coins/${crypto.cmid}`)))
+      .then((res: any) => {
+        return cryptos.map((crypto: any, index) => {
+          crypto.currentPrice  = res[index].data.market_data.current_price[devise];
+          crypto.lowestPrice  = res[index].data.market_data.low_24h[devise];
+          crypto.highestPrice  = res[index].data.market_data.high_24h[devise];
+          return crypto;
+        })
+      })
+    })
+  }
+
   async findOne(id: number): Promise<any> {
     return this.cryptoRepo.findOne({ id }, { relations: ['users'] });
   }
