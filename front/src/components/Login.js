@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import "../assets/css/login.css";
 
-export const Login = () => {
+// API
+import userApi from "../api/user";
+
+export const Login = (props) => {
 
     const [formData, setFormData] = useState({
         email: '',
@@ -16,8 +19,15 @@ export const Login = () => {
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = async e => {
+    const history = useHistory();
+    const onSubmit =  (e) => {
         e.preventDefault();
+        const credentials = JSON.stringify({email, password});
+        userApi.signin(credentials)
+            .then((response) => {
+                props.updateLoginState();
+                history.push('/profile');
+            });
     }
 
     return (

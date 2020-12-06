@@ -43,6 +43,14 @@ export const Profile = () => {
                 const body = JSON.stringify(newUser);
                 userApi.create(body).then((response) => {
                     console.log(response.data);
+                    console.log(response.data.length);
+                    console.log(response.status);
+                    if (response.data.length > 0 && response.status === 201) {
+                        var credentials = {'email': email, 'password': password};
+                        userApi.signin(credentials).then((response2) => {
+                            console.log(response2);
+                        })
+                    }
                 })
             } catch (error) {
                 console.error(error.response.data);

@@ -106,6 +106,10 @@ img {
   margin-right: 0.6rem;
 }
 
+.navbar .logout {
+  cursor: pointer;
+}
+
 /* Landing Page */
 .landing {
   position: relative;

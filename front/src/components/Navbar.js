@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 // Img
 import logo from "../assets/img/coins.svg"; 
 
-const Navbar = () => {
+const Navbar = (props) => {
     return (
         <nav className="navbar">
             <div className="logo">
@@ -14,7 +14,7 @@ const Navbar = () => {
                 </h1>
             </div>
             <ul>
-                { "logged in" === false ? //for testing only
+                { props.logged === false ? //for testing only
                     <Fragment>
                         <li><Link to="/articles">Articles</Link></li>
                         <li><Link to="/register">Register</Link></li>
@@ -26,7 +26,7 @@ const Navbar = () => {
                         <li className="step2"><Link to="/favorites">Favorites</Link></li>
                         <li><Link to="/profile">Profile</Link></li>
                         {"admin" !== false ? <li><Link to="/settings">Settings</Link></li> : ""}
-                        <li className="step3"><Link to="/">Logout</Link></li>
+                        <li className="step3"><a className="logout" onClick={props.logout}>Logout</a></li>
                     </Fragment>
                 }
             </ul>

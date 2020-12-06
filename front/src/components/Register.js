@@ -1,42 +1,57 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
 import { TextField } from '@material-ui/core';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import "../assets/css/login.css";
 
 // API
 import userApi from "../api/user";
 
-export const Register = () => {
-
+export const Register = (props) => {
+    
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        firstName: '',
+        lastName: '',
+        currency: ''
     });
 
-    const { username, email, password, password_confirmation } = formData;
+    const { username, email, password, password_confirmation, firstName, lastName } = formData;
+
+    const [currency, setCurrency] = useState("usd");
+
+    const onChangeRadio = (event) => {
+        setCurrency(event.target.value);
+    };
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = async e => {
+    const history = useHistory();
+    const onSubmit =  (e) => {
         e.preventDefault();
         if (password === password_confirmation) {
             const newUser = {
                 username,
                 email,
-                password
+                password,
+                firstName,
+                lastName,
+                currency
             }
-            try {
-                const body = JSON.stringify(newUser);
-                userApi.create(body).then((response) => {
-                    //
-                })
-            } catch (error) {
-                console.error(error.response.data);
-            }
+            const body = JSON.stringify(newUser);
+            userApi.create(body)
+                .then((response) => {
+                    props.updateLoginState();
+                    history.push('/profile');
+                });
         }
     }
 
@@ -50,6 +65,32 @@ export const Register = () => {
                 </p>
                 <form onSubmit={e => onSubmit(e)}>
                     <Grid container>
+                        <Grid item xs={12}>
+                            <TextField 
+                                className="input"
+                                type="text" 
+                                name="firstName"
+                                label="First name"
+                                variant="outlined" 
+                                value ={firstName} 
+                                onChange={e => onChange(e)} 
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField 
+                                className="input"
+                                type="text" 
+                                name="lastName"
+                                label="Last name"
+                                variant="outlined" 
+                                value ={lastName} 
+                                onChange={e => onChange(e)} 
+                                required
+                                fullWidth
+                            />
+                        </Grid>
                         <Grid item xs={12}>
                             <TextField 
                                 className="input"
@@ -103,6 +144,17 @@ export const Register = () => {
                                 required
                                 fullWidth
                             />
+                        </Grid>
+                        <Grid item xs={12} className="currency">
+                            <FormLabel component="legend">Default currency</FormLabel>
+                            <RadioGroup aria-label="default currency" name="currency" className="currency-radio" value={currency} onChange={onChangeRadio}>
+                                <FormControlLabel value="usd" control={<Radio/>} label="USD"/>
+                                <FormControlLabel value="eur" control={<Radio/>} label="EUR"/>
+                                <FormControlLabel value="gbp" control={<Radio/>} label="GPB"/>
+                                <FormControlLabel value="cad" control={<Radio/>} label="CAD"/>
+                                <FormControlLabel value="chf" control={<Radio/>} label="CHF"/>
+                                <FormControlLabel value="jpy" control={<Radio/>} label="JPY"/>
+                            </RadioGroup>
                         </Grid>
                         <Grid item xs={12}>
                             <Button className="submit-btn" type="submit" color="primary" variant="contained" size="large" fullWidth>
