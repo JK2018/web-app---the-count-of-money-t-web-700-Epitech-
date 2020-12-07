@@ -4,6 +4,25 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 const user = {
+
+    get: () => {
+        return new Promise((resolve, reject) => {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + cookies.get("accessToken")
+                }
+            };
+            axios.get(urlApi+'/api/users/profile', config)
+                .then((response) => {
+                    resolve(response.data);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+            });
+    },
+
     signin: (credentials) => {
         return new Promise((resolve, reject) => {
             const config = {
@@ -14,10 +33,10 @@ const user = {
             axios.post(urlApi+'/api/users/login', credentials, config)
                 .then((response) => {
                     if (response.data && response.status === 201) {
-                        // Save access token in Local Storage
+                        // Save access token in Cookie
                         cookies.set("accessToken", response.data.access_token, { path: '/' });
-                        resolve(response.data);
                     }
+                    resolve(response.data);
                 })
                 .catch((error) => {
                     reject(error);
@@ -48,14 +67,15 @@ const user = {
         });
     },
 
-    update: (request) => {
+    update: (userId, request) => {
         return new Promise((resolve, reject) => {
             const config = {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + cookies.get("accessToken")
                 }
             }
-            axios.post(urlApi+'/api/users', request, config)
+            axios.put(urlApi+'/api/users/'+userId, request, config)
                 .then((response) => {
                     resolve(response);
                 })

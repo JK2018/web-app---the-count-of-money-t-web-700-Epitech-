@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
+import Alert from '@material-ui/lab/Alert';
 import "../assets/css/login.css";
 
 // API
@@ -10,6 +11,7 @@ import userApi from "../api/user";
 
 export const Login = (props) => {
 
+    const [logMatch, setLogMatch] = useState(true);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -27,6 +29,9 @@ export const Login = (props) => {
             .then((response) => {
                 props.updateLoginState();
                 history.push('/profile');
+            })
+            .catch((response) => {
+                setLogMatch(false);
             });
     }
 
@@ -39,6 +44,9 @@ export const Login = (props) => {
                     Not registered yet? <Link to="/register">Create an account.</Link>
                 </p>
                 <form onSubmit={e => onSubmit(e)}>
+                    { (!logMatch) &&
+                        <Alert severity="error" className="alert">The email or password you’ve entered doesn’t match any account.</Alert>
+                    }
                     <Grid container>
                         <Grid item xs={12}>
                             <TextField 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
 import { TextField } from '@material-ui/core';
@@ -14,48 +14,78 @@ import userApi from "../api/user";
 export const Profile = () => {
 
     // DESC :  selectable currencies
+    const [userId, setUser] = useState([]);
+    const [inputErrors, setErrors] = useState({});
     const [formData, setFormData] = useState({
-        username: 'John',
-        email: 'john.doe@gmail.com',
+        username: '',
+        email: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        firstName: '',
+        lastName: '',
+        currency: ''
     });
 
-    const { username, email, password, password_confirmation } = formData;
+    const { username, email, password, password_confirmation, firstName, lastName, currency } = formData;
 
-    const [defaultCurrency, setCurrency] = useState("usd");
+    useEffect(() => {
+        userApi.get().then((response) => {
+            setUser(response.id);
+            setFormData({
+                ...formData,
+                username: response.username,
+                email: response.email,
+                firstName: response.firstName,
+                lastName: response.lastName,
+                currency: response.currency
+            })
+        });
+    }, [userId]);
 
     const onChangeRadio = (event) => {
-        setCurrency(event.target.value);
+        setFormData({...formData, currency: event.target.value});
     };
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const onChange = (e) => {
 
-    const onSubmit = async e => {
-        e.preventDefault();
-        if (password === password_confirmation) {
-            const newUser = {
-                username,
-                email,
-                password
-            }
-            try {
-                const body = JSON.stringify(newUser);
-                userApi.create(body).then((response) => {
-                    console.log(response.data);
-                    console.log(response.data.length);
-                    console.log(response.status);
-                    if (response.data.length > 0 && response.status === 201) {
-                        var credentials = {'email': email, 'password': password};
-                        userApi.signin(credentials).then((response2) => {
-                            console.log(response2);
-                        })
-                    }
-                })
-            } catch (error) {
-                console.error(error.response.data);
-            }
+        var currentFormData = {...formData};
+        currentFormData[e.target.name] = e.target.value;
+        
+        // Password validator
+        if ((e.target.name === "password" || e.target.name === "password_confirmation")
+            && e.target.value.trim().length > 0 
+            && currentFormData["password_confirmation"] !== currentFormData["password"]
+        ) {
+            setErrors({
+                ...inputErrors,
+                password_confirmation: "Password and password confirmation must match"
+            });
+        } else {
+            var currentErrors = {...inputErrors};
+            delete currentErrors.password_confirmation;
+            setErrors(currentErrors);
         }
+
+        setFormData(currentFormData);
+    }
+    
+    const onSubmit =  (e) => {
+        e.preventDefault();
+
+        // If still errors
+        if (Object.keys(inputErrors).length > 0) return false;
+        
+        const user = {
+            firstName,
+            lastName,
+            username,
+            email,
+            currency
+        }
+        if (password.length > 0 && password === password_confirmation) user["password"] = password;
+        const request = JSON.stringify(user);
+
+        userApi.update(userId, request);
     }
 
     return (
@@ -64,6 +94,32 @@ export const Profile = () => {
                 <h1 className="lead">Edit your profile</h1>
                 <form onSubmit={e => onSubmit(e)}>
                     <Grid container>
+                        <Grid item xs={12}>
+                            <TextField 
+                                className="input"
+                                type="text" 
+                                name="firstName"
+                                label="First name"
+                                variant="outlined" 
+                                value ={firstName} 
+                                onChange={e => onChange(e)} 
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField 
+                                className="input"
+                                type="text" 
+                                name="lastName"
+                                label="Last name"
+                                variant="outlined" 
+                                value ={lastName} 
+                                onChange={e => onChange(e)} 
+                                required
+                                fullWidth
+                            />
+                        </Grid>
                         <Grid item xs={12}>
                             <TextField 
                                 className="input"
@@ -100,7 +156,9 @@ export const Profile = () => {
                                 value={password}
                                 minLength="6"
                                 onChange={e => onChange(e)}
-                                required
+                                required={formData["password_confirmation"].length > 0}
+                                error={inputErrors.password && inputErrors.password.length !== 0 ? true : false }
+                                helperText= {inputErrors.password}
                                 fullWidth
                             />
                         </Grid>
@@ -114,13 +172,15 @@ export const Profile = () => {
                                 value={password_confirmation}
                                 minLength="6"
                                 onChange={e => onChange(e)}
-                                required
+                                required={formData["password"].length > 0}
+                                error={inputErrors.password_confirmation && inputErrors.password_confirmation.length !== 0 ? true : false }
+                                helperText= {inputErrors.password_confirmation}
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={12} className="currency">
                             <FormLabel component="legend">Default currency</FormLabel>
-                            <RadioGroup aria-label="default currency" name="currency" className="currency-radio" value={defaultCurrency} onChange={onChangeRadio}>
+                            <RadioGroup aria-label="default currency" name="currency" className="currency-radio" value={currency} onChange={onChangeRadio}>
                                 <FormControlLabel value="usd" control={<Radio/>} label="USD"/>
                                 <FormControlLabel value="eur" control={<Radio/>} label="EUR"/>
                                 <FormControlLabel value="gbp" control={<Radio/>} label="GPB"/>
