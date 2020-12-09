@@ -1,11 +1,32 @@
 import axios from "axios"
+import urlApi from "./config";
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 const crypto = {
 
     get: (coinId) => {
         return new Promise((resolve, reject) => {
             const getCoinUrl = "https://api.coingecko.com/api/v3/coins/"+coinId;
             axios(getCoinUrl)
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        });
+    },
+
+    getAll: () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + cookies.get("accessToken")
+            }
+        };
+        return new Promise((resolve, reject) => {
+            axios.get(urlApi+"/api/cryptos", config)
                 .then((response) => {
                     resolve(response);
                 })
@@ -40,7 +61,61 @@ const crypto = {
                     reject(error);
                 })
         });
-    }
+    },
+
+    create: (request) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + cookies.get("accessToken")
+            }
+        };
+        return new Promise((resolve, reject) => {
+            axios.post(urlApi+"/api/cryptos/", request, config)
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        });
+    },
+
+    update: (cryptoId, request) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + cookies.get("accessToken")
+            }
+        };
+        return new Promise((resolve, reject) => {
+            axios.put(urlApi+"/api/cryptos/"+cryptoId, request, config)
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        });
+    },
+
+    deleteOne: (cryptoId) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + cookies.get("accessToken")
+            }
+        };
+        return new Promise((resolve, reject) => {
+            axios.delete(urlApi+"/api/cryptos/"+cryptoId, config)
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        });
+    },
 };
 
 export default crypto;

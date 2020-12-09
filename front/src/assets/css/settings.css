@@ -1,59 +1,68 @@
 /* Settings form */
 .admin-settings {
-    padding: 100px 30vw;
-  }
-  
-  .admin-settings h1 {
-    margin-bottom: 30px;
-  }
-  
-  .admin-settings .inline-form {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .admin-settings .inline-input {
-    padding-right: 50px;
-    flex-grow: 2;
-  }
-  
-  .admin-settings .inline-button {
-    padding-right: 15px;
-  }
-  
-  .admin-settings .list {
-    margin: 30px 0 50px 0;
-  }
-  
-  .admin-settings .list li {
-    background-color: #f6f8fa;
-    border-radius: 8px;
-    margin-bottom: 15px;
-  }
-  
-  .admin-settings .crypto-logo {
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-    margin-right: 20px;
-    text-align: center;
-  }
-  
-  .admin-settings .crypto-logo img {
-    height: 100%;
-    width: auto;
-    max-width: 100%;
-  }
-  
-  .admin-settings .crypto-info span {
-    text-transform: capitalize;
-  }
-  
-  .admin-settings .crypto-info p {
-    text-transform: uppercase;
-  }
-  
-  /* Crypto Dialog */
-  .add-crypto-dialog {
-    padding: 20px 15px;
-  }
+  padding: 100px 30vw;
+}
+
+.admin-settings h1 {
+  margin-bottom: 30px;
+}
+
+.admin-settings .inline-form {
+  display: flex;
+  flex-direction: row;
+}
+
+.admin-settings .inline-input {
+  padding-right: 50px;
+  flex-grow: 2;
+}
+
+.admin-settings .inline-button {
+  padding-right: 15px;
+}
+
+.admin-settings .list {
+  margin: 30px 0 50px 0;
+}
+
+.admin-settings .list li {
+  background-color: #f6f8fa;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.admin-settings .crypto-logo {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  margin-right: 20px;
+  text-align: center;
+}
+
+.admin-settings .crypto-logo img {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+
+.admin-settings .crypto-info span {
+  text-transform: capitalize;
+}
+
+.admin-settings .crypto-info p {
+  text-transform: uppercase;
+}
+
+.admin-settings .visible-btn {
+  margin-right: 10px;
+}
+
+.admin-settings button.active {
+  color: #24BD64;
+  font-size: 30px;
+}
+
+/* Crypto Dialog */
+.add-crypto-dialog {
+  padding: 20px 15px;
+}

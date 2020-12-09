@@ -1,23 +1,57 @@
-import React, {useState} from 'react'
-import { TextField, FormGroup } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import React, {useState, useEffect} from 'react'
+import { 
+    Button, 
+    IconButton, 
+    ListItem, 
+    ListItemText, 
+    ListItemAvatar, 
+    ListItemSecondaryAction, 
+    TextField, 
+    FormGroup, 
+    Tooltip 
+} from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import CheckIcon from '@material-ui/icons/Check';
 import AddCryptoDialog from './AddCryptoDialog';
 import "../assets/css/settings.css";
 
+// API
+import cryptoApi from "../api/crypto";
+
 const Settings = () => {
 
+    const [count, setCount] = useState(0);
     const [rssFeeds, setFeeds] = useState([]);
     const [cryptos, setCryptos] = useState([]);
     const [inputErrors, setErrors] = useState([]);
     const [openDialog, setOpen] = useState(false);
+
+    useEffect(() => {
+        loadCryptoList();
+
+    }, [count]);
+
+    function loadCryptoList() {
+        cryptoApi.getAll().then((response) => {
+            var cryptosFresh = [];
+            if (response.data && response.data.length > 0) {
+                response.data.forEach(crypto => {
+                    cryptosFresh.push({
+                        id: crypto.id,
+                        symbol: crypto.cmid,
+                        name: crypto.fullName,
+                        logoUrl: crypto.imgUrl,
+                        default: crypto.default
+                    });
+                });
+                setCryptos(cryptosFresh.sort((a, b) => a.id - b.id));
+            }
+        });
+    };
 
     function addFeed() {
         var rssInput = document.getElementById('rss-input');
@@ -30,7 +64,7 @@ const Settings = () => {
         }
 
         var rssFeedsRef = [...rssFeeds];
-        rssFeedsRef.push(rssInput.value);
+        rssFeedsRef.push({id: rssFeeds.length, value: rssInput.value, active: true});
         setFeeds(rssFeedsRef);
         
         rssInput.value = "";
@@ -38,26 +72,62 @@ const Settings = () => {
         return true;
     }
 
-    function removeFeed(value) {
-        var rssFeedsRef = [...rssFeeds];
-        rssFeedsRef = rssFeedsRef.filter(item => item !== value);
-        setFeeds(rssFeedsRef);
+    function disableFeed(feedId) {
+        var freshRssFeed = rssFeeds.map(item => {
+            if(item.id === feedId) {
+                item.active = !item.active;
+            }
+            return item;
+        });
+        setFeeds(freshRssFeed);
     }
 
     function addCryptos(symbol, name, logoUrl) {
-        var cryptosRef = [...cryptos];
-        cryptosRef.push({
-            symbol: symbol,
-            name: name,
-            logoUrl: logoUrl
+        cryptoApi.create({
+            cmid: symbol,
+            fullName: name,
+            imgUrl: logoUrl,
+            default: true
         })
-        setCryptos(cryptosRef);
+        .then(response => {
+            var crypto = response.data;
+            setCryptos([...cryptos, {
+                id: crypto.id,
+                symbol: crypto.cmid,
+                name: crypto.fullName,
+                logoUrl: crypto.imgUrl,
+                default: crypto.default
+            }]);
+        });
     }
 
     function removeCrypto(symbol) {
+        var idRemove;
+        var newCryptos = [];
         var cryptosRef = [...cryptos];
-        cryptosRef = cryptosRef.filter(item => item.symbol !== symbol);
-        setCryptos(cryptosRef);
+        cryptosRef.forEach(crypto => {
+            idRemove = crypto.id;
+            if (crypto.symbol !== symbol) {
+                newCryptos.push(crypto);
+            }
+        });
+        setCryptos(newCryptos);
+        cryptoApi.deleteOne(idRemove);
+    }
+
+    function setVisibleCrypto(cryptoId) {
+        var newVisibility = false;
+        var freshCryptos = cryptos.map((crypto) => {
+            if (crypto.id === cryptoId) {
+                newVisibility = !crypto.default;
+                crypto.default = newVisibility;
+            }
+            return crypto;
+        })
+        cryptoApi.update(cryptoId, {default: newVisibility})
+            .then(() => {
+                setCryptos(freshCryptos);
+            });
     }
 
     function handleKeyPress(e, input) {
@@ -94,17 +164,17 @@ const Settings = () => {
                 </IconButton>
             </FormGroup>
             <List className="list">
-                {rssFeeds.map((value) =>
+                {rssFeeds.map((feed) =>
                     React.cloneElement(
                         <ListItem>
-                            <ListItemText primary={value}/>
+                            <ListItemText primary={feed.value}/>
                             <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete" onClick={() => removeFeed(value)} >
-                                    <DeleteIcon/>
+                                <IconButton edge="end" aria-label="delete" onClick={() => disableFeed(feed.id)} className={feed.active ? "active" : ""} >
+                                    <CheckIcon/>
                                 </IconButton>
                             </ListItemSecondaryAction>
                         </ListItem>,
-                        {key: value}
+                        {key: feed.id}
                     )
                 )}
             </List>
@@ -122,9 +192,16 @@ const Settings = () => {
                             </ListItemAvatar>
                             <ListItemText className="crypto-info" primary={item.name} secondary={item.symbol}/>
                             <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete" onClick={() => removeCrypto(item.symbol)}>
-                                    <DeleteIcon/>
-                                </IconButton>
+                                <Tooltip title={item.default ? "Hide to public" : "Show to public"}>
+                                    <IconButton edge="end" aria-label="visible" className="visible-btn" onClick={() => setVisibleCrypto(item.id)}>
+                                        {item.default ? <VisibilityIcon/> : <VisibilityOffIcon/>}
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Delete">
+                                    <IconButton edge="end" aria-label="delete" onClick={() => removeCrypto(item.symbol)}>
+                                        <DeleteIcon/>
+                                    </IconButton>
+                                </Tooltip>
                             </ListItemSecondaryAction>
                         </ListItem>,
                         {key: item.symbol}
