@@ -16,7 +16,7 @@ export class ArticleController {
     try {
       return !user ?
         this.articleService.findAll() :
-        this.articleService.findWhere({});
+        this.articleService.findWithFilter(user.id);
     } catch (err) {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
@@ -26,7 +26,6 @@ export class ArticleController {
   }
 
   @ApiOkResponse({ description: 'Get artcile by id' })
-  // @UseGuards(JwtAnonymousGuard)
   @Get('/:id')
   async getArticlebyId(@Param('id') id: string) {
     return id;

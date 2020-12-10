@@ -13,6 +13,7 @@ export class CronService {
   @Cron(CronExpression.EVERY_HOUR)
   async handleCron() {
     try {
+      console.log('FETCH DATA EVERY HOUR');
       const { data } = await this.httpService.get('https://api.rss2json.com/v1/api.json?rss_url=https://cointelegraph.com/rss').toPromise();
 
       await this.articleService.deleteAll();

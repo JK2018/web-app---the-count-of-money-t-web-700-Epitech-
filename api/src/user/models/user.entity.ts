@@ -2,13 +2,14 @@ import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, BeforeIn
 import { Crypto } from '../../crypto/entities/crypto.entity';
 import * as bcrypt from 'bcrypt';
 import {ApiProperty} from "@nestjs/swagger";
+import { Exclude } from "class-transformer";
 
 export enum UserRole {
     ADMIN = 'admin',
     USER = 'user'
 }
 
-@Entity({name: 'users'})
+@Entity({ name: 'users' })
 export class User {
     @ApiProperty()
     @PrimaryGeneratedColumn()
@@ -23,10 +24,11 @@ export class User {
     facebook_id?: string;
 
     @ApiProperty()
-    @Column({ unique: true, nullable: true })
-    email?: string;
+    @Column({ unique: true })
+    email: string;
 
     @ApiProperty()
+    @Exclude()
     @Column({ nullable: true })
     password?: string;
 
@@ -43,8 +45,15 @@ export class User {
     lastName: string;
 
     @ApiProperty()
-    @Column({ default: 'USD' })
+    @Column({ default: 'EUR' })
     currency: string;
+
+    @ApiProperty()
+    @Column('varchar', {
+        array: true,
+        default: () => 'array[]::varchar[]'
+    })
+    articleKeywords: string[]
 
     @ApiProperty()
     @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
@@ -52,7 +61,7 @@ export class User {
 
     @ApiProperty()
     @ManyToMany(() => Crypto, (crypto) => crypto.users, {
-        eager: true
+        eager: true,
     })
     @JoinTable()
     cryptos: Crypto[];

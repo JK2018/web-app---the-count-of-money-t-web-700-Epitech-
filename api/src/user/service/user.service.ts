@@ -1,11 +1,11 @@
 import { Crypto } from "../../crypto/entities/crypto.entity";
 import { CryptoService } from "../../crypto/service/crypto.service";
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { User } from '../models/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, UpdateResult } from 'typeorm';
-import { CreateUserDto, CreateUserFromProviderDto, UpdateUserDto } from '../models/user.dto';
+import { Injectable } from "@nestjs/common";
+import { TypeOrmCrudService } from "@nestjsx/crud-typeorm";
+import { User } from "../models/user.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { CreateUserDto, CreateUserFromProviderDto, UpdateUserDto } from "../models/user.dto";
 
 @Injectable()
 export class UserService extends TypeOrmCrudService<User> {
@@ -37,6 +37,7 @@ export class UserService extends TypeOrmCrudService<User> {
         newUser.lastName = user.lastName;
         newUser.username = user.username;
         newUser.currency = user.currency;
+        // newUser.role = UserRole.ADMIN;
 
         return this.userRepo.save(newUser);
     }
@@ -49,19 +50,22 @@ export class UserService extends TypeOrmCrudService<User> {
         user.firstName = data.firstName;
         user.lastName = data.lastName;
         user.username = data.username;
-        // user.currency = 'eur';
 
         return this.userRepo.save(user);
     }
 
-    async updateUser(id: string | number, user: UpdateUserDto): Promise<UpdateResult> {
-        const updatedUser = new User();
+    async updateUser(id: string | number, data: UpdateUserDto): Promise<User> {
+        const user = await this.userRepo.findOne(id);
 
-        updatedUser.firstName = user.firstName;
-        updatedUser.lastName = user.lastName;
-        updatedUser.username = user.username;
+        user.email = data.email;
+        user.cryptos = data.cryptos;
+        user.articleKeywords = data.articleKeywords;
+        user.firstName = data.firstName;
+        user.lastName = data.lastName;
+        user.username = data.username;
+        user.currency = data.currency;
 
-        return this.userRepo.update(id, updatedUser);
+        return this.userRepo.save(user);
     }
 
     async addCrypto(user: User, id: number) {
