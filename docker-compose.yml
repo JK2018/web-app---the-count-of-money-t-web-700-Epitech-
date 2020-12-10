@@ -30,6 +30,8 @@ services:
       FACEBOOK_APP_SECRET: cfbae58fe9426fe4d27855e837d48e2e
       MODE: DEV
       RUN_MIGRATIONS: "true"
+      TYPEORM_SEEDING_FACTORIES: src/factories/**/*{.ts,.js}
+      TYPEORM_SEEDING_SEEDS: src/seeds/**/*{.ts,.js}
     expose:
       - 3000
     volumes:

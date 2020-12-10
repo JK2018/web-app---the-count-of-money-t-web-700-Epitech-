@@ -1,6 +1,6 @@
 {
   "type": "postgres",
-  "host": "localhost",
+  "host": "postgres",
   "port": 5432,
   "username": "postgres",
   "password": "postgres",
@@ -15,5 +15,11 @@
   "cli": {
     "migrationsDir": "src/migration"
   },
+  "factories": [
+    "src/factories/**/*{.ts,.js}"
+  ],
+  "seeds": [
+    "src/seeds/**/*{.ts,.js}"
+  ],
   "ssl": false
 }
