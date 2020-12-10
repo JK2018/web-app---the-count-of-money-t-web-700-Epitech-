@@ -19,6 +19,7 @@ export class CryptoService {
   async create(createCryptoDto: CreateCryptoDto): Promise<any> {
     return this.cryptosAvailable()
     .then((cryptosAvailable: []) => {
+      console.log("dqsd")
       if(cryptosAvailable.find((crypto : any) => crypto.id == createCryptoDto.cmid)){
         return this.cryptoRepo.save(createCryptoDto);
       }
