@@ -13,6 +13,10 @@ export class ArticleService {
     return this.articleRepo.find();
   }
 
+  async findWhere(options: {[key: string]: any}): Promise<Article[]> {
+    return this.articleRepo.find(options);
+  }
+
   async deleteAll(): Promise<void> {
     return this.articleRepo.clear();
   }

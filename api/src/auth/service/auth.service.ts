@@ -1,10 +1,10 @@
-import { UserService } from './../../user/service/user.service';
+import { UserService } from '../../user/service/user.service';
 import {BadRequestException, Injectable} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Inject, forwardRef } from '@nestjs/common';
 import { User } from '../../user/models/user.entity';
 import * as bcrypt from 'bcrypt';
-import {CreateUserFromProviderDto} from "../../user/models/user.dto";
+import { CreateUserFromProviderDto } from '../../user/models/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -47,16 +47,4 @@ export class AuthService {
             throw new BadRequestException();
         }
     }
-
-    // generateJWT(user: User): Observable <string> {
-    //     return from(this.jwtService.signAsync({user}));
-    // }
-
-    // hashPassword(password: string): Observable <string> {
-    //     return from<string>(bcrypt.hash(password, 12));
-    // }
-
-    // comparePasswords(newPassword: string, passwortHash: string): Observable<any>{
-    //     return from(bcrypt.compare(newPassword, passwortHash));
-    // }
 }
