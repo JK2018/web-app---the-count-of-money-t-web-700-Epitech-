@@ -36,6 +36,24 @@ const crypto = {
         });
     },
 
+    getAllPublic: () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + cookies.get("accessToken")
+            }
+        };
+        return new Promise((resolve, reject) => {
+            axios.get(urlApi+"/api/cryptos/public", config)
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        });
+    },
+
     getDetailed: (currency, coinId) => {
         return new Promise((resolve, reject) => {
             const coinFilter = coinId ? "&ids="+coinId : "";
@@ -50,10 +68,16 @@ const crypto = {
         });
     },
 
-    getHistoricData: (coinId, currency = "usd", days = 30, interval = "daily") => {
+    getHistoricData: (coinId, interval = "daily") => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + cookies.get("accessToken")
+            }
+        };
         return new Promise((resolve, reject) => {
-            const getHistoryUrl = "https://api.coingecko.com/api/v3/coins/"+coinId+"/market_chart?vs_currency="+currency+"&days="+days+"&interval="+interval;
-            axios(getHistoryUrl)
+            const getHistoryUrl = urlApi + "/api/cryptos/"+coinId +"/history/"+interval;
+            axios(getHistoryUrl, config)
                 .then((response) => {
                     resolve(response);
                 })

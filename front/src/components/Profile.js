@@ -102,8 +102,7 @@ export const Profile = () => {
                                 label="First name"
                                 variant="outlined" 
                                 value ={firstName} 
-                                onChange={e => onChange(e)} 
-                                required
+                                onChange={e => onChange(e)}
                                 fullWidth
                             />
                         </Grid>
@@ -115,8 +114,7 @@ export const Profile = () => {
                                 label="Last name"
                                 variant="outlined" 
                                 value ={lastName} 
-                                onChange={e => onChange(e)} 
-                                required
+                                onChange={e => onChange(e)}
                                 fullWidth
                             />
                         </Grid>

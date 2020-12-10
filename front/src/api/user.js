@@ -83,6 +83,42 @@ const user = {
                     reject(error);
                 })
         });
+    },
+
+    addFavoriteCrypto: (cryptoId) => {
+        return new Promise((resolve, reject) => {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + cookies.get("accessToken")
+                }
+            }
+            axios.put(urlApi+'/api/users/cryptos/'+cryptoId, {}, config)
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        });
+    },
+
+    removeFavoriteCrypto: (cryptoId) => {
+        return new Promise((resolve, reject) => {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + cookies.get("accessToken")
+                }
+            }
+            axios.delete(urlApi+'/api/users/cryptos/'+cryptoId, config)
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        });
     }
 };
 

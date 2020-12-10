@@ -55,7 +55,7 @@ const FavoritesList = () => {
 
                     // DESC : fetch historical data for each chart and set it as an object attribute
                     for (let i = 0; i < result.data.length; i++) {
-                        cryptoApi.getHistoricData(result.data[i].id, "usd", 30, "daily").then((response) => {
+                        cryptoApi.getHistoricData(result.data[i].id, "daily").then((response) => {
                             const chartPricesRaw = response.data.prices;
                             const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank})); 
                             theChartDataObj['chartDataRank'+result.data[i].market_cap_rank]= chartPricesFinal;

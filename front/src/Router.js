@@ -35,7 +35,12 @@ const Router = () => {
         <BrowserRouter>
             <Fragment>
                 <Navbar logged={logged} logout={logout}></Navbar>
-                <Route exact path='/' component={Landing}/>
+                <Route 
+                    exact 
+                    path='/' 
+                    render={(props) => (
+                        <Landing {...props} logged={logged} />
+                    )}/>
                 <section>
                     <Switch>
                         <ProtectedRoute logged={logged} exact path='/favorites' component={FavoritesList}/>

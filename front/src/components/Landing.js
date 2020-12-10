@@ -52,7 +52,7 @@ const steps = [
 
 // ROUTE : /
 // DESC : will render all cryptos.
-const Landing = () => {
+const Landing = (props) => {
     
     // DESC :  selectable currencies
     const [currencies] = useState([
@@ -77,24 +77,25 @@ const Landing = () => {
 
         // DESC : fetch cryptos general data
         const fetchData = async () => {            
-            cryptoApi.getDetailed(defaultCurrency).then((result) => {
+            cryptoApi.getAllPublic().then((result) => {
 
                 setData(result.data);
     
                 // DESC : fetch historical data for each chart and set it as an object attribute
                 for (let i = 0; i < result.data.length; i++) {
-                    cryptoApi.getHistoricData(result.data[i].id, "usd", 30, "daily").then((response) => {
+                    cryptoApi.getHistoricData(result.data[i].cmid, "daily").then((response) => {
+                        /*
                         const chartPricesRaw = response.data.prices;
                         const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank }));
-                        theChartDataObj['chartDataRank' + result.data[i].market_cap_rank] = chartPricesFinal;
+                        theChartDataObj['chartDataRank' + result.data[i].market_cap_rank] = chartPricesFinal; */
                     })
                 }
     
                 // DESC : set the mini chart data obj to context
-                theChartDataObj['data2'] = data;
+                /* theChartDataObj['data2'] = data;
                 setContextValue(
                     theChartDataObj
-                )
+                ) */
             })
         }
         fetchData();
@@ -154,7 +155,7 @@ const Landing = () => {
                                 <th>30d Chart Evolution</th>
                             </tr>
                         </thead>
-                        <CryptoList className="tourStep1" data={data} defaultStarCol={'lightgrey'} ></CryptoList>
+                        <CryptoList className="tourStep1" data={data} defaultStarCol={'lightgrey'} logged={props.logged}></CryptoList>
                     </table>
                 </BaseContext.Provider>
             </div>
