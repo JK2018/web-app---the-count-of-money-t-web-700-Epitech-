@@ -17,7 +17,13 @@ export class CryptoService {
   ) { }
 
   async create(createCryptoDto: CreateCryptoDto): Promise<any> {
-    return this.cryptoRepo.save(createCryptoDto);
+    return this.cryptosAvailable()
+    .then((cryptosAvailable: []) => {
+      if(cryptosAvailable.find((crypto : any) => crypto.id == createCryptoDto.cmid)){
+        return this.cryptoRepo.save(createCryptoDto);
+      }
+      else return Promise.reject({message:"Cmid not know"})
+    })
   }
 
   async findAll(user: User): Promise<any> {
