@@ -15,5 +15,11 @@
   "cli": {
     "migrationsDir": "src/migration"
   },
+  "factories": [
+    "src/factories/**/*{.ts,.js}"
+  ],
+  "seeds": [
+    "src/seeds/**/*{.ts,.js}"
+  ],
   "ssl": false
 }
