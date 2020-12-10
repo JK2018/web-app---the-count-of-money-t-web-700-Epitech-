@@ -35,19 +35,19 @@ export class User {
     username: string;
 
     @ApiProperty()
-    @Column()
+    @Column({ default: '' })
     firstName: string;
 
     @ApiProperty()
-    @Column()
+    @Column({ default: '' })
     lastName: string;
 
     @ApiProperty()
-    @Column()
+    @Column({ default: 'USD' })
     currency: string;
 
     @ApiProperty()
-    @Column({type: 'enum', enum: UserRole, default: UserRole.USER})
+    @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
     role: UserRole;
 
     @ApiProperty()

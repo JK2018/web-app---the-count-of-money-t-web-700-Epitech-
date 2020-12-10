@@ -37,7 +37,7 @@ export class CryptoService {
     })
   }
 
-  async findAllPublic(devise: string = "eur"): Promise<any> {
+  async findAllPublic(devise = "eur"): Promise<any> {
     return this.cryptoRepo.find({default: true})
     .then((cryptos: Crypto[]) => {
       return Promise.all(cryptos.map((crypto : Crypto) => axios.get(`https://api.coingecko.com/api/v3/coins/${crypto.cmid}`)))

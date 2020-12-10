@@ -1,6 +1,6 @@
-import { Crypto } from './../../crypto/entities/crypto.entity';
-import { CryptoService } from './../../crypto/service/crypto.service';
-import { Injectable } from '@nestjs/common';
+import { Crypto } from "../../crypto/entities/crypto.entity";
+import { CryptoService } from "../../crypto/service/crypto.service";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { User } from '../models/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,6 +25,10 @@ export class UserService extends TypeOrmCrudService<User> {
     }
 
     async createUser(user: CreateUserDto) {
+        if (!user.password) {
+            throw new Error('Password is missing');
+        }
+
         const newUser = new User();
 
         newUser.email = user.email;
@@ -45,7 +49,7 @@ export class UserService extends TypeOrmCrudService<User> {
         user.firstName = data.firstName;
         user.lastName = data.lastName;
         user.username = data.username;
-        user.currency = "eur";
+        // user.currency = 'eur';
 
         return this.userRepo.save(user);
     }
