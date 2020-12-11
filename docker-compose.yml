@@ -7,11 +7,8 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=count_of_money
-      - PG_DATA=/var/lib/postgresql/data
     ports:
       - 5432:5432
-    volumes:
-      - pgdata:/var/lib/postgresql/data
     restart: always
   api:
     build: "./api"
@@ -52,5 +49,3 @@ services:
 
 networks:
   default:
-volumes:
-  pgdata:

@@ -22,11 +22,13 @@ const CryptoList = (props) => {
         setCryptos(props);
 
         // Set favorites cryptos for this user
-        userApi.get().then((response) => {
-            if (response.cryptos.length > 0) {
-                setFavorites(response.cryptos);
-            }
-        });
+        if (props.logged) {
+            userApi.get().then((response) => {
+                if (response.cryptos && response.cryptos.length > 0) {
+                    setFavorites(response.cryptos);
+                }
+            });
+        }
 
     }, [props]);
 

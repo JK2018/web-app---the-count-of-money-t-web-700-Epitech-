@@ -4,7 +4,7 @@ export const RBAcStorage: IStorageRbac = {
     roles: ['user', 'admin'],
     permissions: {
         users: ['get', 'edit'],
-        cryptos: ['get', 'getPriceHistory', 'create', 'delete'],
+        cryptos: ['create', 'update', 'delete'],
     },
     grants: {
         admin: [
@@ -13,8 +13,6 @@ export const RBAcStorage: IStorageRbac = {
         ],
         user: [
             'users',
-            'cryptos@get',
-            'cryptos@getPriceHistory'
         ],
     },
     filters: {}

@@ -1,6 +1,6 @@
-import { UserService } from './../../user/service/user.service';
-import { User } from './../../user/models/user.entity';
-import { Crypto } from './../entities/crypto.entity';
+import { UserService } from '../../user/service/user.service';
+import { User } from '../../user/models/user.entity';
+import { Crypto } from '../entities/crypto.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
@@ -17,14 +17,21 @@ export class CryptoService {
   ) { }
 
   async create(createCryptoDto: CreateCryptoDto): Promise<any> {
-    return this.cryptoRepo.save(createCryptoDto);
+    return this.cryptosAvailable()
+    .then((cryptosAvailable: []) => {
+      console.log("dqsd")
+      if(cryptosAvailable.find((crypto : any) => crypto.id == createCryptoDto.cmid)){
+        return this.cryptoRepo.save(createCryptoDto);
+      }
+      else return Promise.reject({message:"Cmid not know"})
+    })
   }
 
   async findAll(user: User): Promise<any> {
     return Promise.all([this.userService.findOne(user.id), this.cryptoRepo.find()])
     .then(res => {
       user = res[0];
-      let cryptos : Crypto[] = res[1];
+      const cryptos : Crypto[] = res[1];
       return Promise.all(cryptos.map((crypto : Crypto) => axios.get(`https://api.coingecko.com/api/v3/coins/${crypto.cmid}`)))
       .then((res: any) => {
         return cryptos.map((crypto: any, index) => {
@@ -37,7 +44,7 @@ export class CryptoService {
     })
   }
 
-  async findAllPublic(devise: string = "eur"): Promise<any> {
+  async findAllPublic(devise = "eur"): Promise<any> {
     return this.cryptoRepo.find({default: true})
     .then((cryptos: Crypto[]) => {
       return Promise.all(cryptos.map((crypto : Crypto) => axios.get(`https://api.coingecko.com/api/v3/coins/${crypto.cmid}`)))
@@ -60,12 +67,20 @@ export class CryptoService {
     return Promise.all([this.userService.findOne(user.id), this.cryptoRepo.findOneOrFail({ where: {cmid}, relations: ['users'] })])
     .then(res => {
       user = res[0];
-      let crypto: any = res[1];
+      const crypto: any = res[1];
       return axios.get(`https://api.coingecko.com/api/v3/coins/${crypto.cmid}`)
       .then((res: any) => {
+        crypto.description = res.data.description["fr"];
+        crypto.tag = res.data.symbol;
+        crypto.rank = res.data.market_cap_rank;
         crypto.currentPrice  = res.data.market_data.current_price[user.currency];
         crypto.lowestPrice  = res.data.market_data.low_24h[user.currency];
         crypto.highestPrice  = res.data.market_data.high_24h[user.currency];
+        crypto.volume = res.data.market_data.total_volume[user.currency];
+        crypto.marketCap = res.data.market_data.market_cap[user.currency];
+        crypto.dayEvolution = res.data.market_data.price_change_24h_in_currency[user.currency];
+        crypto.weekEvolution = res.data.market_data.price_change_percentage_7d_in_currency[user.currency];
+        crypto.monthEvolution = res.data.market_data.price_change_percentage_30d_in_currency[user.currency];
         return crypto;
       })
     })
@@ -94,8 +109,7 @@ export class CryptoService {
     .then(user => {
       return axios.get(`https://api.coingecko.com/api/v3/coins/${cmid}/market_chart?vs_currency=${user.currency}&interval=${periode}&days=30`)
       .then(res => {
-        let history = res.data;
-        return history;
+        return res.data;
       })
     })
   }

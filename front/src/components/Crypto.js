@@ -30,7 +30,7 @@ const Crypto = (props) => {
                 });
         }
     }
-    console.log(crypto);
+
     const isLoggedStars = ()=> {
         var logStatus = props.logged;
         if (!logStatus) {

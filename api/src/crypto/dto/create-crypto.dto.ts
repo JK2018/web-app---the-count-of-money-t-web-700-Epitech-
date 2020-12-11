@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateCryptoDto {
     @ApiProperty()
-    cmids: string;
+    cmid: string;
 
     @ApiProperty()
     fullName: string;

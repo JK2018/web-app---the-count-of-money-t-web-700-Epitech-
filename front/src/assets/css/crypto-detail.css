@@ -16,7 +16,7 @@
 }
 
 .crypto-detail .logo img {
-    max-width: 200px;
+    object-fit: contain;
 }
 
 .crypto-detail li {

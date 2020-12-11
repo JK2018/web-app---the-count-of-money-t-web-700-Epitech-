@@ -6,9 +6,14 @@ const cookies = new Cookies();
 const crypto = {
 
     get: (coinId) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + cookies.get("accessToken")
+            }
+        };
         return new Promise((resolve, reject) => {
-            const getCoinUrl = "https://api.coingecko.com/api/v3/coins/"+coinId;
-            axios(getCoinUrl)
+            axios(urlApi+"/api/cryptos/"+coinId, config)
                 .then((response) => {
                     resolve(response);
                 })
@@ -37,14 +42,8 @@ const crypto = {
     },
 
     getAllPublic: () => {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + cookies.get("accessToken")
-            }
-        };
         return new Promise((resolve, reject) => {
-            axios.get(urlApi+"/api/cryptos/public", config)
+            axios.get(urlApi+"/api/cryptos/public")
                 .then((response) => {
                     resolve(response);
                 })
