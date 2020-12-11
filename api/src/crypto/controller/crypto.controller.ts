@@ -60,6 +60,17 @@ export class CryptoController {
     });
   }
 
+  @ApiOkResponse({ description: 'Get crypto by cmid' })
+  @Get('/public/:cmid')
+  async findPublicOne(@Param('cmid') cmid: string) {
+    return this.cryptoService.findByCmIdPublic(cmid).catch(err => {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        message: err.message
+      }, HttpStatus.BAD_REQUEST)
+    });
+  }
+
   @ApiOkResponse({ description: 'Get all cryptos' })
   @UseGuards(JwtAuthGuard)
   @Get()
