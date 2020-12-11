@@ -11,7 +11,7 @@ import {
     UseGuards,
     Delete,
     Param,
-    UnauthorizedException
+    UnauthorizedException, ClassSerializerInterceptor, UseInterceptors
 } from "@nestjs/common";
 // import { Crud } from '@nestjsx/crud';
 // import { User } from '../models/user.entity';
@@ -111,6 +111,7 @@ export class UserController {
 
     @ApiOkResponse({ description: 'Get current user profile' })
     @UseGuards(JwtAuthGuard)
+    @UseInterceptors(ClassSerializerInterceptor)
     @Get('profile')
     async getProfile(@Req() { user }) {
         return this.service.getUser(user.id).catch(err => {

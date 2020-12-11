@@ -25,7 +25,7 @@ class ConfigService {
         return mode != 'DEV';
     }
 
-    public getTypeOrmConfig(): TypeOrmModuleOptions {
+    public getTypeOrmConfig(): any {
         return {
             type: 'postgres',
 
@@ -42,11 +42,12 @@ class ConfigService {
             cli: {
                 migrationsDir: 'src/migration',
             },
-
+            factories: ['src/factories/**/*{.ts,.js}'],
+            seeds: ['src/seeds/**/*{.ts,.js}'],
             ssl: this.isProduction(),
         };
     }
-}
+} 
 
 const configService = new ConfigService(process.env)
     .ensureValues([

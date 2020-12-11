@@ -1,4 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
+import { Crypto } from '../../crypto/entities/crypto.entity';
 
 export class CreateUserDto {
     @ApiProperty()
@@ -25,7 +26,7 @@ export class CreateUserFromProviderDto {
     providerId: string;
 
     @ApiProperty()
-    email?: string;
+    email: string;
 
     @ApiProperty()
     firstName?: string;
@@ -39,6 +40,9 @@ export class CreateUserFromProviderDto {
 
 export class UpdateUserDto {
     @ApiProperty()
+    email: string;
+
+    @ApiProperty()
     firstName: string;
 
     @ApiProperty()
@@ -49,4 +53,10 @@ export class UpdateUserDto {
 
     @ApiProperty()
     currency: string;
+
+    @ApiProperty()
+    cryptos: Crypto[];
+
+    @ApiProperty()
+    articleKeywords: string[];
 }
