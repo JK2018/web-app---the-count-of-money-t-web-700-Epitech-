@@ -71,6 +71,17 @@ export class CryptoController {
     });
   }
 
+  @ApiOkResponse({ description: 'Get all cryptos available' })
+  @Get("public/:cmid/history/:periode")
+  async publicHistory(@Param('cmid') cmid: string, @Param('periode') periode: string) {
+    return this.cryptoService.getPublicHistory(cmid, periode).catch(err => {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        message: err.message
+      }, HttpStatus.BAD_REQUEST)
+    });
+  }
+
   @ApiOkResponse({ description: 'Get all cryptos' })
   @UseGuards(JwtAuthGuard)
   @Get()

@@ -95,7 +95,7 @@ export class CryptoService {
     crypto.highestPrice = data.market_data.high_24h[devise];
     crypto.marketCap = data.market_data.market_cap[devise];
     crypto.dayEvolutionPercentage = data.market_data.price_change_percentage_24h_in_currency[devise];
-    crypto.dayEvolutionPrice= data.market_data.price_change_24h_in_currency[devise];
+    crypto.dayEvolutionPrice = data.market_data.price_change_24h_in_currency[devise];
     return crypto;
   }
 
@@ -125,5 +125,15 @@ export class CryptoService {
             return res.data;
           })
       })
+  }
+
+  async getPublicHistory(cmid: string, periode: string): Promise<any> {
+    return this.cryptoRepo.findOneOrFail({ where: { cmid, default: true }, relations: ['users'] })
+      .then(() => axios.get(`https://api.coingecko.com/api/v3/coins/${cmid}/market_chart?vs_currency=eur&interval=${periode}&days=30`)
+        .then(res => {
+          return res.data;
+        })
+      )
+      .catch(() => ({message: "Crypto not know or not public"}))
   }
 }

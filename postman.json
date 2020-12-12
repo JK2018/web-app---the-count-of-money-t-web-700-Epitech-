@@ -482,6 +482,40 @@
 					"response": []
 				},
 				{
+					"name": "Get Public Crypto history",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/cryptos/public/01coin/history/minute",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"cryptos",
+								"public",
+								"01coin",
+								"history",
+								"minute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add new crypto",
 					"request": {
 						"auth": {
