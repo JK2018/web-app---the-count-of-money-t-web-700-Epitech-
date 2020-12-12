@@ -11,7 +11,7 @@ import userApi from "../api/user";
 const Crypto = (props) => {
 
     const [crypto, setCrypto] = useState(props);
-
+ 
     // ACTION : when user click star icon
     // DESC : toggle color, re-render, remove or add to cookies
     const handleFavToggle = (e) => {
@@ -48,7 +48,7 @@ const Crypto = (props) => {
         <tr>
             {isLoggedStars()}
             <td>{crypto.rank}</td>
-            <td><img className="iconimg" src={crypto.img} alt="" /></td>
+            <td className="td-center"><img className="iconimg" src={crypto.img} alt="" /></td>
             <td className="coinName"><Link to={{ pathname: "/crypto/" + props.cmid }} style={{ display: 'block' }}>{props.coin}</Link></td>
             <td className="uppercase">{crypto.tag}</td>
             <td>{crypto.price}</td>

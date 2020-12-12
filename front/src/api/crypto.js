@@ -13,7 +13,7 @@ const crypto = {
             }
         };
         return new Promise((resolve, reject) => {
-            axios(urlApi+"/api/cryptos/"+coinId, config)
+            axios(urlApi+"/api/cryptos/public/"+coinId, config)
                 .then((response) => {
                     resolve(response);
                 })

@@ -41,13 +41,13 @@ const CryptoList = (props) => {
                     id={item.id}
                     cmid={item.cmid}
                     coin={item.fullName} 
-                    tag={item.symbol}
+                    tag={item.tag}
                     price={formatFloat(item.currentPrice).toLocaleString('en')} 
-                    rank={item.market_cap_rank} 
-                    oneday={formatFloat(item.price_change_percentage_24h)} 
-                    onedaycurr={formatFloat(item.price_change_24h)} 
+                    rank={item.rank} 
+                    oneday={formatFloat(item.dayEvolutionPercentage)} 
+                    onedaycurr={formatFloat(item.dayEvolutionPrice)} 
                     dayvol={formatFloat(item.total_volume/1000)} 
-                    mcap={formatFloat(item.market_cap/1000000, 0)}
+                    mcap={formatFloat(item.marketCap/1000000, 0)}
                     isfavorite={favoriteCryptos.find(favorite => favorite.id === item.id) ? true : false}>
                 </Crypto>
             ))}

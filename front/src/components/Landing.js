@@ -83,20 +83,18 @@ const Landing = (props) => {
     
                 // DESC : fetch historical data for each chart and set it as an object attribute
                 for (let i = 0; i < result.data.length; i++) {
-                    /* cryptoApi.getHistoricData(result.data[i].cmid, "daily").then((response) => {
+                    cryptoApi.getHistoricData(result.data[i].cmid, "daily").then((response) => {
                         const chartPricesRaw = response.data.prices;
-                        console.log(chartPricesRaw);
-                        const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': (i+1) }));
-                        console.log(chartPricesFinal);
-                        theChartDataObj['chartDataRank' + (i+1)] = chartPricesFinal;
-                    }) */
+                        const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].rank }));
+                        theChartDataObj['chartDataRank' + result.data[i].rank] = chartPricesFinal;
+                    })
                 }
     
                 // DESC : set the mini chart data obj to context
-                /* theChartDataObj['data2'] = data;
+                theChartDataObj['data2'] = data;
                 setContextValue(
                     theChartDataObj
-                ) */
+                )
             })
         }
         fetchData();

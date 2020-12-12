@@ -96,8 +96,13 @@
     line-height: 40px;
 }
 
+.td-center {
+    text-align: center;
+}
+
 .iconimg {
+    margin: auto;
     height: 40px;
-    width: 40px;
+    width: auto;
     line-height: 40px;
 }

@@ -10,9 +10,9 @@ export default class CreateUsers implements Seeder {
       .into(Crypto)
       .values([
         {
-          cmid: "01coin",
-          fullName: "01coin",
-          imgUrl: "https://static.latribune.fr/full_width/1568204/le-bitcoin-a-plus-de-18-000-se-rapproche-de-son-record.jpg",
+          cmid: "bitcoin",
+          fullName: "Bitcoin",
+          imgUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/2000px-BTC_Logo.svg.png",
           default: true
         },
         {

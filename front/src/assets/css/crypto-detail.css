@@ -16,7 +16,13 @@
 }
 
 .crypto-detail .logo img {
+    max-height: 300px;
+    padding-right: 100px;
     object-fit: contain;
+}
+
+.crypto-detail .infos {
+    padding-top: 30px;
 }
 
 .crypto-detail li {

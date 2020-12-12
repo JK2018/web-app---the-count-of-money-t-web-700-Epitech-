@@ -7,10 +7,11 @@ import { faMoneyBill, faCoins } from "@fortawesome/free-solid-svg-icons";
 
 // API
 import cryptoApi from "../api/crypto";
+import userApi from "../api/user";
 
 // ROUTE : /favorites
 // DESC : will render only cryptos selected as favorites by user that has signed in.
-const FavoritesList = () => {
+const FavoritesList = (props) => {
 
     // DESC : selectable currencies
     const [currencies] = useState([
@@ -43,43 +44,55 @@ const FavoritesList = () => {
     }
     buildUrlString();
     
-
     // DESC : fetches data from api, and updates data every 30s
     useEffect(() => {
 
-        const fetchData = async () => {
-            if(coinUrlString){
-                cryptoApi.getDetailed(defaultCurrency, coinUrlString).then((result) => {
+        // DESC : fetch cryptos general data
+        const fetchData = async () => {        
+            
+            cryptoApi.getAllPublic().then((result) => {
 
-                    setData(result.data);
-
-                    // DESC : fetch historical data for each chart and set it as an object attribute
-                    for (let i = 0; i < result.data.length; i++) {
-                        cryptoApi.getHistoricData(result.data[i].id, "daily").then((response) => {
-                            const chartPricesRaw = response.data.prices;
-                            const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': result.data[i].market_cap_rank})); 
-                            theChartDataObj['chartDataRank'+result.data[i].market_cap_rank]= chartPricesFinal;
-                        }) 
-                    }
-
-                    // DESC : set the mini chart data obj to context
-                    theChartDataObj['data2']= data;
-                    setContextValue(theChartDataObj);
-                })
-            }   
+                if (result.data && result.data.length > 0) {
+                    var allPublicCrypto = result.data;
+                    
+                    userApi.get().then((result) => {
+        
+                        if (result.cryptos && result.cryptos.length > 0) {
+                            
+                            // Filter only favorite cryptos
+                            var favoriteCryptos = allPublicCrypto.filter(crypto => result.cryptos.find(favorite => favorite.id === crypto.id));
+                            setData(favoriteCryptos);
+                
+                            // DESC : fetch historical data for each chart and set it as an object attribute
+                            for (let i = 0; i < favoriteCryptos.length; i++) {
+                                cryptoApi.getHistoricData(favoriteCryptos[i].cmid, "daily").then((response) => {
+                                    const chartPricesRaw = response.data.prices;
+                                    const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': favoriteCryptos[i].rank }));
+                                    theChartDataObj['chartDataRank' + favoriteCryptos[i].rank] = chartPricesFinal;
+                                })
+                            }
+                
+                            // DESC : set the mini chart data obj to context
+                            theChartDataObj['data2'] = data;
+                            setContextValue(
+                                theChartDataObj
+                            )
+                        }     
+                    })
+                }
+            });
         }
         fetchData();
 
         // DESC : refresh 30s interval
-        const interval=setInterval(()=>{
+        const interval = setInterval(() => {
             fetchData();
-           },30000);
-           fetchData();
+        }, 30000);
 
-        return()=>{
-        clearInterval(interval)}
-
-    }, [defaultCurrency]);
+        return () => {
+            clearInterval(interval)
+        }
+    }, []);
 
     // ACTION : when user selects currency via select menu
     // DESC : action when user selects another currency
@@ -88,7 +101,7 @@ const FavoritesList = () => {
         cookies.set('currency', e.currentTarget.value, { path: '/favorites' });
         window.location.reload(false);
     } 
-    
+
     return (
         <section className="landing">
             <div className="main-comp">
@@ -114,7 +127,7 @@ const FavoritesList = () => {
                                 <th>30d Chart Evolution</th>
                             </tr>
                         </thead>
-                        <CryptoList data={data} defaultStarCol={'lightgrey'} ></CryptoList>
+                        <CryptoList data={data} defaultStarCol={'lightgrey'} logged={props.logged}></CryptoList>
                     </table>
                 </BaseContext.Provider>
             </div>

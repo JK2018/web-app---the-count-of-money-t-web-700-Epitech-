@@ -161,10 +161,9 @@ const CryptoDetail = () => {
                             <h1>{data.name}</h1>
                         </div>
                     </Grid>
-                    <Grid lg={4} md={6} sm={6} xs={6} item>
+                    <Grid className="infos" lg={4} md={6} sm={6} xs={6} item>
                         <ul>
                             <li><label>Rank</label>{data.rank}</li>
-                            { /* <li><label>Website</label><a href={data.links.homepage[0]} target="_blank" rel="noreferrer">{data.links.homepage[0]}</a></li> */ }
                             <li><label>Current price</label>{ formatPrice(data.currentPrice) } €</li>
                             <li><label>Total volume</label>{ formatPrice(data.volume) } €</li>
                             <li><label>Market cap</label>{ formatPrice(data.marketCap) } €</li>
