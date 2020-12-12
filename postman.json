@@ -16,7 +16,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJncmVnQGdyZWcuZnIiLCJyb2xlIjoidXNlciIsImlhdCI6MTYwNzAxMDAyNiwiZXhwIjoxNjA5NjAyMDI2fQ.fouTsiPL_BB6RBU80uIzyex1kpSdZlh6A929uVYIdkE",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJncmVnb2lyZUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MDc2Nzc5NTcsImV4cCI6MTYxMDI2OTk1N30.ADzlq5s9IAGklLcHpVyOyJLXyqRJcECe9cZc6ajE_BY",
 									"type": "string"
 								}
 							]
@@ -86,7 +86,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"greg@greg.fr\",\n\t\"password\": \"greg\"\n}",
+							"raw": "{\n\t\"email\": \"gregoire@gmail.com\",\n\t\"password\": \"test\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -263,6 +263,68 @@
 			"name": "Crypto",
 			"item": [
 				{
+					"name": "Get All Cryptos available",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJncmVnQGdyZWcuZnIiLCJyb2xlIjoidXNlciIsImlhdCI6MTYwNzAwNjAwMCwiZXhwIjoxNjA5NTk4MDAwfQ.m9onJrPdXZrU3q43oMAvXq3AqY67XcRwhO2eKs3pbE0\"",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/cryptos/available",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"cryptos",
+								"available"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Currencies available",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiVGhvbWFzIFRlc3QiLCJ1c2VybmFtZSI6IlRob21hczUiLCJlbWFpbCI6InRob21hc0B0ZXN0NS5kZSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE1OTAwNzc2NzMsImV4cCI6MTU5MDA4NzY3M30.mlK5PEO-GrXtUJ_Px8ja2-G5XSxTEOamiwCj_9jUUUY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/cryptos/currencies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"cryptos",
+								"currencies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get All Cryptos",
 					"request": {
 						"auth": {
@@ -270,7 +332,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJncmVnQGdyZWcuZnIiLCJyb2xlIjoidXNlciIsImlhdCI6MTYwNzAwODMzOSwiZXhwIjoxNjA5NjAwMzM5fQ.nwz0zzTkPbH2Ss99O2UH3HYa7BL4CZjJNNEpZfhZru8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJncmVnb2lyZUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MDc2Nzc5NTcsImV4cCI6MTYxMDI2OTk1N30.ADzlq5s9IAGklLcHpVyOyJLXyqRJcECe9cZc6ajE_BY",
 									"type": "string"
 								}
 							]
@@ -293,6 +355,37 @@
 					"response": []
 				},
 				{
+					"name": "Get All public Cryptos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/cryptos/public",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"cryptos",
+								"public"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Crypto by cmid",
 					"request": {
 						"auth": {
@@ -300,7 +393,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJncmVnQGdyZWcuZnIiLCJyb2xlIjoidXNlciIsImlhdCI6MTYwNzAwNjAwMCwiZXhwIjoxNjA5NTk4MDAwfQ.m9onJrPdXZrU3q43oMAvXq3AqY67XcRwhO2eKs3pbE0",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJncmVnb2lyZUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MDc2Nzc5NTcsImV4cCI6MTYxMDI2OTk1N30.ADzlq5s9IAGklLcHpVyOyJLXyqRJcECe9cZc6ajE_BY",
 									"type": "string"
 								}
 							]
@@ -318,6 +411,38 @@
 								"api",
 								"cryptos",
 								"01coin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Public Crypto by cmid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/cryptos/public/1337",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"cryptos",
+								"public",
+								"1337"
 							]
 						}
 					},
@@ -357,14 +482,14 @@
 					"response": []
 				},
 				{
-					"name": "Get All Cryptos available",
+					"name": "Get Public Crypto history",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJncmVnQGdyZWcuZnIiLCJyb2xlIjoidXNlciIsImlhdCI6MTYwNzAwNjAwMCwiZXhwIjoxNjA5NTk4MDAwfQ.m9onJrPdXZrU3q43oMAvXq3AqY67XcRwhO2eKs3pbE0\"",
+									"value": "",
 									"type": "string"
 								}
 							]
@@ -372,7 +497,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/cryptos/available",
+							"raw": "http://localhost:3000/api/cryptos/public/01coin/history/minute",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -381,7 +506,10 @@
 							"path": [
 								"api",
 								"cryptos",
-								"available"
+								"public",
+								"01coin",
+								"history",
+								"minute"
 							]
 						}
 					},
@@ -390,6 +518,16 @@
 				{
 					"name": "Add new crypto",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJncmVnQGdyZWcuZnIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MDc2MDU0NjYsImV4cCI6MTYxMDE5NzQ2Nn0.lOvgm2tt00twdeFAPOXJfVcv-WBj1OC95UarKr0Zi0k",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -483,68 +621,6 @@
 								"api",
 								"cryptos",
 								"4"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Currencies available",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiVGhvbWFzIFRlc3QiLCJ1c2VybmFtZSI6IlRob21hczUiLCJlbWFpbCI6InRob21hc0B0ZXN0NS5kZSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE1OTAwNzc2NzMsImV4cCI6MTU5MDA4NzY3M30.mlK5PEO-GrXtUJ_Px8ja2-G5XSxTEOamiwCj_9jUUUY",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/api/cryptos/currencies",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"cryptos",
-								"currencies"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All public Cryptos",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJncmVnQGdyZWcuZnIiLCJyb2xlIjoidXNlciIsImlhdCI6MTYwNzAwODMzOSwiZXhwIjoxNjA5NjAwMzM5fQ.nwz0zzTkPbH2Ss99O2UH3HYa7BL4CZjJNNEpZfhZru8",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/api/cryptos/public",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"cryptos",
-								"public"
 							]
 						}
 					},
