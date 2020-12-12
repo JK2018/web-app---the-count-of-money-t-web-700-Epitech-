@@ -85,6 +85,24 @@ const user = {
         });
     },
 
+    updateProfile: (request) => {
+        return new Promise((resolve, reject) => {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + cookies.get("accessToken")
+                }
+            }
+            axios.put(urlApi+'/api/users/profile', request, config)
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        });
+    },
+
     addFavoriteCrypto: (cryptoId) => {
         return new Promise((resolve, reject) => {
             const config = {

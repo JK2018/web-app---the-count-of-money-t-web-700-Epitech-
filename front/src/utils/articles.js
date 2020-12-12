@@ -1,9 +1,6 @@
 import Grid from "@material-ui/core/Grid";
 import parse from "html-react-parser";
 
-// API
-import articleApi from "../api/article"; 
-
 // Img
 import sadFace from "../assets/img/sad.svg";    
 
@@ -16,9 +13,9 @@ export function renderNews(news, gridSize = "large") {
         return news.map((item, i) => (
             <Grid className="new-container" item xl={xlCol} lg={lgCol} md={4} sm={6} xs={12} key={i}>
                 
-                <a href={item.link} target="_blank" rel="noreferrer" className="new-content">
+                <a href={item.urlArticle} target="_blank" rel="noreferrer" className="new-content">
                     <h3>{item.title}</h3>
-                    {parse(item.description)}
+                    {parse(item.summary)}
                 </a>
             </Grid>
         ))
@@ -26,41 +23,27 @@ export function renderNews(news, gridSize = "large") {
     return <div className="no-news"><img src={sadFace} alt="sad-face"/><p>No news related to this currency ...</p></div>
 }
 
-export function getRSSFeed(filters) {
+export function filterNews(news, filters) {
  
     return new Promise((resolve, reject) => {
-        // rss2json.com mandatory to prevent CROS Request error
-        articleApi.getFeed("https://cointelegraph.com/rss")
-            .then(function (response) {
-                if (response.data.feed && response.data.items.length > 0) {
-                    var posts = response.data.items;
-                    if (filters.length > 0) {
-                        posts = posts.filter(function(item) {
+        if (news && news.length > 0) {
+            if (filters.length > 0) {
+                news = news.filter(function(item) {
 
-                            // Check if article contains filters
-                            // If one filter not matches, post is ingored
-                            return !filters.some((filter) => {
-                                
-                                // Set filter to lower case
-                                filter = filter.toLowerCase();
-        
-                                // Check if filter not matches with categories
-                                // Check if filter is not include in title
-                                // Check if filter is not include in description
-                                // Check if filter is not include in content
-                                return (!item.categories.some(category => category.toLowerCase().includes(filter))
-                                    && !item.title.toLowerCase().includes(filter)
-                                    && !item.description.toLowerCase().includes(filter) 
-                                    && !item.content.toLowerCase().includes(filter)
-                                );
-                            })
-                        })
-                    }
-                    resolve(posts);
-                }
-            })
-            .catch((error) => {
-                reject(error);
-            })
+                    // Check if article contains filters
+                    // If one filter not matches, post is ingored
+                    return !filters.some((filter) => {
+                        
+                        // Set filter to lower case
+                        filter = filter.toLowerCase();
+
+                        // Check if filter is not include in title
+                        // Check if filter is not include in description
+                        return (!item.title.toLowerCase().includes(filter) && !item.summary.toLowerCase().includes(filter));
+                    })
+                })
+            }
+        }
+        resolve(news);
     });
 }

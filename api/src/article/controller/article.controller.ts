@@ -25,7 +25,7 @@ export class ArticleController {
     }
   }
 
-  @ApiOkResponse({ description: 'Get artcile by id' })
+  @ApiOkResponse({ description: 'Get article by id' })
   @Get('/:id')
   async getArticlebyId(@Param('id') id: string) {
     return id;

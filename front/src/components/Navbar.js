@@ -25,7 +25,7 @@ const Navbar = (props) => {
                         <li><Link to="/articles">Articles</Link></li>
                         <li className="step2"><Link to="/favorites">Favorites</Link></li>
                         <li><Link to="/profile">Profile</Link></li>
-                        {"admin" !== false ? <li><Link to="/settings">Settings</Link></li> : ""}
+                        {props.role === "admin" ? <li><Link to="/settings">Settings</Link></li> : ""}
                         <li className="step3"><a className="logout" onClick={props.logout}>Logout</a></li>
                     </Fragment>
                 }

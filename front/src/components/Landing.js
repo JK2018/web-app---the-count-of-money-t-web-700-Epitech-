@@ -140,13 +140,7 @@ const Landing = (props) => {
                                 <th></th>
                                 <th>Coin<FontAwesomeIcon icon={faCoins} className="sub-icon"/></th>
                                 <th>Tag</th>
-                                <th>Price
-                                    <select className="currencySelect sub-icon" value={currencyValue} onChange={e => onSelectChange(e)}>
-                                        {currencies.map(({ label, value }) => (
-                                            <option key={value} value={value}>{label}</option>
-                                        ))}
-                                    </select>
-                                </th>
+                                <th>Price (€)</th>
                                 <th>24h %</th>
                                 <th>24h<FontAwesomeIcon icon={faMoneyBill} className="sub-icon"/></th>
                                 <th>Market Cap</th>

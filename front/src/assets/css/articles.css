@@ -2,8 +2,31 @@
     margin: 50px 10vw;
 }
 
+.articles .inline-form {
+    display: flex;
+    flex-direction: row;
+}
+
+.articles .inline-form button {
+    margin-top: 5px;
+}
+
+.articles .inline-input {
+    width: 300px;
+    margin-right: 10px;
+}
+
 .filters {
-    margin-bottom: 50px !important;
+    flex-direction: column;
+    margin-bottom: 40px !important;
+}
+
+.filters .list{
+    margin-top: 20px;
+}
+
+.filters .tag{
+    margin-right: 10px;
 }
 
 .news h2 {

@@ -157,7 +157,7 @@ const Settings = () => {
                 <IconButton 
                     className="inline-button" 
                     color="primary" 
-                    aria-label="add to shopping cart" 
+                    aria-label="add" 
                     onClick={addFeed}
                 >
                     <AddCircleIcon/>

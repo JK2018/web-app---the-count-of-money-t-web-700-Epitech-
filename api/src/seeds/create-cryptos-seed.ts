@@ -16,27 +16,69 @@ export default class CreateUsers implements Seeder {
           default: true
         },
         {
-          cmid: "0xmonero",
-          fullName: "0xmonero",
-          imgUrl: "https://static.latribune.fr/full_width/1568204/le-bitcoin-a-plus-de-18-000-se-rapproche-de-son-record.jpg",
+          cmid: "ethereum",
+          fullName: "Ethereum",
+          imgUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b7/ETHEREUM-YOUTUBE-PROFILE-PIC.png",
           default: true
         },
         {
-          cmid: "1337",
-          fullName: "Elite",
-          imgUrl: "https://static.latribune.fr/full_width/1568204/le-bitcoin-a-plus-de-18-000-se-rapproche-de-son-record.jpg",
+          cmid: "ripple",
+          fullName: "XRP",
+          imgUrl: "https://cryptologos.cc/logos/xrp-xrp-logo.png",
           default: true
         },
         {
-          cmid: "extradna",
-          fullName: "extraDNA",
-          imgUrl: "https://static.latribune.fr/full_width/1568204/le-bitcoin-a-plus-de-18-000-se-rapproche-de-son-record.jpg",
+          cmid: "tether",
+          fullName: "Tether",
+          imgUrl: "https://cryptologos.cc/logos/tether-usdt-logo.png",
+          default: true
+        },
+        {
+          cmid: "litecoin",
+          fullName: "Litecoin",
+          imgUrl: "https://cdn.worldvectorlogo.com/logos/litecoin.svg",
+          default: true
+        },
+        {
+          cmid: "bitcoin-cash",
+          fullName: "Bitcoin Cash",
+          imgUrl: "https://wallet.cryptospend.com.au/images/bitcoin-cash-bch.png",
+          default: true
+        },
+        {
+          cmid: "chainlink",
+          fullName: "Chainlink",
+          imgUrl: "https://cryptologos.cc/logos/chainlink-link-logo.png",
+          default: true
+        },
+        {
+          cmid: "cardano",
+          fullName: "Cardano",
+          imgUrl: "https://s3.cointelegraph.com/storage/uploads/view/a7872fcc56858227ffa183256a5d55e1.png",
+          default: true
+        },
+        {
+          cmid: "polkadot",
+          fullName: "Polkadot",
+          imgUrl: "https://cryptologos.cc/logos/polkadot-new-dot-logo.png",
+          default: true
+        },
+        {
+          cmid: "binancecoin",
+          fullName: "Binance Coin",
+          imgUrl: "https://www.bitprime.co.nz/wp-content/uploads/2018/08/binance-coin-logo-png-transparent-1024x1024.png",
+          default: true
+        },
+        {
+          cmid: "stellar",
+          fullName: "Stellar",
+          imgUrl: "https://cryptologos.cc/logos/stellar-xlm-logo.png",
           default: false
         },
         {
-          cmid: "ezoow",
-          fullName: "EZOOW",
-          imgUrl: "https://static.latribune.fr/full_width/1568204/le-bitcoin-a-plus-de-18-000-se-rapproche-de-son-record.jpg",
+          cmid: "usd-coin",
+          fullName: "USD Coin",
+          imgUrl: "https://bitcoinmatin.fr/wp-content/uploads/2019/10/usdc-logo.png",
           default: false
         },
       ])

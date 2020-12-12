@@ -4,11 +4,12 @@ import Grid from "@material-ui/core/Grid";
 import Chart from "chart.js";
 import moment from "moment";
 import parse from "html-react-parser";
-import { renderNews, getRSSFeed } from '../utils/articles';
+import { renderNews, filterNews } from '../utils/articles';
 import "../assets/css/crypto-detail.css";
 
 // API
 import cryptoApi from "../api/crypto";
+import articleApi from "../api/article";
 
 // Img
 import upArrow from "../assets/img/up-arrow.svg"; 
@@ -144,7 +145,10 @@ const CryptoDetail = () => {
         cryptoApi.get(coinId).then((result) => {
             setData(result.data);
             createMainChart();
-            getRSSFeed([result.data.fullName]).then((posts) => setNews(posts));;
+            // Get articles for this currency
+            articleApi.getArticles().then((posts) => {
+                filterNews(posts.data, [result.data.fullName]).then(filteredNews => setNews(filteredNews));
+            });
         })
 
     }, [coinId]);

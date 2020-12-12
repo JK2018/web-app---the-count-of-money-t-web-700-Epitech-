@@ -75,7 +75,7 @@ const crypto = {
             }
         };
         return new Promise((resolve, reject) => {
-            const getHistoryUrl = urlApi + "/api/cryptos/"+coinId +"/history/"+interval;
+            const getHistoryUrl = urlApi + "/api/cryptos/public/"+coinId +"/history/"+interval;
             axios(getHistoryUrl, config)
                 .then((response) => {
                     resolve(response);
