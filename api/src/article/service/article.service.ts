@@ -23,16 +23,18 @@ export class ArticleService {
       throw new Error('Unknown user');
     }
 
-    articles = articles.filter(article => {
-      let i = 0;
+    if (user.articleKeywords.length > 0) {
+      articles = articles.filter(article => {
+        let i = 0;
 
-      while (user.articleKeywords[i]) {
-        if (article.summary.includes(user.articleKeywords[i]) || article.title.includes(user.articleKeywords[i])) {
-          return true;
+        while (user.articleKeywords[i]) {
+          if (article.summary.includes(user.articleKeywords[i]) || article.title.includes(user.articleKeywords[i])) {
+            return true;
+          }
+          i++;
         }
-        i++;
-      }
-    });
+      });
+    }
 
     return articles;
   }

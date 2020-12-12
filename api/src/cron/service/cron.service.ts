@@ -1,7 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron, CronExpression, Timeout } from "@nestjs/schedule";
 import { ArticleService } from '../../article/service/article.service';
-import { Article } from "../../article/models/article.entity";
+import { Article } from '../../article/models/article.entity';
 
 @Injectable()
 export class CronService {
@@ -10,10 +10,15 @@ export class CronService {
     private readonly httpService: HttpService,
   ) {}
 
+  @Timeout(0)
+  async handleTimeout() {
+    await this.refreshArticles();
+  }
+
   @Cron(CronExpression.EVERY_HOUR)
-  async handleCron() {
+  async refreshArticles() {
     try {
-      console.log('FETCH DATA EVERY HOUR');
+      console.log('FETCH ARTICLE EVERY HOUR');
       const { data } = await this.httpService.get('https://api.rss2json.com/v1/api.json?rss_url=https://cointelegraph.com/rss').toPromise();
 
       await this.articleService.deleteAll();
