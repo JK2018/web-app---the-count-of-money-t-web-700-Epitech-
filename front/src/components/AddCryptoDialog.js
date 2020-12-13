@@ -6,6 +6,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+// API
+import cryptoApi from "../api/crypto";
+
 const AddCryptoDialog = (props) => {
 
     const [openDialog, setOpen] = useState(props.openDialog);
@@ -29,6 +32,32 @@ const AddCryptoDialog = (props) => {
         });
     }
 
+    function addCryptos(symbol, name, logoUrl) {
+        cryptoApi.create({
+            cmid: symbol,
+            fullName: name,
+            imgUrl: logoUrl,
+            default: true
+        })
+        .then(response => {
+            var crypto = response.data;
+            props.setCryptos([...props.cryptos, {
+                id: crypto.id,
+                symbol: crypto.cmid,
+                name: crypto.fullName,
+                logoUrl: crypto.imgUrl,
+                default: crypto.default
+            }]);
+            handleClose();
+        })
+        .catch(error => {
+            setErrors({
+                ...inputErrors,
+                symbol: error.response.data.message
+            });
+        });
+    }
+
     function submitForm(event) {
         event.preventDefault();
 
@@ -45,8 +74,7 @@ const AddCryptoDialog = (props) => {
         setErrors(errors);
 
         if (!Object.keys(errors).find(key => errors[key] !== "")) {
-            props.addCryptos(inputs.symbol, inputs.name, inputs.url);
-            handleClose();
+            addCryptos(inputs.symbol, inputs.name, inputs.url);
         }
     }
 

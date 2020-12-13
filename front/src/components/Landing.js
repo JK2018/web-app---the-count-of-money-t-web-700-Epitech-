@@ -66,7 +66,7 @@ const Landing = (props) => {
         // DESC : fetch cryptos general data
         const fetchData = async () => {            
             cryptoApi.getAllPublic().then((result) => {
-
+                
                 setData(result.data);
     
                 // DESC : fetch historical data for each chart and set it as an object attribute

@@ -5,9 +5,7 @@ import {
     ListItem, 
     ListItemText, 
     ListItemAvatar, 
-    ListItemSecondaryAction, 
-    TextField, 
-    FormGroup, 
+    ListItemSecondaryAction,
     Tooltip 
 } from '@material-ui/core';
 import RssFeedIcon from '@material-ui/icons/RssFeed';
@@ -22,19 +20,17 @@ import "../assets/css/settings.css";
 import cryptoApi from "../api/crypto";
 import articleApi from "../api/article";
 
-const Settings = () => {
+const Settings = (props) => {
 
-    const [count, setCount] = useState(0);
     const [rssFeeds, setFeeds] = useState([]);
     const [cryptos, setCryptos] = useState([]);
-    const [inputErrors, setErrors] = useState([]);
     const [openDialog, setOpen] = useState(false);
 
     useEffect(() => {
         loadCryptoList();
         loadFeedList();
 
-    }, [count]);
+    }, [props]);
 
     function loadFeedList() {
         articleApi.getFeeds().then(response => setFeeds(response.data));
@@ -58,33 +54,15 @@ const Settings = () => {
         });
     };
 
-    function addCryptos(symbol, name, logoUrl) {
-        cryptoApi.create({
-            cmid: symbol,
-            fullName: name,
-            imgUrl: logoUrl,
-            default: true
-        })
-        .then(response => {
-            var crypto = response.data;
-            setCryptos([...cryptos, {
-                id: crypto.id,
-                symbol: crypto.cmid,
-                name: crypto.fullName,
-                logoUrl: crypto.imgUrl,
-                default: crypto.default
-            }]);
-        });
-    }
-
     function removeCrypto(symbol) {
         var idRemove;
         var newCryptos = [];
         var cryptosRef = [...cryptos];
         cryptosRef.forEach(crypto => {
-            idRemove = crypto.id;
             if (crypto.symbol !== symbol) {
                 newCryptos.push(crypto);
+            } else {
+                idRemove = crypto.id;
             }
         });
         setCryptos(newCryptos);
@@ -130,7 +108,7 @@ const Settings = () => {
             <Button variant="outlined" color="primary" onClick={handleClickDialog}>
                 Add crypto currency
             </Button>
-            <AddCryptoDialog openDialog={openDialog} handler={handleClickDialog} addCryptos={addCryptos}/>
+            <AddCryptoDialog openDialog={openDialog} handler={handleClickDialog} cryptos={cryptos} setCryptos={setCryptos}/>
             <List className="list">
                 {cryptos.map((item) =>
                     React.cloneElement(
