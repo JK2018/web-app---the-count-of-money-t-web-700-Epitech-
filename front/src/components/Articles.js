@@ -22,19 +22,23 @@ const Articles = (props) => {
 
         if (filter !== "" && !filters.find(item => item === filter)) {
             var updatedFilters = [...filters, filter];
-            setFilters(updatedFilters);
             
             // Save filters for this user
             if (props.logged) {
-                userApi.updateProfile({articleKeywords: updatedFilters});
+                userApi.updateProfile({articleKeywords: updatedFilters}).then(() => setFilters(updatedFilters));
+            } else {
+                setFilters(updatedFilters);
             }
+
         }
     }
 
     useEffect(() => {
         // Reload articles
         if (props.logged) {
-            articleApi.getArticles(props.logged).then((posts) => setNews(posts.data));
+            articleApi.getArticles(props.logged).then((posts) => {
+                setNews(posts.data);
+            });
         } else {
             articleApi.getArticles().then((posts) => {
                 filterNews(posts.data, filters).then(filteredNews => setNews(filteredNews));
@@ -51,7 +55,6 @@ const Articles = (props) => {
     
     }, [filters]);
 
-    console.log(news);
     function handleKeyPress(e) {
         if (e.key === "Enter") {
             addFilter();
@@ -61,12 +64,14 @@ const Articles = (props) => {
     const handleDelete = (filterToDelete) => () => {
 
         var updatedFilters = filters.filter((filter) => filter !== filterToDelete);
-        setFilters(updatedFilters);
         
         // Save filters for this user
         if (props.logged) {
-            userApi.updateProfile({articleKeywords: updatedFilters});
+            userApi.updateProfile({articleKeywords: updatedFilters}).then(() => setFilters(updatedFilters));
+        } else {
+            setFilters(updatedFilters);
         }
+
     };
 
     return (

@@ -11,10 +11,9 @@ import "../assets/css/login.css";
 // API
 import userApi from "../api/user";
 
-export const Profile = () => {
+export const Profile = (props) => {
 
     // DESC :  selectable currencies
-    const [userId, setUser] = useState([]);
     const [inputErrors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         username: '',
@@ -30,7 +29,6 @@ export const Profile = () => {
 
     useEffect(() => {
         userApi.get().then((response) => {
-            setUser(response.id);
             setFormData({
                 ...formData,
                 username: response.username,
@@ -40,7 +38,7 @@ export const Profile = () => {
                 currency: response.currency
             })
         });
-    }, [userId]);
+    }, [props]);
 
     const onChangeRadio = (event) => {
         setFormData({...formData, currency: event.target.value});
@@ -85,7 +83,7 @@ export const Profile = () => {
         if (password.length > 0 && password === password_confirmation) user["password"] = password;
         const request = JSON.stringify(user);
 
-        userApi.update(userId, request);
+        userApi.updateProfile(request);
     }
 
     return (

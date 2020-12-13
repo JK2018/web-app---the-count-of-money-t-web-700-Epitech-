@@ -54,20 +54,8 @@ const steps = [
 // DESC : will render all cryptos.
 const Landing = (props) => {
     
-    // DESC :  selectable currencies
-    const [currencies] = useState([
-        { label: "EUR", value: "eur" },
-        { label: "USD", value: "usd" },
-        { label: "GBP", value: "gbp" },
-        { label: "CAD", value: "cad" },
-        { label: "CHF", value: "chf" },
-        { label: "JPY", value: "jpy" }
-    ]);
-    
     const cookies = new Cookies();
     const [isTourOpen, setIsTourOpen] = useState(cookies.get('byPassTour') ? false : true);
-    const [defaultCurrency, setDefaultCurrency] = useState(cookies.get('currency') ? cookies.get('currency') : "usd");
-    const [currencyValue, setCurrencyValue] = useState(defaultCurrency);
     const [data, setData] = useState([]);
     const [contextValue, setContextValue] = useState({});
     const theChartDataObj = {};
@@ -109,14 +97,6 @@ const Landing = (props) => {
         }
     }, []);
 
-    // ACTION : when user selects currency via select menu
-    // DESC : action when user selects another currency
-    const onSelectChange = (e) => {
-        setCurrencyValue(e.currentTarget.value);
-        cookies.set('currency', e.currentTarget.value, { path: '/' });
-        window.location.reload(false);
-    }
-
     const closeTour = () => {
         cookies.set('byPassTour', true, { path: '/' });
         setIsTourOpen(false)
@@ -140,7 +120,7 @@ const Landing = (props) => {
                                 <th></th>
                                 <th>Coin<FontAwesomeIcon icon={faCoins} className="sub-icon"/></th>
                                 <th>Tag</th>
-                                <th>Price (€)</th>
+                                <th>Price ({props.defaultCurrency})</th>
                                 <th>24h %</th>
                                 <th>24h<FontAwesomeIcon icon={faMoneyBill} className="sub-icon"/></th>
                                 <th>Market Cap</th>

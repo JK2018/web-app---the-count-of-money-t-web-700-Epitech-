@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from 'react-router-dom';
-import Cookies from 'universal-cookie';
+import { Link } from 'react-router-dom';
 import MiniChart from './MiniChart';
 
 // API

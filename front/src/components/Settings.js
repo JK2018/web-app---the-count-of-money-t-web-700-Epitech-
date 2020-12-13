@@ -10,17 +10,17 @@ import {
     FormGroup, 
     Tooltip 
 } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RssFeedIcon from '@material-ui/icons/RssFeed';
 import List from '@material-ui/core/List';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import CheckIcon from '@material-ui/icons/Check';
 import AddCryptoDialog from './AddCryptoDialog';
 import "../assets/css/settings.css";
 
 // API
 import cryptoApi from "../api/crypto";
+import articleApi from "../api/article";
 
 const Settings = () => {
 
@@ -32,8 +32,13 @@ const Settings = () => {
 
     useEffect(() => {
         loadCryptoList();
+        loadFeedList();
 
     }, [count]);
+
+    function loadFeedList() {
+        articleApi.getFeeds().then(response => setFeeds(response.data));
+    }
 
     function loadCryptoList() {
         cryptoApi.getAll().then((response) => {
@@ -52,35 +57,6 @@ const Settings = () => {
             }
         });
     };
-
-    function addFeed() {
-        var rssInput = document.getElementById('rss-input');
-        
-        if (!rssInput.value || rssInput.value.length === 0 || rssInput.value.trim().length === 0) {
-            var errors = [...inputErrors];
-            errors["rss"] = "Invalid input";
-            setErrors(errors);
-            return false;
-        }
-
-        var rssFeedsRef = [...rssFeeds];
-        rssFeedsRef.push({id: rssFeeds.length, value: rssInput.value, active: true});
-        setFeeds(rssFeedsRef);
-        
-        rssInput.value = "";
-
-        return true;
-    }
-
-    function disableFeed(feedId) {
-        var freshRssFeed = rssFeeds.map(item => {
-            if(item.id === feedId) {
-                item.active = !item.active;
-            }
-            return item;
-        });
-        setFeeds(freshRssFeed);
-    }
 
     function addCryptos(symbol, name, logoUrl) {
         cryptoApi.create({
@@ -130,14 +106,6 @@ const Settings = () => {
             });
     }
 
-    function handleKeyPress(e, input) {
-        if (e.key === "Enter") {
-            if (input === "feed") {
-                addFeed();
-            }
-        }
-    }
-
     function handleClickDialog() {
         setOpen(!openDialog);
     };
@@ -145,36 +113,16 @@ const Settings = () => {
     return (
         <div className="admin-settings">
             <h1>RSS Feeds</h1>
-            <FormGroup className="inline-form">
-                <TextField                    
-                    className="inline-input"
-                    id="rss-input"
-                    label="Add RSS Feed URL"
-                    error={inputErrors.rss && inputErrors.rss.length !== 0 ? true : false }
-                    helperText= {inputErrors.rss}
-                    onKeyPress={(e) => handleKeyPress(e, "feed")}
-                />
-                <IconButton 
-                    className="inline-button" 
-                    color="primary" 
-                    aria-label="add" 
-                    onClick={addFeed}
-                >
-                    <AddCircleIcon/>
-                </IconButton>
-            </FormGroup>
             <List className="list">
-                {rssFeeds.map((feed) =>
+                {rssFeeds && rssFeeds.map((feed) =>
                     React.cloneElement(
                         <ListItem>
-                            <ListItemText primary={feed.value}/>
-                            <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete" onClick={() => disableFeed(feed.id)} className={feed.active ? "active" : ""} >
-                                    <CheckIcon/>
-                                </IconButton>
+                            <ListItemText primary={feed} className="rss-feed"/>
+                            <ListItemSecondaryAction className="rss-icon">
+                                <RssFeedIcon />
                             </ListItemSecondaryAction>
                         </ListItem>,
-                        {key: feed.id}
+                        {key: feed}
                     )
                 )}
             </List>

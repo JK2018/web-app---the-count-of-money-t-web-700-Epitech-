@@ -8,6 +8,7 @@ import "../assets/css/login.css";
 
 // API
 import userApi from "../api/user";
+import urlApi from "../api/config";
 
 export const Login = (props) => {
 
@@ -79,6 +80,18 @@ export const Login = (props) => {
                             <Button className="submit-btn" type="submit" color="primary" variant="contained" size="large" fullWidth>
                                 Log in
                             </Button>
+                        </Grid>
+                        <Grid container>
+                            <Grid item xs={6} className="oauth-button">
+                                <Button color="default" variant="contained" size="large" fullWidth href={urlApi+"/api/users/auth/discord"}>
+                                    Discord
+                                </Button>
+                            </Grid>
+                            <Grid item xs={6} className="oauth-button">
+                                <Button color="default" variant="contained" size="large" fullWidth href={urlApi+"/api/users/auth/facebook"}>
+                                    Facebook
+                                </Button>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </form>

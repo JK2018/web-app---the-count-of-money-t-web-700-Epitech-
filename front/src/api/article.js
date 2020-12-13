@@ -24,11 +24,17 @@ const article = {
                     reject(error);
                 })
         });
-    }
+    },
 
-    /* getFeed: (rssUrl) => {
+    getFeeds: () => {
         return new Promise((resolve, reject) => {
-            axios("https://api.rss2json.com/v1/api.json?rss_url="+rssUrl)
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + cookies.get("accessToken")
+                }
+            };
+            axios(urlApi + "/api/articles/press/list", config)
                 .then((response) => {
                     resolve(response);
                 })
@@ -36,7 +42,7 @@ const article = {
                     reject(error);
                 })
         });
-    } */
+    }
 };
 
 export default article;

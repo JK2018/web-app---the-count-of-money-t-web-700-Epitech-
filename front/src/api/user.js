@@ -137,6 +137,23 @@ const user = {
                     reject(error);
                 })
         });
+    },
+
+    oAuthCallback: (provider, code) => {
+        return new Promise((resolve, reject) => {
+            axios.get(urlApi+'/api/users/auth/'+provider+"/callback", 
+                {
+                    params: {
+                        code: code
+                    }
+                })
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        });
     }
 };
 

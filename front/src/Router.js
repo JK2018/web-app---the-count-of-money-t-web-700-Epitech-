@@ -15,13 +15,14 @@ import './assets/css/main.css';
 
 // API
 import userApi from "./api/user";
+import LoginCallback from './components/LoginCallback';
 
 const Router = () => {
     
     const cookies = new Cookies();
     const [logged, setLogin] = useState(cookies.get("accessToken") ? true : false);
     const [role, setRole] = useState("");
-    const [defaultCurrency, setDefaultCurrency] = useState("eur");
+    const [defaultCurrency, setDefaultCurrency] = useState("EUR");
 
     function updateLoginState () {
         if (cookies.get("accessToken")) {
@@ -58,7 +59,7 @@ const Router = () => {
                         <ProtectedRoute logged={logged} exact path='/profile' component={Profile}/>
                         <ProtectedRoute logged={logged} exact path='/settings' component={Settings}/> 
                         <ProtectedRoute logged={logged} exact path='/profile' component={Profile}/> 
-                        <Route defaultCurrency={defaultCurrency} exact path='/crypto/:id' component={CryptoDetail}/>
+                        <Route exact path='/crypto/:id' component={CryptoDetail}/>
                         <Route 
                             exact 
                             path='/articles' 
@@ -82,6 +83,7 @@ const Router = () => {
                     </Switch>
                 </section>
             </Fragment>
+            <Route exact path='/oauth-callback/:provider' component={LoginCallback}/>
         </BrowserRouter>
     );
 }

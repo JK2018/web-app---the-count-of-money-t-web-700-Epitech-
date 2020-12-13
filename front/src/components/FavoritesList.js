@@ -12,21 +12,9 @@ import userApi from "../api/user";
 // ROUTE : /favorites
 // DESC : will render only cryptos selected as favorites by user that has signed in.
 const FavoritesList = (props) => {
-
-    // DESC : selectable currencies
-    const [currencies] = useState([
-        { label: "EUR", value: "eur"},
-        { label: "USD", value: "usd"},
-        { label: "GBP", value: "gbp"},
-        { label: "CAD", value: "cad"},
-        { label: "CHF", value: "chf"},
-        { label: "JPY", value: "jpy"}
-    ]);
  
     const cookies = new Cookies();
     const getCooks = cookies.getAll();
-    const [defaultCurrency, setDefaultCurrency] = useState(cookies.get('currency') ? cookies.get('currency') : "usd");
-    const [currencyValue, setCurrencyValue] = useState(defaultCurrency);
     const [contextValue, setContextValue] = useState({});
     const [data, setData] = useState([]);
     const theChartDataObj = {};    
@@ -94,14 +82,6 @@ const FavoritesList = (props) => {
         }
     }, []);
 
-    // ACTION : when user selects currency via select menu
-    // DESC : action when user selects another currency
-    const onSelectChange = (e) => {
-        setCurrencyValue(e.currentTarget.value);
-        cookies.set('currency', e.currentTarget.value, { path: '/favorites' });
-        window.location.reload(false);
-    } 
-
     return (
         <section className="landing">
             <div className="main-comp">
@@ -114,13 +94,7 @@ const FavoritesList = (props) => {
                                 <th></th>
                                 <th>Coin<FontAwesomeIcon icon={faCoins} className="sub-icon"/></th>
                                 <th>Tag</th>
-                                <th>Price
-                                    <select className="currencySelect sub-icon" value={currencyValue} onChange={e => onSelectChange(e)}>
-                                        {currencies.map(({ label, value }) => (
-                                            <option key={value} value={value}>{label}</option>
-                                        ))}
-                                    </select>
-                                </th>
+                                <th>Price ({props.defaultCurrency})</th>
                                 <th>24h %</th>
                                 <th>24h<FontAwesomeIcon icon={faMoneyBill} className="sub-icon"/></th>
                                 <th>Market Cap</th>

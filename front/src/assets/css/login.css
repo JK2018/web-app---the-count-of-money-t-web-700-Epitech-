@@ -23,6 +23,18 @@
   margin-top: 20px;
 }
 
+.login-form .oauth-button {
+  margin-top: 30px;
+}
+
+.login-form .oauth-button:first-child{
+  padding-right: 5px;
+}
+
+.login-form .oauth-button:last-child{
+  padding-left: 5px;
+}
+
 .login-form .alert {
   margin-bottom: 30px;
   background-color: #ffcaca;
@@ -38,3 +50,30 @@
   justify-content: space-between;
   flex-direction: row !important;
 }
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: auto !important;
+  padding-top: 20vh;
+}
+
+.loading span {
+  font-size: 20px;
+}
+
+.loading img {
+  margin: auto;
+  max-width: 100px;
+  margin-bottom: 30px;
+}
+
+.loading img {
+  -webkit-animation:spin 8s linear infinite;
+  -moz-animation:spin 8s linear infinite;
+  animation:spin 8s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
