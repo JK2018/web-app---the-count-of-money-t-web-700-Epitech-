@@ -148,7 +148,11 @@ const user = {
                     }
                 })
                 .then((response) => {
-                    resolve(response);
+                    if (response.data && response.status === 200) {
+                        // Save access token in Cookie
+                        cookies.set("accessToken", response.data.access_token, { path: '/' });
+                    }
+                    resolve(response.data);
                 })
                 .catch((error) => {
                     reject(error);

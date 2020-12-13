@@ -16,9 +16,14 @@ export const LoginCallback = (props) => {
         const provider = props.match.params.provider;
 
         if (code && code.length > 0 && provider && provider.length > 0) {
-            /* userApi.oAuthCallback(provider, code).then((response) => {
-                console.log(response);
-            }) */
+            userApi.oAuthCallback(provider, code)
+                .then((response) => {
+                    props.updateLoginState();
+                    props.history.push('/profile');
+                })
+                .catch(() => {
+                    document.location.href = "/";
+                });
         }
     }, []);
 

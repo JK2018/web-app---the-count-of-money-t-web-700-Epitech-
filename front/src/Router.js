@@ -22,12 +22,13 @@ const Router = () => {
     const cookies = new Cookies();
     const [logged, setLogin] = useState(cookies.get("accessToken") ? true : false);
     const [role, setRole] = useState("");
-    const [defaultCurrency, setDefaultCurrency] = useState("EUR");
+    const [defaultCurrency, setDefaultCurrency] = useState("eur");
 
     function updateLoginState () {
         if (cookies.get("accessToken")) {
             setLogin(true);
             userApi.get().then((response) => {
+                console.log(response);
                 // Get user role
                 setRole(response.role);
                 // Get default currency
@@ -42,7 +43,7 @@ const Router = () => {
         cookies.remove("accessToken");
         setLogin(false);
     }
- 
+    
     return (
         <BrowserRouter>
             <Fragment>
@@ -56,9 +57,8 @@ const Router = () => {
                 <section>
                     <Switch>
                         <ProtectedRoute logged={logged} defaultCurrency={defaultCurrency} exact path='/favorites' component={FavoritesList}/>
-                        <ProtectedRoute logged={logged} exact path='/profile' component={Profile}/>
+                        <ProtectedRoute logged={logged} setDefaultCurrency={setDefaultCurrency} exact path='/profile' component={Profile}/> 
                         <ProtectedRoute logged={logged} exact path='/settings' component={Settings}/> 
-                        <ProtectedRoute logged={logged} exact path='/profile' component={Profile}/> 
                         <Route exact path='/crypto/:id' component={CryptoDetail}/>
                         <Route 
                             exact 
@@ -83,7 +83,13 @@ const Router = () => {
                     </Switch>
                 </section>
             </Fragment>
-            <Route exact path='/oauth-callback/:provider' component={LoginCallback}/>
+            <Route 
+                exact 
+                path='/oauth-callback/:provider'
+                render={(props) => (
+                    <LoginCallback {...props} updateLoginState={updateLoginState} />
+                )}
+            />
         </BrowserRouter>
     );
 }

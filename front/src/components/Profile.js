@@ -83,7 +83,9 @@ export const Profile = (props) => {
         if (password.length > 0 && password === password_confirmation) user["password"] = password;
         const request = JSON.stringify(user);
 
-        userApi.updateProfile(request);
+        userApi.updateProfile(request).then((response) => {
+            props.setDefaultCurrency(currency);
+        });
     }
 
     return (
