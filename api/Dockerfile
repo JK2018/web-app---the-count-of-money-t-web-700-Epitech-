@@ -9,7 +9,7 @@ COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install
 
-RUN rm -rf s./rc/migration
+RUN rm -rf src/migration
 
 # add app
 COPY . ./
