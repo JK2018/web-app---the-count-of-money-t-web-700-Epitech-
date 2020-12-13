@@ -11,7 +11,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
             passReqToCallback: false,
             clientID: process.env.FACEBOOK_APP_ID,
             clientSecret: process.env.FACEBOOK_APP_SECRET,
-            callbackURL: 'http://localhost:3000/api/users/auth/facebook/callback',
+            callbackURL: 'http://localhost:3001/oauth-callback/facebook',
             scope: 'email',
             profileFields: ['id', 'emails', 'name'],
         });
@@ -23,7 +23,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
             providerId: profile.id,
             firstName: name.givenName,
             lastName: name.familyName,
-            email: emails && emails[0].value,
+            email: emails ? emails[0].value : '',
             username: `${name.givenName} ${name.familyName}`
         }
 
