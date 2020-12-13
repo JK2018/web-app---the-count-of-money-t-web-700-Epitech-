@@ -16,7 +16,7 @@ import upArrow from "../assets/img/up-arrow.svg";
 import downArrow from "../assets/img/down-arrow.svg";
 
 
-const CryptoDetail = () => {
+const CryptoDetail = (props) => {
 
     const params = useParams();
     const coinId = params.id;
@@ -42,7 +42,7 @@ const CryptoDetail = () => {
             var ctx = document.getElementById('main-chart');
             if (ctx) {
                 ctx.getContext('2d');
-                cryptoApi.getHistoricData(coinId).then((response) => {
+                cryptoApi.getHistoricData(coinId, "daily", props.logged).then((response) => {
                     var prices = response.data.prices.map(item => {
                         var timestamp = item[0];
                         var price = Number.parseFloat(item[1]).toFixed(2);
@@ -118,7 +118,7 @@ const CryptoDetail = () => {
                                     },
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Closing price ($)'
+                                        labelString: 'Closing price '+props.defaultCurrency.toUpperCase()
                                     }
                                 }]
                             },
@@ -130,7 +130,7 @@ const CryptoDetail = () => {
                                 callbacks: {
                                     label: function(tooltipItem, myData) {
                                         var label = myData.datasets[tooltipItem.datasetIndex].label + ' ' || '';
-                                        label += parseFloat(tooltipItem.value).toFixed(2) + '$';
+                                        label += parseFloat(tooltipItem.value).toFixed(2);
                                         return label;
                                     }
                                 }
@@ -142,7 +142,7 @@ const CryptoDetail = () => {
         }
 
         // Load currency data, then create chart
-        cryptoApi.get(coinId).then((result) => {
+        cryptoApi.get(coinId, props.logged).then((result) => {
             setData(result.data);
             createMainChart();
             // Get articles for this currency
@@ -168,9 +168,9 @@ const CryptoDetail = () => {
                     <Grid className="infos" lg={4} md={6} sm={6} xs={6} item>
                         <ul>
                             <li><label>Rank</label>{data.rank}</li>
-                            <li><label>Current price</label>{ formatPrice(data.currentPrice) } €</li>
-                            <li><label>Total volume</label>{ formatPrice(data.volume) } €</li>
-                            <li><label>Market cap</label>{ formatPrice(data.marketCap) } €</li>
+                            <li><label>Current price</label>{ formatPrice(data.currentPrice) } {props.defaultCurrency.toUpperCase()}</li>
+                            <li><label>Total volume</label>{ formatPrice(data.volume) } {props.defaultCurrency.toUpperCase()}</li>
+                            <li><label>Market cap</label>{ formatPrice(data.marketCap) } {props.defaultCurrency.toUpperCase()}</li>
                         </ul>
                     </Grid>
                     <Grid lg={4} md={12} sm={12} xs={12} item>

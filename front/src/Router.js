@@ -59,7 +59,13 @@ const Router = () => {
                         <ProtectedRoute logged={logged} defaultCurrency={defaultCurrency} exact path='/favorites' component={FavoritesList}/>
                         <ProtectedRoute logged={logged} setDefaultCurrency={setDefaultCurrency} exact path='/profile' component={Profile}/> 
                         <ProtectedRoute logged={logged} exact path='/settings' component={Settings}/> 
-                        <Route exact path='/crypto/:id' component={CryptoDetail}/>
+                        <Route 
+                            exact 
+                            path='/crypto/:id' 
+                            render={(props) => (
+                                    <CryptoDetail {...props} logged={logged} defaultCurrency={defaultCurrency}/>
+                            )}
+                        />
                         <Route 
                             exact 
                             path='/articles' 

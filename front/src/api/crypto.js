@@ -5,15 +5,20 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 const crypto = {
 
-    get: (coinId) => {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + cookies.get("accessToken")
+    get: (coinId, logged = false) => {
+        var config = {};
+        var getUrl = urlApi + "/api/cryptos/public/" + coinId;
+        if (logged) {
+            config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + cookies.get("accessToken")
+                }
             }
+            getUrl = urlApi + "/api/cryptos/" + coinId;
         };
         return new Promise((resolve, reject) => {
-            axios(urlApi+"/api/cryptos/public/"+coinId, config)
+            axios(getUrl, config)
                 .then((response) => {
                     resolve(response);
                 })
@@ -67,15 +72,19 @@ const crypto = {
         });
     },
 
-    getHistoricData: (coinId, interval = "daily") => {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + cookies.get("accessToken")
+    getHistoricData: (coinId, interval = "daily", logged = false) => {
+        var config = {};
+        var getHistoryUrl = urlApi + "/api/cryptos/public/"+coinId +"/history/"+interval;
+        if (logged) {
+            config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + cookies.get("accessToken")
+                }
             }
-        };
+            getHistoryUrl = urlApi + "/api/cryptos/"+coinId +"/history/"+interval;
+        }
         return new Promise((resolve, reject) => {
-            const getHistoryUrl = urlApi + "/api/cryptos/public/"+coinId +"/history/"+interval;
             axios(getHistoryUrl, config)
                 .then((response) => {
                     resolve(response);

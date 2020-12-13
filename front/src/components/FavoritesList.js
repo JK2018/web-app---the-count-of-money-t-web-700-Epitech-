@@ -53,7 +53,7 @@ const FavoritesList = (props) => {
                 
                             // DESC : fetch historical data for each chart and set it as an object attribute
                             for (let i = 0; i < favoriteCryptos.length; i++) {
-                                cryptoApi.getHistoricData(favoriteCryptos[i].cmid, "daily").then((response) => {
+                                cryptoApi.getHistoricData(favoriteCryptos[i].cmid, "daily", props.logged).then((response) => {
                                     const chartPricesRaw = response.data.prices;
                                     const chartPricesFinal = chartPricesRaw.map(elem => ({ 'val': elem[1], 'rank': favoriteCryptos[i].rank }));
                                     theChartDataObj['chartDataRank' + favoriteCryptos[i].rank] = chartPricesFinal;
